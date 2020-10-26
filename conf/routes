@@ -6,4 +6,5 @@
 GET     /                           controllers.MainController.index
 POST    /player/:number             controllers.MainController.player(number)
 POST    /start                      controllers.MainController.start
+POST    /reveal                     controllers.MainController.reveal
 

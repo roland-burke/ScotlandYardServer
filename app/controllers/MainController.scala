@@ -3,7 +3,7 @@ package controllers
 import com.google.inject.Guice
 import de.htwg.se.scotlandyard.ScotlandYardModule
 import javax.inject._
-import de.htwg.se.scotlandyard.aview.tui.Tui
+import de.htwg.se.scotlandyard.aview.tui.{RevealMrX1State, RevealMrX2State, Tui}
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
 import de.htwg.se.scotlandyard.model.coreComponent.GameMaster
 import de.htwg.se.scotlandyard.model.coreComponent.gameInitializerComponent.GameInitializerInterface
@@ -33,7 +33,12 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   }
 
   def start() = Action {
-    controller.startGame()
+    tui.changeState(new RevealMrX1State(tui))
     Ok(tui.toString())
+  }
+
+  def reveal() = Action {
+    tui.changeState(new RevealMrX2State(tui))
+    Ok(tui.getMrXStartingPositionString())
   }
 }
