@@ -49,7 +49,7 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
 
   def revealMrXPosition() = Action {
     tui.changeState(new RevealMrX2State(tui))
-    Ok(views.html.index(tui.getMrXStartingPositionString()))
+    Ok(views.html.index(tui.getMrXStartingPositionStringAndStartGame()))
   }
 
   def startGame() = Action {

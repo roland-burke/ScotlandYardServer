@@ -11,8 +11,8 @@ GET     /menu/choose/start          controllers.MainController.startReveal
 GET     /menu/choose/:player        controllers.MainController.chooseName(player)
 GET     /menu/name/:name            controllers.MainController.enterName(name)
 GET     /menu/reveal                controllers.MainController.revealMrXPosition
+GET     /game                       controllers.MainController.startGame
 
 # Game routes
-GET     /game                       controllers.MainController.startGame
 GET     /map/:direction             controllers.MainController.moveMap(direction)
 GET     /player/:station            controllers.MainController.movePlayer(station)
