@@ -24,21 +24,64 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   val tui = new Tui(controller, tuiMap)
 
   def index = Action {
-    Ok(tui.toString())
+    Ok(views.html.index(tui.toString()))
   }
 
-  def player(number: String) = Action {
+  def setNumberOfPlayer(number: String) = Action {
     controller.initPlayers(number.toInt)
-    Ok(tui.toString())
+    Ok(views.html.index(tui.toString()))
   }
 
-  def start() = Action {
+  def startReveal() = Action {
     tui.changeState(new RevealMrX1State(tui))
-    Ok(tui.toString())
+    Ok(views.html.index(tui.toString()))
   }
 
-  def reveal() = Action {
-    tui.changeState(new RevealMrX2State(tui))
-    Ok(tui.getMrXStartingPositionString())
+  def chooseName(input: String) = Action {
+    tui.evaluateNameMenu(input)
+    Ok(views.html.index(tui.toString()))
   }
+
+  def enterName(input: String) = Action {
+    tui.evaluateEnterName(input)
+    Ok(views.html.index(tui.toString()))
+  }
+
+  def revealMrXPosition() = Action {
+    tui.changeState(new RevealMrX2State(tui))
+    Ok(views.html.index(tui.getMrXStartingPositionString()))
+  }
+
+  def startGame() = Action {
+    Redirect(routes.MainController.index())
+  }
+
+  def moveMap(direction: String) = Action {
+    tui.evaluateMoveMapInput(direction)
+    Ok(views.html.index(tui.toString()))
+  }
+
+  def movePlayer(station: String) = Action {
+    tui.evaluateNextPositionInput(station)
+    Ok(views.html.index(tui.toString()))
+  }
+
+  /*
+  def moveMapUp() = Action {
+
+  }
+
+  def moveMapDown() = Action {
+
+  }
+
+  def moveMapLeft() = Action {
+
+  }
+
+  def moveMapRight() = Action {
+
+  }
+
+   */
 }
