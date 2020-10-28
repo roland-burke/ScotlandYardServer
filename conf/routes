@@ -12,6 +12,7 @@ GET     /menu/choose/:player        controllers.MainController.chooseName(player
 GET     /menu/name/:name            controllers.MainController.enterName(name)
 GET     /menu/reveal                controllers.MainController.revealMrXPosition
 GET     /game                       controllers.MainController.startGame
+GET     /menu                       controllers.MainController.openGame
 
 # Game routes
 GET     /map/:direction             controllers.MapController.moveMap(direction)

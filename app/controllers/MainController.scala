@@ -15,40 +15,44 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   val controller = Game.controller
 
   def index = Action {
-    Ok(views.html.index(tui.toString()))
+    Ok(views.html.index("Welcome to ScotlandYard!"))
+  }
+
+  def openGame() = Action {
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 
   def setNumberOfPlayer(number: String) = Action {
     controller.initPlayers(number.toInt)
-    Ok(views.html.index(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 
   def startReveal() = Action {
     tui.changeState(new RevealMrX1State(tui))
-    Ok(views.html.index(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 
   def chooseName(input: String) = Action {
     tui.evaluateNameMenu(input)
-    Ok(views.html.index(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 
   def enterName(input: String) = Action {
     tui.evaluateEnterName(input)
-    Ok(views.html.index(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 
   def revealMrXPosition() = Action {
     tui.changeState(new RevealMrX2State(tui))
-    Ok(views.html.index(tui.getMrXStartingPositionStringAndStartGame()))
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 
   def startGame() = Action {
-    Redirect(routes.MainController.index())
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 
   def movePlayer(station: String, ticket: String) = Action {
     tui.evaluateNextPositionInput(station + " " + ticket)
-    Ok(views.html.index(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 }

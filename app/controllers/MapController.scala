@@ -11,7 +11,7 @@ class MapController @Inject()(cc: ControllerComponents)(implicit assetsFinder: A
 
   def moveMap(direction: String) = Action {
     tui.evaluateMoveMapInput(direction)
-    Ok(views.html.index(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
 
 }
