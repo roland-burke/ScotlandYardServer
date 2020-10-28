@@ -14,5 +14,5 @@ GET     /menu/reveal                controllers.MainController.revealMrXPosition
 GET     /game                       controllers.MainController.startGame
 
 # Game routes
-GET     /map/:direction             controllers.MainController.moveMap(direction)
+GET     /map/:direction             controllers.MapController.moveMap(direction)
 GET     /player/:station            controllers.MainController.movePlayer(station)
