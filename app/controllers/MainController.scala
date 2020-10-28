@@ -47,8 +47,8 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     Redirect(routes.MainController.index())
   }
 
-  def movePlayer(station: String) = Action {
-    tui.evaluateNextPositionInput(station)
+  def movePlayer(station: String, ticket: String) = Action {
+    tui.evaluateNextPositionInput(station + " " + ticket)
     Ok(views.html.index(tui.toString()))
   }
 }
