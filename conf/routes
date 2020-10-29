@@ -5,6 +5,9 @@
 # An example controller showing a sample home page
 GET     /                           controllers.MainController.index
 
+# Rules
+GET     /rules                      controllers.MainController.showRules
+
 # Menu routes
 GET     /menu/player/:number        controllers.MainController.setNumberOfPlayer(number)
 GET     /menu/choose/start          controllers.MainController.startReveal

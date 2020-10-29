@@ -18,6 +18,10 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     Ok(views.html.index("Welcome to ScotlandYard!"))
   }
 
+  def showRules() = Action {
+    Ok(views.html.main("ScotlandYard")(views.html.rules("Rules")))
+  }
+
   def openGame() = Action {
     Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
