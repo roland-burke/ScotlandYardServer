@@ -9,9 +9,14 @@ class MapController @Inject()(cc: ControllerComponents)(implicit assetsFinder: A
 
   val tui = Game.tui
 
-  def moveMap(direction: String) = Action {
+  def moveMap(direction: String): Action[AnyContent] = Action { implicit request =>
     tui.evaluateMoveMapInput(direction)
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnGameStatusOk
+  }
+
+  def returnGameStatusOk(implicit request: Request[_]): Result = {
+    val gameHtml = views.html.game()(views.html.map(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(gameHtml))
   }
 
 }

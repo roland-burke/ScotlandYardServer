@@ -18,54 +18,68 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   }
 
   def showRules(): Action[AnyContent] = Action {
-    Ok(views.html.main("ScotlandYard")(views.html.rules("About")))
+    Ok(views.html.main("ScotlandYard")(views.html.about("About")))
   }
 
-  def openGame(): Action[AnyContent] = Action {
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+  // Menu Endpoints
+
+  def openMenu(): Action[AnyContent] = Action { implicit request =>
+    returnMenuStatusOk
   }
 
-  def setNumberOfPlayer(number: String): Action[AnyContent] = Action {
+  def setNumberOfPlayer(number: String): Action[AnyContent] = Action { implicit request =>
     controller.initPlayers(number.toInt)
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnMenuStatusOk
   }
 
-  def startReveal(): Action[AnyContent] = Action {
+  def startReveal(): Action[AnyContent] = Action { implicit request =>
     tui.changeState(new RevealMrX1State(tui))
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnMenuStatusOk
   }
 
-  def chooseName(input: String): Action[AnyContent] = Action {
+  def chooseName(input: String): Action[AnyContent] = Action { implicit request =>
     tui.evaluateNameMenu(input)
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnMenuStatusOk
   }
 
-  def enterName(input: String): Action[AnyContent] = Action {
+  def enterName(input: String): Action[AnyContent] = Action { implicit request =>
     tui.evaluateEnterName(input)
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnMenuStatusOk
   }
 
-  def revealMrXPosition(): Action[AnyContent] = Action {
+  def revealMrXPosition(): Action[AnyContent] = Action { implicit request =>
     tui.changeState(new RevealMrX2State(tui))
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnMenuStatusOk
   }
 
-  def startGame(): Action[AnyContent] = Action {
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+  // Game endpoints
+
+  def startGame(): Action[AnyContent] = Action { implicit request =>
+    returnGameStatusOk
   }
 
-  def movePlayer(station: String, ticket: String): Action[AnyContent] = Action {
+  def movePlayer(station: String, ticket: String): Action[AnyContent] = Action { implicit request =>
     tui.evaluateNextPositionInput(station + " " + ticket)
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnGameStatusOk
   }
 
-  def undoMove(): Action[AnyContent] = Action {
+  def undoMove(): Action[AnyContent] = Action { implicit request =>
     controller.undoValidateAndMove()
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnGameStatusOk
   }
 
-  def redoMove(): Action[AnyContent] = Action {
+  def redoMove(): Action[AnyContent] = Action { implicit request =>
     controller.redoValidateAndMove()
-    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+    returnGameStatusOk
+  }
+
+  def returnMenuStatusOk(implicit request: Request[_]): Result = {
+    val menuHtml = views.html.main("ScotlandYard")(views.html.menu(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(menuHtml))
+  }
+
+  def returnGameStatusOk(implicit request: Request[_]): Result = {
+    val gameHtml = views.html.game()(views.html.map(tui.toString()))
+    Ok(views.html.main("ScotlandYard")(gameHtml))
   }
 }

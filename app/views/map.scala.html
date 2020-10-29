@@ -1,0 +1,23 @@
+@(mapString: String)(implicit request: RequestHeader)
+
+<pre>@mapString</pre>
+
+<form method="post" action="@routes.MapController.moveMap("aaa")">
+    @helper.CSRF.formField
+    <input type="submit" value="Map left">
+</form>
+
+<form method="post" action="@routes.MapController.moveMap("ddd")">
+    @helper.CSRF.formField
+    <input type="submit" value="Map right">
+</form>
+
+<form method="post" action="@routes.MapController.moveMap("www")">
+    @helper.CSRF.formField
+    <input type="submit" value="Map up">
+</form>
+
+<form method="post" action="@routes.MapController.moveMap("sss")">
+    @helper.CSRF.formField
+    <input type="submit" value="Map down">
+</form>

@@ -6,7 +6,7 @@
 GET     /                           controllers.MainController.index
 
 # Rules
-GET     /rules                      controllers.MainController.showRules
+GET     /about                      controllers.MainController.showRules
 
 # Menu routes
 GET     /menu/player/:number        controllers.MainController.setNumberOfPlayer(number)
@@ -15,10 +15,10 @@ GET     /menu/choose/:player        controllers.MainController.chooseName(player
 GET     /menu/name/:name            controllers.MainController.enterName(name)
 GET     /menu/reveal                controllers.MainController.revealMrXPosition
 GET     /game                       controllers.MainController.startGame
-GET     /menu                       controllers.MainController.openGame
+GET     /menu                       controllers.MainController.openMenu
 
 # Game routes
-GET     /map/:direction             controllers.MapController.moveMap(direction)
+POST    /map/move                   controllers.MapController.moveMap(direction)
 GET     /player/:station/:ticket    controllers.MainController.movePlayer(station, ticket)
 GET     /undo                       controllers.MainController.undoMove
 GET     /redo                       controllers.MainController.redoMove
