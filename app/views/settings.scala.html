@@ -1,9 +1,9 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 
-@(menuString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
+@(titleString: String, mrXPosition: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
 
-<pre>@menuString</pre>
-<form name="menuForm" method="post" action="@routes.MainController.setNumberOfPlayer">
+<h1>@titleString</h1>
+<form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
     @helper.CSRF.formField
 
     @for(n <- 2 to 7) {
@@ -19,7 +19,7 @@
 <input type="submit" value="Set Number of Player">
 </form>
 <br>
-<form name="menuForm" method="post" action="@routes.MainController.setPlayerName">
+<form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
     @helper.CSRF.formField
 
     <select name="playerIndex">
@@ -36,6 +36,19 @@
 </form>
 
 <br>
-<form method="get" action="@routes.MainController.startGame">
+
+<form method="get" action="@routes.SettingsController.revealMrXPosition()">
+    <input type="submit" value="Reveal Mr.X Position">
+</form>
+
+@if(!mrXPosition.isEmpty) {
+    <div>Mr.X is at Station: @mrXPosition</div>
+}
+
+<br>
+
+<form method="get" action="@routes.GameController.startGame">
     <input type="submit" value="Start Game">
 </form>
+
+

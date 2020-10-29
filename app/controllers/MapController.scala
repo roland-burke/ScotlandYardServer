@@ -2,6 +2,7 @@ package controllers
 
 import javax.inject._
 import model.Game
+import model.Game.controller
 import play.api.mvc._
 
 @Singleton
@@ -15,7 +16,7 @@ class MapController @Inject()(cc: ControllerComponents)(implicit assetsFinder: A
   }
 
   def returnGameStatusOk(implicit request: Request[_]): Result = {
-    val gameHtml = views.html.game()(views.html.map(tui.toString()))
+    val gameHtml = views.html.game(controller.getCurrentPlayer(), views.html.map(tui.toString()))
     Ok(views.html.main("ScotlandYard")(gameHtml))
   }
 

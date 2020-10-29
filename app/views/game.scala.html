@@ -1,4 +1,27 @@
-@()(content: Html)(implicit request: RequestHeader)
+@import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
+@import model.Game.controller
+
+@(currentPlayer: DetectiveInterface, content: Html)(implicit request: RequestHeader)
 
 @content
-<div>Other stuff for the game</div>
+
+    <form name="gameForm" method="post" action="@routes.GameController.movePlayer">
+        @helper.CSRF.formField
+
+    <label>Taxi</label>
+    <input type="radio" checked="true" id="taxi" value="t" name="transport">
+    <label>Bus</label>
+    <input type="radio" id="bus" value="b" name="transport">
+    <label>Underground</label>
+    <input type="radio" id="underground" value="u" name="transport">
+    <label>Black Ticket</label>
+        @if(currentPlayer.equals(controller.getPlayersList()(0))) {
+            <input type="radio" id="black" value="x" name="transport">
+        } else {
+            <input disabled="true" type="radio" id="black" value="x" name="transport">
+        }
+
+    <input type="number" name="station" value="">
+
+    <input type="submit" value="Move Player">
+    </form>
