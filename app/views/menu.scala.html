@@ -24,7 +24,11 @@
 
     <select name="playerIndex">
         @for((player, i) <- players.view.zipWithIndex) {
-            <option name="player" value="@i">@player.name</option>
+            @if(player.name.equals("MrX")) {
+                <option name="player" disabled="true" value="@i">@player.name</option>
+            } else {
+                <option name="player" value="@i">@player.name</option>
+            }
         }
     </select>
 <input type="text" value="" name="playerName">
