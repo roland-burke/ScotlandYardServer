@@ -1,4 +1,6 @@
-@(menuString: String, playerNumber: String)(implicit request: RequestHeader)
+@import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
+
+@(menuString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
 
 <pre>@menuString</pre>
 <form name="menuForm" method="post" action="@routes.MainController.setNumberOfPlayer">
@@ -15,6 +17,18 @@
     }
 
 <input type="submit" value="Set Number of Player">
+</form>
+<br>
+<form name="menuForm" method="post" action="@routes.MainController.setPlayerName">
+    @helper.CSRF.formField
+
+    <select name="playerIndex">
+        @for((player, i) <- players.view.zipWithIndex) {
+            <option name="player" value="@i">@player.name</option>
+        }
+    </select>
+<input type="text" value="" name="playerName">
+<input type="submit" value="Set Player Name">
 </form>
 
 <br>
