@@ -18,7 +18,7 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   }
 
   def showRules(): Action[AnyContent] = Action {
-    Ok(views.html.main("ScotlandYard")(views.html.rules("Rules")))
+    Ok(views.html.main("ScotlandYard")(views.html.rules("About")))
   }
 
   def openGame(): Action[AnyContent] = Action {
