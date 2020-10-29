@@ -17,6 +17,8 @@ GET     /menu                       controllers.MainController.openGame
 # Game routes
 GET     /map/:direction             controllers.MapController.moveMap(direction)
 GET     /player/:station/:ticket    controllers.MainController.movePlayer(station, ticket)
+GET     /undo                       controllers.MainController.undoMove
+GET     /redo                       controllers.MainController.redoMove
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(file)

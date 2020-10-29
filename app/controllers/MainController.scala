@@ -55,4 +55,14 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     tui.evaluateNextPositionInput(station + " " + ticket)
     Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
   }
+
+  def undoMove() = Action {
+    controller.undoValidateAndMove()
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+  }
+
+  def redoMove() = Action {
+    controller.redoValidateAndMove()
+    Ok(views.html.main("ScotlandYard")(views.html.game(tui.toString())))
+  }
 }
