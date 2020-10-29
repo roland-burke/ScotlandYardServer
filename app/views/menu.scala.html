@@ -1,4 +1,23 @@
-@(menuString: String)(implicit request: RequestHeader)
+@(menuString: String, playerNumber: String)(implicit request: RequestHeader)
 
 <pre>@menuString</pre>
-<div>Menu stuff</div>
+<form name="menuForm" method="post" action="@routes.MainController.setNumberOfPlayer">
+    @helper.CSRF.formField
+
+    @for(n <- 2 to 7) {
+        <label>@n Players</label>
+        @if(playerNumber.toInt == n) {
+            <input type="radio" checked="true" id="@n+Players" value="@n" name="nPlayer">
+        } else {
+            <input type="radio" id="@n+Players" value="@n" name="nPlayer">
+        }
+        <br>
+    }
+
+<input type="submit" value="Set Number of Player">
+</form>
+
+<br>
+<form method="get" action="@routes.MainController.startGame">
+    <input type="submit" value="Start Game">
+</form>

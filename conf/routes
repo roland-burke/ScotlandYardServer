@@ -9,7 +9,7 @@ GET     /                           controllers.MainController.index
 GET     /about                      controllers.MainController.showRules
 
 # Menu routes
-GET     /menu/player/:number        controllers.MainController.setNumberOfPlayer(number)
+POST    /menu/player/               controllers.MainController.setNumberOfPlayer
 GET     /menu/choose/start          controllers.MainController.startReveal
 GET     /menu/choose/:player        controllers.MainController.chooseName(player)
 GET     /menu/name/:name            controllers.MainController.enterName(name)

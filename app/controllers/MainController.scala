@@ -27,9 +27,13 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnMenuStatusOk
   }
 
-  def setNumberOfPlayer(number: String): Action[AnyContent] = Action { implicit request =>
-    controller.initPlayers(number.toInt)
-    returnMenuStatusOk
+  def setNumberOfPlayer(): Action[AnyContent] = Action { implicit request =>
+    val selection = request.body.asFormUrlEncoded
+    selection.map { args =>
+      val number = args("nPlayer").head
+      controller.initPlayers(number.toInt)
+      returnMenuStatusOk
+    }.getOrElse(InternalServerError("Ooopa - Internal Server Error"))
   }
 
   def startReveal(): Action[AnyContent] = Action { implicit request =>
@@ -74,7 +78,7 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   }
 
   def returnMenuStatusOk(implicit request: Request[_]): Result = {
-    val menuHtml = views.html.main("ScotlandYard")(views.html.menu(tui.toString()))
+    val menuHtml = views.html.main("ScotlandYard")(views.html.menu(tui.toString(), controller.getPlayersList().length.toString))
     Ok(views.html.main("ScotlandYard")(menuHtml))
   }
 
