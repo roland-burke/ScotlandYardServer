@@ -27,7 +27,12 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     selection.map { args =>
       val transport = args("transport").head
       val station = args("station").head
-      controller.doMove(station.toInt, TicketType.of(transport))
+
+      if(controller.validateMove(station.toInt, TicketType.of(transport))) {
+        controller.doMove(station.toInt, TicketType.of(transport))
+      }
+      if (controller.getWin()) controller.winGame()
+
       returnGameStatusOk
     }.getOrElse(InternalServerError("Ooopa - Internal Server Error"))
   }
