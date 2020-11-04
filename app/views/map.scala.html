@@ -5,28 +5,28 @@
 
     <div id="wrapper">
         <div id="left">
-            <form method="post" action="@routes.MapController.moveMap("aaaa")">
+            <form method="post" action="@routes.GameController.moveMap("aaa")">
                 @helper.CSRF.formField
-                <input type="submit" value="Map left">
+                <input type="submit" value="Left">
             </form>
         </div>
 
         <div id="middle">
-            <form method="post" action="@routes.MapController.moveMap("www")">
+            <form method="post" action="@routes.GameController.moveMap("ww")">
                 @helper.CSRF.formField
-                <input type="submit" value="Map up">
+                <input type="submit" value="Up">
             </form>
 
-            <form method="post" action="@routes.MapController.moveMap("sss")">
+            <form method="post" action="@routes.GameController.moveMap("ss")">
                 @helper.CSRF.formField
-                <input type="submit" value="Map down">
+                <input type="submit" value="Down">
             </form>
         </div>
 
         <div id="right">
-            <form method="post" action="@routes.MapController.moveMap("dddd")">
+            <form method="post" action="@routes.GameController.moveMap("ddd")">
                 @helper.CSRF.formField
-                <input type="submit" value="Map right">
+                <input type="submit" value="Right">
             </form>
         </div>
     </div>

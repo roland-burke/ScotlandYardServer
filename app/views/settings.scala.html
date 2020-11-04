@@ -1,6 +1,6 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 
-@(titleString: String, mrXPosition: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
+@(titleString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
 
 <h1>@titleString</h1>
 <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
@@ -34,16 +34,6 @@
 <input type="text" value="" name="playerName">
 <input type="submit" value="Set Player Name">
 </form>
-
-<br>
-
-<form method="get" action="@routes.SettingsController.revealMrXPosition()">
-    <input type="submit" value="Reveal Mr.X Position">
-</form>
-
-@if(!mrXPosition.isEmpty) {
-    <div>Mr.X is at Station: @mrXPosition</div>
-}
 
 <br>
 

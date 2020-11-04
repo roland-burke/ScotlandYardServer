@@ -5,7 +5,8 @@ import de.htwg.se.scotlandyard.aview.tui.Tui
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
 import de.htwg.se.scotlandyard.util.TicketType
 import model.Game
-import play.api.mvc.{_}
+import model.Game.controller
+import play.api.mvc._
 
 @Singleton
 class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
@@ -47,8 +48,16 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnGameStatusOk
   }
 
-  def returnGameStatusOk(implicit request: Request[_]): Result = {
-    val gameHtml = views.html.game(controller.getCurrentPlayer(), views.html.map(tui.toString()))
+  def revealMrXPosition(): Action[AnyContent] = Action { implicit request =>
+    returnGameStatusOk(request, controller.getMrX().station.number.toString)
+  }
+
+  def moveMap(direction: String): Action[AnyContent] = Action { implicit request =>
+    tui.evaluateMoveMapInput(direction)
+    returnGameStatusOk
+  }
+  def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {
+    val gameHtml = views.html.game(controller.getCurrentPlayer(), mrxStation, views.html.map(tui.toString()))
     Ok(views.html.main("ScotlandYard")(gameHtml))
   }
 }

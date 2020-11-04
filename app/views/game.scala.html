@@ -1,7 +1,7 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 @import model.Game.controller
 
-@(currentPlayer: DetectiveInterface, content: Html)(implicit request: RequestHeader)
+@(currentPlayer: DetectiveInterface, mrXPosition: String, content: Html)(implicit request: RequestHeader)
 
 @content
 
@@ -9,19 +9,36 @@
         @helper.CSRF.formField
 
     <label>Taxi</label>
-    <input type="radio" checked="true" id="taxi" value="t" name="transport">
+    <input type="radio" checked="true" id="taxi" value="t" name="transport"><br>
     <label>Bus</label>
-    <input type="radio" id="bus" value="b" name="transport">
+    <input type="radio" id="bus" value="b" name="transport"><br>
     <label>Underground</label>
-    <input type="radio" id="underground" value="u" name="transport">
+    <input type="radio" id="underground" value="u" name="transport"><br>
     <label>Black Ticket</label>
         @if(currentPlayer.equals(controller.getPlayersList()(0))) {
-            <input type="radio" id="black" value="x" name="transport">
+            <input type="radio" id="black" value="x" name="transport"><br>
         } else {
-            <input disabled="true" type="radio" id="black" value="x" name="transport">
+            <input disabled="true" type="radio" id="black" value="x" name="transport"><br>
         }
 
     <input type="number" name="station" value="">
 
     <input type="submit" value="Move Player">
     </form>
+    <br>
+    <form method="get" action="@routes.GameController.undoMove">
+        <input type="submit" value="Undo">
+    </form>
+    <form method="get" action="@routes.GameController.redoMove">
+        <input type="submit" value="Redo">
+    </form>
+    <br>
+    @if(currentPlayer.name.equals("MrX")) {
+    <form method="get" action="@routes.GameController.revealMrXPosition">
+        <input type="submit" value="Reveal Mr.X Position">
+    </form>
+    }
+    @if(!mrXPosition.isEmpty) {
+    <div>Mr.X is at Station: @mrXPosition</div>
+    }
+

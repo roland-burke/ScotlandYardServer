@@ -26,11 +26,6 @@ class SettingsController @Inject()(cc: ControllerComponents)(implicit assetsFind
     }.getOrElse(InternalServerError("Ooopa - Internal Server Error"))
   }
 
-  def revealMrXPosition(): Action[AnyContent] = Action { implicit request =>
-    val mrXPosition = controller.getMrX().station.number
-    returnMenuStatusOk(request, mrXPosition.toString)
-  }
-
   def setPlayerName(): Action[AnyContent] = Action { implicit request =>
     val selection = request.body.asFormUrlEncoded
     println(selection.toString)
@@ -42,8 +37,8 @@ class SettingsController @Inject()(cc: ControllerComponents)(implicit assetsFind
     }.getOrElse(InternalServerError("Ooopa - Internal Server Error"))
   }
 
-  def returnMenuStatusOk(implicit request: Request[_], mrXPosition: String = ""): Result = {
-    val menuHtml = views.html.main("ScotlandYard")(views.html.settings("Settings", mrXPosition, controller.getPlayersList().length.toString, controller.getPlayersList()))
+  def returnMenuStatusOk(implicit request: Request[_]): Result = {
+    val menuHtml = views.html.main("ScotlandYard")(views.html.settings("Settings", controller.getPlayersList().length.toString, controller.getPlayersList()))
     Ok(views.html.main("ScotlandYard")(menuHtml))
   }
 
