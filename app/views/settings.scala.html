@@ -1,6 +1,7 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 
 @(titleString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
+<div class="main">
 
 <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
     @helper.CSRF.formField
@@ -40,4 +41,4 @@
     <input type="submit" value="Start Game">
 </form>
 
-
+</div>
