@@ -11,11 +11,21 @@
 * argument is an `Html` object containing the body of the page.
 *@
 @main("Welcome to ScotlandYard") {
-
-    @*
-    * Get an `Html` object by calling the built-in Play welcome
-    * template and passing a `String` message.
-    *@
-    @welcome(message)
+    <div class="main">
+    <form method="get" action="settings">
+        <input type="submit" value="Start Game">
+    </form>
+    <br>
+    <form method="get" action="about">
+        <input type="submit" value="About">
+    </form>
+    <br>
+    <div>
+        More information about <a href="https://github.com/tim-koehler/ScotlandYard" target="_blank">ScotlandYard Core</a>
+    </div>
+    <div>
+        More information about <a href="https://github.com/roland-burke/ScotlandYardServer" target="_blank">ScotlandYard Server</a>
+    </div>
+</div>
 
 }

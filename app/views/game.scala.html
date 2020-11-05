@@ -3,6 +3,8 @@
 
 @(currentPlayer: DetectiveInterface, mrXPosition: String, content: Html)(implicit request: RequestHeader)
 
+<div class="main">
+
 @content
 
     <form name="gameForm" method="post" action="@routes.GameController.movePlayer">
@@ -42,3 +44,4 @@
     <div>Mr.X is at Station: @mrXPosition</div>
     }
 
+</div>

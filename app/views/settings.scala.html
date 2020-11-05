@@ -2,7 +2,6 @@
 
 @(titleString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
 
-<h1>@titleString</h1>
 <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
     @helper.CSRF.formField
 
