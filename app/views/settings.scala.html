@@ -1,0 +1,44 @@
+@import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
+
+@(titleString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
+
+<h1>@titleString</h1>
+<form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
+    @helper.CSRF.formField
+
+    @for(n <- 2 to 7) {
+        <label>@n Players</label>
+        @if(playerNumber.toInt == n) {
+            <input type="radio" checked="true" id="@n+Players" value="@n" name="nPlayer">
+        } else {
+            <input type="radio" id="@n+Players" value="@n" name="nPlayer">
+        }
+        <br>
+    }
+
+<input type="submit" value="Set Number of Player">
+</form>
+<br>
+<form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
+    @helper.CSRF.formField
+
+    <select name="playerIndex">
+        @for((player, i) <- players.view.zipWithIndex) {
+            @if(player.name.equals("MrX")) {
+                <option name="player" disabled="true" value="@i">@player.name</option>
+            } else {
+                <option name="player" value="@i">@player.name</option>
+            }
+        }
+    </select>
+<input type="text" value="" name="playerName">
+<input type="submit" value="Set Player Name">
+</form>
+
+<br>
+
+<form method="get" action="@routes.GameController.startGame">
+    <input type="submit" value="Start Game">
+</form>
+
+

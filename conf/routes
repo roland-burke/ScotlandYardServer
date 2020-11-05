@@ -6,22 +6,20 @@
 GET     /                           controllers.MainController.index
 
 # Rules
-GET     /rules                      controllers.MainController.showRules
+GET     /about                      controllers.MainController.showRules
 
 # Menu routes
-GET     /menu/player/:number        controllers.MainController.setNumberOfPlayer(number)
-GET     /menu/choose/start          controllers.MainController.startReveal
-GET     /menu/choose/:player        controllers.MainController.chooseName(player)
-GET     /menu/name/:name            controllers.MainController.enterName(name)
-GET     /menu/reveal                controllers.MainController.revealMrXPosition
-GET     /game                       controllers.MainController.startGame
-GET     /menu                       controllers.MainController.openGame
+POST    /settings/player/name       controllers.SettingsController.setPlayerName
+POST    /settings/player/           controllers.SettingsController.setNumberOfPlayer
+GET     /settings                   controllers.SettingsController.openMenu
+GET     /game                       controllers.GameController.startGame
 
 # Game routes
-GET     /map/:direction             controllers.MapController.moveMap(direction)
-GET     /player/:station/:ticket    controllers.MainController.movePlayer(station, ticket)
-GET     /undo                       controllers.MainController.undoMove
-GET     /redo                       controllers.MainController.redoMove
+POST    /map/move                   controllers.GameController.moveMap(direction)
+POST    /player/                    controllers.GameController.movePlayer
+GET     /undo                       controllers.GameController.undoMove
+GET     /redo                       controllers.GameController.redoMove
+GET     /reveal                     controllers.GameController.revealMrXPosition
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(file)

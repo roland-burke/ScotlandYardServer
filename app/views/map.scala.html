@@ -1,0 +1,35 @@
+@(mapString: String)(implicit request: RequestHeader)
+
+<div>
+    <pre>@mapString</pre>
+
+    <div id="wrapper">
+        <div id="left">
+            <form method="post" action="@routes.GameController.moveMap("aaa")">
+                @helper.CSRF.formField
+                <input type="submit" value="Left">
+            </form>
+        </div>
+
+        <div id="middle">
+            <form method="post" action="@routes.GameController.moveMap("ww")">
+                @helper.CSRF.formField
+                <input type="submit" value="Up">
+            </form>
+
+            <form method="post" action="@routes.GameController.moveMap("ss")">
+                @helper.CSRF.formField
+                <input type="submit" value="Down">
+            </form>
+        </div>
+
+        <div id="right">
+            <form method="post" action="@routes.GameController.moveMap("ddd")">
+                @helper.CSRF.formField
+                <input type="submit" value="Right">
+            </form>
+        </div>
+    </div>
+
+
+</div>
