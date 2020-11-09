@@ -1,20 +1,35 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 @import model.Game.controller
+@import de.htwg.se.scotlandyard.util.TicketType.TicketType
 
-@(currentPlayer: DetectiveInterface, mrXPosition: String, map: Html)(implicit request: RequestHeader)
+@(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], map: Html)(implicit request: RequestHeader)
 
 <div>
 
     <div class="game-wrapper">
         <div>
             <h3>Mr.X History</h3>
-        </div>
+            @for(t <- history) {
+                <label>@t.toString()</label>
+                <br>
+                }
+            </div>
         @map
         <div>
             <h3>Stats</h3>
         </div>
     </div>
 
+    <div>
+        @if(currentPlayer.name.equals("MrX")) {
+            <form method="get" action="@routes.GameController.revealMrXPosition">
+                <input type="submit" value="Reveal Mr.X Position">
+            </form>
+        }
+        @if(!mrXPosition.isEmpty) {
+            <div>Mr.X is at Station: @mrXPosition</div>
+        }
+    </div>
 
     <div class="game-controls">
         <form name="gameForm" method="post" action="@routes.GameController.movePlayer">
@@ -48,14 +63,7 @@
         </form>
 
     </div>
+    <br>
 
-    @if(currentPlayer.name.equals("MrX")) {
-        <form method="get" action="@routes.GameController.revealMrXPosition">
-            <input type="submit" value="Reveal Mr.X Position">
-        </form>
-    }
-    @if(!mrXPosition.isEmpty) {
-        <div>Mr.X is at Station: @mrXPosition</div>
-    }
 
 </div>
