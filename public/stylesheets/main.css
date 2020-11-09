@@ -32,15 +32,20 @@
 }
 
 body {
-    margin-top: 100px;
+    margin: 100px 0 3em 0;
     border: 1px solid red;
+}
+
+html {
+    margin: 0;
+    padding: 0;
 }
 
 .main {
     clear: both;
     text-align: center;
     vertical-align: middle;
-    padding: 20px;
+    padding: 20px 0 3em 0;
     height: 80%;
     border: 1px solid green;
 }
@@ -167,8 +172,8 @@ footer {
     align-items: center;
     flex-wrap: wrap;
     border: 1px solid black;
+
+    position: absolute;
+    bottom: 0;
 }
 
-.footer-item {
-
-}
