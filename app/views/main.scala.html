@@ -15,15 +15,16 @@
         <title>@title</title>
         <meta name="description" content="ScotlandYard online game">
         <meta name="keywords" content="ScotlandYard, Game, Coding, HTWG, Scala">
-        <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/main.css")' />
+        <link rel="stylesheet" media="screen" href="@assetsFinder.path("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@assetsFinder.path("images/favicon.png")">
         <link rel="icon" href="@assetsFinder.path("images/Icon.png")">
         <script src="@assetsFinder.path("javascripts/hello.js")" type="text/javascript"></script>
     </head>
-    <body>
-        <div id="background"></div>
-        @header(title)
-        @content
-        @footer()
+    <body id="background">
+            @header(title)
+        <main class="main">
+            @content
+        </main>
+            @footer()
     </body>
 </html>

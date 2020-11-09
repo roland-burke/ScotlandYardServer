@@ -1,0 +1,174 @@
+#wrapper {
+    width: 310px;
+    overflow: hidden;
+    float: right;
+}
+#left {
+    width: 100px;
+    float: left;
+}
+#middle {
+    width: 100px;
+    float: left;
+}
+#right {
+    width: 100px;
+    float: right;
+    align-self: center;
+    align-content: center;
+}
+
+#background:after {
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity : 0.15;
+    z-index: -1;
+    background-image: url("https://raw.githubusercontent.com/roland-burke/ScotlandYardServer/dev/resources/map_large.png");
+}
+
+body {
+    margin-top: 100px;
+    border: 1px solid red;
+}
+
+.main {
+    clear: both;
+    text-align: center;
+    vertical-align: middle;
+    padding: 20px;
+    height: 80%;
+    border: 1px solid green;
+}
+
+.game-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* === Game Controls */
+
+.game-controls {
+    background-color: #ffe8b1;
+    align-items: center;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.game-controls div {
+    margin: 15px;
+}
+
+.game-controls * {
+    display: inline;
+}
+
+/* === Buttons === */
+
+.settings-button {
+    background-color: #8383e9;
+    height: 4vh;
+    width: 8vw;
+    border-radius: 10px;
+}
+
+.move-player-button {
+    background-color: #f5985b;
+    height: 4vh;
+    width: 8vw;
+    border-radius: 10px;
+}
+
+.map-button {
+    background-color: #b9b9f8;
+    height: 5vh;
+    width: 6vw;
+    border-radius: 10px;
+}
+
+.main-menu-button {
+    box-shadow: 5px 4px 5px 3px #c7c7c7;
+    background:linear-gradient(to bottom, #7cb7eb 5%, #2b4d7a 100%);
+    background-color:#7cb7eb;
+    border-radius:20px;
+    border:4px solid #000000;
+    display:inline-block;
+    cursor:pointer;
+    color:#000000;
+    font-family:Courier New;
+    font-size:20px;
+    font-weight:bold;
+    padding:16px 30px;
+    text-decoration:none;
+    text-shadow:3px 3px 2px #393947;
+}
+.main-menu-button:hover {
+    background:linear-gradient(to bottom, #2b4d7a 5%, #7cb7eb 100%);
+    background-color:#2b4d7a;
+}
+.main-menu-button:active {
+    position:relative;
+    top:1px;
+}
+
+/* === Header === */
+
+header {
+    background-color: #93b2e0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 25px 0 black;
+}
+
+/* The '*' is a placeholder for every element in the header */
+header * {
+    display: inline;
+}
+
+header li {
+    margin: 20px;
+}
+
+header li a {
+    color: black;
+    text-decoration: none;
+}
+
+/* Centered section inside the top navigation */
+.topnav-centered a {
+    float: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
+}
+
+/* === Footer === */
+
+footer {
+    background-color: #c4c4c4;
+    height: 3em;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    border: 1px solid black;
+}
+
+.footer-item {
+
+}

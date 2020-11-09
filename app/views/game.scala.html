@@ -1,47 +1,60 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 @import model.Game.controller
 
-@(currentPlayer: DetectiveInterface, mrXPosition: String, content: Html)(implicit request: RequestHeader)
+@(currentPlayer: DetectiveInterface, mrXPosition: String, map: Html)(implicit request: RequestHeader)
 
-<div class="main">
+<div>
 
-@content
+    <div class="game-wrapper">
+        <div>
+            <h3>Mr.X History</h3>
+        </div>
+        @map
+        <div>
+            <h3>Stats</h3>
+        </div>
+    </div>
 
-    <form name="gameForm" method="post" action="@routes.GameController.movePlayer">
-        @helper.CSRF.formField
+    <div class="game-controls">
+        <form name="gameForm" method="post" action="@routes.GameController.movePlayer">
+            @helper.CSRF.formField
 
-    <label>Taxi</label>
-    <input type="radio" checked="true" id="taxi" value="t" name="transport"><br>
-    <label>Bus</label>
-    <input type="radio" id="bus" value="b" name="transport"><br>
-    <label>Underground</label>
-    <input type="radio" id="underground" value="u" name="transport"><br>
-    <label>Black Ticket</label>
-        @if(currentPlayer.equals(controller.getPlayersList()(0))) {
-            <input type="radio" id="black" value="x" name="transport"><br>
-        } else {
-            <input disabled="true" type="radio" id="black" value="x" name="transport"><br>
-        }
+            <div>
+                <label>Taxi</label>
+                <input type="radio" checked="true" id="taxi" value="t" name="transport">
+            </div>
+            <div>
+                <label>Bus</label>
+                <input type="radio" id="bus" value="b" name="transport">
+            </div>
+            <div>
+                <label>Underground</label>
+                <input type="radio" id="underground" value="u" name="transport">
+            </div>
+            <div>
+                <label>Black Ticket</label>
+                @if(currentPlayer.equals(controller.getPlayersList()(0))) {
+                    <input type="radio" id="black" value="x" name="transport">
+                } else {
+                    <input disabled="true" type="radio" id="black" value="x" name="transport">
+                    }
+            </div>
 
-    <input type="number" name="station" value="">
+            <div>
+                <input type="number" name="station" value="">
+                <input class="move-player-button" type="submit" value="Move Player">
+            </div>
+        </form>
 
-    <input type="submit" value="Move Player">
-    </form>
-    <br>
-    <form method="get" action="@routes.GameController.undoMove">
-        <input type="submit" value="Undo">
-    </form>
-    <form method="get" action="@routes.GameController.redoMove">
-        <input type="submit" value="Redo">
-    </form>
-    <br>
+    </div>
+
     @if(currentPlayer.name.equals("MrX")) {
-    <form method="get" action="@routes.GameController.revealMrXPosition">
-        <input type="submit" value="Reveal Mr.X Position">
-    </form>
+        <form method="get" action="@routes.GameController.revealMrXPosition">
+            <input type="submit" value="Reveal Mr.X Position">
+        </form>
     }
     @if(!mrXPosition.isEmpty) {
-    <div>Mr.X is at Station: @mrXPosition</div>
+        <div>Mr.X is at Station: @mrXPosition</div>
     }
 
 </div>
