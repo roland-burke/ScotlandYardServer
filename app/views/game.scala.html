@@ -1,9 +1,8 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 @import model.Game.controller
 @import de.htwg.se.scotlandyard.util.TicketType.TicketType
-
-@import de.htwg.se.scotlandyard.model.playersComponent.playersBaseImpl.MrX
 @import de.htwg.se.scotlandyard.model.playersComponent.MrXInterface
+
 @(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer, map: Html)(implicit request: RequestHeader)
 
 <div class="main">
@@ -86,7 +85,7 @@
 
             <div>
                 <input type="number" name="station" value="">
-                <input class="move-player-button" type="submit" value="Move Player">
+                <input class="standard-button" type="submit" value="Move Player">
             </div>
         </form>
 
