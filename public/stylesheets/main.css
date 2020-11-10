@@ -134,13 +134,6 @@ html {
     top:1px;
 }
 
-.map-button {
-    background-color: #b9b9f8;
-    height: 5vh;
-    width: 6vw;
-    border-radius: 10px;
-}
-
 .main-menu-button {
     box-shadow: 5px 4px 5px 3px #c7c7c7;
     background:linear-gradient(to bottom, #7cb7eb 5%, #2b4d7a 100%);
@@ -223,22 +216,23 @@ header li a {
 /* ==== Map Nav ==== */
 
 #wrapper {
-    width: 400px;
+    width: 300px;
     float: right;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
 }
 #left {
-    width: 80px;
     float: left;
 }
 #middle {
-    width: 80px;
     float: left;
 }
 #right {
-    width: 80px;
     float: right;
 }
 
+.map-button {
+    background-color: #b9b9f8;
+    border-radius: 6px;
+    font-size: 15px;
+}
