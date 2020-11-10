@@ -1,17 +1,4 @@
 
-#background:after {
-    content : "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity : 0.15;
-    z-index: -1;
-    background-image: url("https://raw.githubusercontent.com/roland-burke/ScotlandYardServer/dev/resources/map_large.png");
-}
-
 body {
     margin: 100px 0 3em 0;
     border: 1px solid red;
@@ -33,19 +20,33 @@ html {
     border: 1px solid green;
 }
 
+#background:after {
+    content : "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity : 0.15;
+    z-index: -1;
+    background-image: url("https://raw.githubusercontent.com/roland-burke/ScotlandYardServer/dev/resources/map_large.png");
+}
+
 .game-wrapper {
     display: flex;
     justify-content: space-evenly;
 }
 
-/* === Game Controls */
+/* ==== Game ==== */
 
 .game-controls {
     background-color: #ffe8b1;
-    align-items: center;
     border: 2px solid #000000;
-    border-radius: 10px;
+    border-radius: 6px;
+    align-items: center;
     padding: 5px;
+    margin: 10px 20px 10px 20px;
 }
 
 .game-controls div {
@@ -54,6 +55,47 @@ html {
 
 .game-controls * {
     display: inline;
+}
+
+.stats-wrapper {
+    background-color: #96b9ec;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.stats-item {
+    background-color: #b2dbff;
+    border: 2px solid #25313e;
+    border-radius: 10px;
+    margin: 4px;
+    padding: 4px;
+}
+
+.history-wrapper {
+    background-color: #96b9ec;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.history-item {
+    background-color: #b2dbff;
+    border: 2px solid #25313e;
+    border-radius: 8px;
+    margin: 4px;
+    padding: 4px;
+}
+
+/* === Map === */
+
+.map-wrapper {
+    border: 4px groove #5b5b8a;
+    border-radius: 5px;
 }
 
 /* === Buttons === */
@@ -104,10 +146,11 @@ html {
     top:1px;
 }
 
-/* === Header === */
+/* ==== Header ==== */
 
 header {
     background-color: #93b2e0;
+    box-shadow: 0 0 25px 0 black;
     position: fixed;
     top: 0;
     left: 0;
@@ -116,7 +159,6 @@ header {
     display: flex;
     align-items: center;
     text-align: center;
-    box-shadow: 0 0 25px 0 black;
 }
 
 /* The '*' is a placeholder for every element in the header */
@@ -135,15 +177,15 @@ header li a {
 
 /* Centered section inside the top navigation */
 .topnav-centered a {
+    font-size: 25px;
     float: none;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 25px;
 }
 
-/* === Footer === */
+/* ==== Footer ==== */
 
 .footer {
     background-color: #c4c4c4;
@@ -158,7 +200,7 @@ header li a {
     flex-wrap: wrap;
 }
 
-/* === Map Nav === */
+/* ==== Map Nav ==== */
 
 #wrapper {
     width: 400px;

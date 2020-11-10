@@ -2,24 +2,52 @@
 @import model.Game.controller
 @import de.htwg.se.scotlandyard.util.TicketType.TicketType
 
-@(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], map: Html)(implicit request: RequestHeader)
+@import de.htwg.se.scotlandyard.model.playersComponent.playersBaseImpl.MrX
+@import de.htwg.se.scotlandyard.model.playersComponent.MrXInterface
+@(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer, map: Html)(implicit request: RequestHeader)
 
 <div class="main">
 
     <div class="game-wrapper">
-        <div>
+        <div class="history-wrapper">
             <h3>Mr.X History</h3>
             @for(t <- history) {
-                <label>@t.toString()</label>
-                <br>
+                <div class="history-item">
+                    @t.toString()
+                </div>
                 }
             </div>
         @map
-        <div>
+        <div class="stats-wrapper">
             <h3>Stats</h3>
+            @for(player <- players) {
+                    <div class="stats-item">
+                        <div>
+                            @if(player.name == "MrX") {
+                                @player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen
+                            } else {
+                                @player.name Station: @player.station.number
+                            }
+                        </div>
+                        <div>
+                            <div>
+                                Taxi: @player.tickets.taxiTickets
+                            </div>
+                            <div>
+                                Bus: @player.tickets.busTickets
+                            </div>
+                            <div>
+                                Underground: @player.tickets.undergroundTickets
+                            </div>
+                        </div>
+                    </div>
+            }
         </div>
     </div>
 
+    <div>
+        Round: @round - Current Player: @currentPlayer.name
+    </div>
     <div>
         @if(currentPlayer.name.equals("MrX")) {
             <form method="get" action="@routes.GameController.revealMrXPosition">
