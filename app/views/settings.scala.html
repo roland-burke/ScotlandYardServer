@@ -7,17 +7,20 @@
         <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
             @helper.CSRF.formField
             @for(n <- 2 to 7) {
-                <label>@n Players</label>
+                <label class="radio-button-label">@n Players</label>
                 @if(playerNumber.toInt == n) {
                     <input type="radio" checked="true" id="@n+Players" value="@n" name="nPlayer">
+                    <span class="radio-button"></span>
                 } else {
-                    <input type="radio" id="@n+Players" value="@n" name="nPlayer">
+                    <input type="radio" class="radio-button" id="@n+Players" value="@n" name="nPlayer">
+                    <span class="radio-button"></span>
                 }
                 <br>
             }
-
+            <br>
             <input class="standard-button" type="submit" value="Set Number of Player">
         </form>
+
         <br>
         <form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
             @helper.CSRF.formField

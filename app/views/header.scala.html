@@ -1,13 +1,33 @@
-@(title: String)
+@(title: String)(isIngame: Boolean)
 
 <header>
     <div class="topnav">
-        <ul>
-            <li><a href="/about">About</a></li>
-            <li><a href="/">Main Menu</a></li>
-            <li><a href="/undo">Undo</a></li>
-            <li><a href="/redo">Redo</a></li>
-            <li class="topnav-centered"><a>@title</a></li>
-        </ul>
+        <div class="topnav-left">
+            <form method="get" action="/">
+                <input class="navbar-button" type="submit" value="Main Menu">
+            </form>
+            <form method="get" action="/about">
+                <input class="navbar-button" type="submit" value="About">
+            </form>
+            @if(isIngame) {
+            <label class="navbar-button">
+                <input type="file"/>
+                Save Game
+            </label>
+            }
+        </div>
+        <div class="topnav-centered">
+            <a>@title</a>
+        </div>
+        @if(isIngame) {
+        <div class="topnav-right">
+            <form method="get" action="/undo">
+                <input class="navbar-button" type="submit" value="Undo">
+            </form>
+            <form method="get" action="/redo">
+                <input class="navbar-button" type="submit" value="Redo">
+            </form>
+        </div>
+        }
     </div>
 </header>
