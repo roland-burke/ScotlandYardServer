@@ -3,7 +3,7 @@
 @import de.htwg.se.scotlandyard.util.TicketType.TicketType
 @import de.htwg.se.scotlandyard.model.playersComponent.MrXInterface
 
-@(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer, map: Html)(implicit request: RequestHeader)
+@(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer, map: Html)(implicit request: RequestHeader, assetsFinder: AssetsFinder)
 
 <div class="main">
 
@@ -12,34 +12,43 @@
             <h3>Mr.X History</h3>
             @for(t <- history) {
                 <div class="history-item">
-                    @t.toString()
+                @t.toString()
                 </div>
-                }
+            }
             </div>
         @map
         <div class="stats-wrapper">
             <h3>Stats</h3>
             @for(player <- players) {
-                    <div class="stats-item">
+                <div class="stats-item">
+                    <div>
+                    @if(player.name == "MrX") {
+                        @player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen
+                    } else {
+                        @player.name Station: @player.station.number
+                    }
+                    </div>
+                    <div>
                         <div>
-                            @if(player.name == "MrX") {
-                                @player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen
-                            } else {
-                                @player.name Station: @player.station.number
-                            }
+                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/Taxi.svg")">
+                            @player.tickets.taxiTickets
                         </div>
                         <div>
-                            <div>
-                                Taxi: @player.tickets.taxiTickets
-                            </div>
-                            <div>
-                                Bus: @player.tickets.busTickets
-                            </div>
-                            <div>
-                                Underground: @player.tickets.undergroundTickets
-                            </div>
+                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/Bus.svg")">
+                            @player.tickets.busTickets
+                        </div>
+                        <div>
+                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/Underground.svg")">
+                            @player.tickets.undergroundTickets
+                        </div>
+                        <div>
+                        @if(player.name == "MrX") {
+                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/BlackTicket.svg")">
+                            @player.asInstanceOf[MrXInterface].tickets.blackTickets
+                        }
                         </div>
                     </div>
+                </div>
             }
         </div>
     </div>
@@ -61,21 +70,19 @@
     <div class="game-controls">
         <form name="gameForm" method="post" action="@routes.GameController.movePlayer">
             @helper.CSRF.formField
-
             <div>
-                <label>Taxi</label>
-                <input type="radio" checked="true" id="taxi" value="t" name="transport">
-            </div>
+                <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
+                <input class="radio-test" type="radio" checked="true" id="taxi" value="t" name="transport">
             <div>
-                <label>Bus</label>
+                <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
                 <input type="radio" id="bus" value="b" name="transport">
             </div>
             <div>
-                <label>Underground</label>
+                <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
                 <input type="radio" id="underground" value="u" name="transport">
             </div>
             <div>
-                <label>Black Ticket</label>
+                <img class="ticket-icon" src="@assetsFinder.path("images/BlackTicket.svg")">
                 @if(currentPlayer.equals(controller.getPlayersList()(0))) {
                     <input type="radio" id="black" value="x" name="transport">
                 } else {

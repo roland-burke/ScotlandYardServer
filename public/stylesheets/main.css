@@ -110,6 +110,14 @@ body {
     padding: 4px;
 }
 
+.ticket-icon {
+    width: 90px;
+}
+
+.ticket-icon-stats {
+    width: 70px;
+}
+
 /* === Map === */
 
 .map-wrapper {
