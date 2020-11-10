@@ -1,10 +1,8 @@
-
 @*
 * This template takes a two arguments, a String containing a
 * message to display and an AssetsFinder to locate static assets.
 *@
 @(message: String)(implicit assetsFinder: AssetsFinder)
-
 @*
 * Call the `main` template with two arguments. The first
 * argument is a `String` with the title of the page, the second
@@ -12,13 +10,12 @@
 *@
 @main("Welcome to ScotlandYard") {
     <div class="main">
-    <form method="get" action="settings">
-        <input class="main-menu-button" type="submit" value="Start Game">
-    </form>
-    <br>
-    <form method="get" action="about">
-        <input class="main-menu-button" type="submit" value="About">
-    </form>
-</div>
-
+        <form method="get" action="settings">
+            <input class="main-menu-button" type="submit" value="Start Game">
+        </form>
+        <br>
+        <form method="get" action="about">
+            <input class="main-menu-button" type="submit" value="About">
+        </form>
+    </div>
 }
