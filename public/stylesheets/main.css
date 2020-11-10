@@ -7,23 +7,14 @@ Tags: Scala, Play, ScotlandYard
 
 body {
     margin: 100px 0 3em 0;
-    border: 1px solid red;
-    height: 100%;
-}
-
-html {
     height: 100%;
 }
 
 .main {
-    clear: both;
     text-align: center;
     vertical-align: middle;
     margin: 20px 0 3em 0;
-
     height: 80%;
-    min-height: 100%;
-    border: 1px solid green;
 }
 
 #background:after {
