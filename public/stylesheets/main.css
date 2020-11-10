@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Michroma');
-
+/*@import url(radioButtons.css);*/
 /*
 Theme Name: Scotty Custom
 Description: ScotlandYard online Game
@@ -7,17 +7,33 @@ Author: Roland Burke, Tim Köhler
 Tags: Scala, Play, ScotlandYard
 */
 
+#about {
+    display: inline-block;
+    text-align: left;
+    max-width: 60%;
+}
+
+input[type="file"] {
+    display: none;
+}
+
 body {
     margin: 100px 0 3em 0;
     height: 100%;
-    font-family:Courier New;
+    font-family: Courier New;
 }
 
 .main {
-    text-align: center;
+    /*text-align: center;
     vertical-align: middle;
     margin: 20px 0 3em 0;
-    height: 80%;
+    height: 80%;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 60vh;
 }
 
 #background:after {
@@ -43,9 +59,9 @@ body {
 .index-wrapper {
     background-color: #cae4ff;
     border: 2px solid #000000;
-    border-radius: 6px;
+    border-radius: 100px;
     display: inline-block;
-    padding: 25px;
+    padding: 80px 40px;
 }
 
 /* ==== Game ==== */
@@ -59,7 +75,7 @@ body {
     box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     align-items: center;
     padding: 5px;
-    margin: 10px 20px 10px 20px;
+    margin: 50px 20px 10px 20px;
 }
 
 .game-controls div {
@@ -80,6 +96,9 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 555px;
+    margin-left: 150px;
 }
 
 .stats-item {
@@ -100,6 +119,9 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 555px;
+    margin-right: 150px;
 }
 
 .history-item {
@@ -123,13 +145,14 @@ body {
 .map-wrapper {
     border: 4px groove #5b5b8a;
     border-radius: 5px;
+    display: inline-block;
 }
 
 /* === Buttons === */
 
 .standard-button {
     box-shadow: 0px 10px 14px -7px #276873;
-    background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+    background:linear-gradient(to bottom, #93b2e0 5%, #93BFE0 100%);
     background-color:#599bb3;
     border-radius:8px;
     display:inline-block;
@@ -143,8 +166,8 @@ body {
     text-shadow:0px 1px 0px #3d768a;
 }
 .standard-button:hover {
-    background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
-    background-color:#408c99;
+    background:linear-gradient(to bottom, #2E5D80 5%, #2E5D80 100%);
+    background-color:#2E5D80;
 }
 .standard-button:active {
     position:relative;
@@ -222,6 +245,35 @@ header li a {
     text-shadow: rgb(0, 0, 0) 2px 2px 6px;
 }
 
+.topnav-left {
+    float: none;
+    position: absolute;
+    top: 0%;
+    left: 1%;
+    font-family: Michroma, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    font-size: 28px;
+    color: rgb(21, 14, 73);
+    background-color: rgba(255, 255, 255, 0);
+    text-shadow: rgb(0, 0, 0) 2px 2px 6px;
+}
+
+.topnav-right {
+    float: none;
+    position: absolute;
+    top: 0%;
+    left: 92%;
+
+    font-family: Michroma, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    font-size: 28px;
+    color: rgb(21, 14, 73);
+    background-color: rgba(255, 255, 255, 0);
+    text-shadow: rgb(0, 0, 0) 2px 2px 6px;
+}
+
 /* ==== Footer ==== */
 
 .footer {
@@ -240,10 +292,11 @@ header li a {
 /* ==== Map Nav ==== */
 
 #wrapper {
-    width: 300px;
-    float: right;
     display: flex;
     align-items: center;
+    margin: auto;
+    width: 10%;
+    padding: 0px 0px 15px 0px;
 }
 #left {
     float: left;
@@ -259,4 +312,30 @@ header li a {
     background-color: #b9b9f8;
     border-radius: 6px;
     font-size: 15px;
+}
+
+.navbar-button {
+	box-shadow:inset 0px 9px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 10%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Michroma;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 14px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+	margin-top: 1px;
+}
+.navbar-button :hover {
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
+}
+.navbar-button :active {
+	position:relative;
+	top:1px;
 }

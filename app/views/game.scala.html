@@ -6,10 +6,9 @@
 @(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer, map: Html)(implicit request: RequestHeader, assetsFinder: AssetsFinder)
 
 <div class="main">
-
     <div class="game-wrapper">
         <div class="history-wrapper">
-            <h3>Mr.X History</h3>
+            <h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>
             @for(t <- history) {
                 <div class="history-item">
                 @t.toString()
@@ -20,15 +19,14 @@
         <div class="stats-wrapper">
             <h3>Stats</h3>
             @for(player <- players) {
-                <div class="stats-item">
-                    <div>
-                    @if(player.name == "MrX") {
-                        @player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen
-                    } else {
-                        @player.name Station: @player.station.number
-                    }
-                    </div>
-                    <div>
+                    <div class="stats-item">
+                        <div>
+                            @if(player.name == "MrX") {
+                                <b>@player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen</b>
+                            } else {
+                                <b>@player.name Station: @player.station.number</b>
+                            }
+                        </div>
                         <div>
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/Taxi.svg")">
                             @player.tickets.taxiTickets
@@ -59,14 +57,13 @@
     <div>
         @if(currentPlayer.name.equals("MrX")) {
             <form method="get" action="@routes.GameController.revealMrXPosition">
-                <input type="submit" value="Reveal Mr.X Position">
+                <input type="submit" class="standard-button" style="padding: 3px 3px 3px 3px;" value="Reveal Mr.X Position">
             </form>
         }
         @if(!mrXPosition.isEmpty) {
             <div>Mr.X is at Station: @mrXPosition</div>
         }
     </div>
-
     <div class="game-controls">
         <form name="gameForm" method="post" action="@routes.GameController.movePlayer">
             @helper.CSRF.formField

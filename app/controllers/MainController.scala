@@ -12,7 +12,7 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   }
 
   def showRules(): Action[AnyContent] = Action {
-    Ok(views.html.main("ScotlandYard")(views.html.about("About")))
+    Ok(views.html.main("Scotland Yard")(false)(views.html.about("About")))
   }
 
 }
