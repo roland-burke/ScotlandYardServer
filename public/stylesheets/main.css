@@ -1,3 +1,9 @@
+/*
+Theme Name: Scotty Custom
+Description: ScotlandYard online Game
+Author: Roland Burke, Tim Köhler
+Tags: Scala, Play, ScotlandYard
+*/
 
 body {
     margin: 100px 0 3em 0;
@@ -54,6 +60,9 @@ html {
     background-color: #ffe8b1;
     border: 2px solid #000000;
     border-radius: 6px;
+    -webkit-box-shadow: 5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     align-items: center;
     padding: 5px;
     margin: 10px 20px 10px 20px;
@@ -71,6 +80,9 @@ html {
     background-color: #96b9ec;
     border: 2px solid #000000;
     border-radius: 6px;
+    -webkit-box-shadow: 5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -88,6 +100,9 @@ html {
     background-color: #96b9ec;
     border: 2px solid #000000;
     border-radius: 6px;
+    -webkit-box-shadow: 5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     display: flex;
     align-items: center;
     flex-direction: column;
