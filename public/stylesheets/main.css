@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Michroma');
+
 /*
 Theme Name: Scotty Custom
 Description: ScotlandYard online Game
@@ -8,6 +10,7 @@ Tags: Scala, Play, ScotlandYard
 body {
     margin: 100px 0 3em 0;
     height: 100%;
+    font-family:Courier New;
 }
 
 .main {
@@ -196,12 +199,19 @@ header li a {
 
 /* Centered section inside the top navigation */
 .topnav-centered a {
-    font-size: 25px;
     float: none;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    font-family: Michroma, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    font-size: 28px;
+    color: rgb(21, 14, 73);
+    background-color: rgba(255, 255, 255, 0);
+    text-shadow: rgb(0, 0, 0) 2px 2px 6px;
 }
 
 /* ==== Footer ==== */
