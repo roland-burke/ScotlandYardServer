@@ -16,7 +16,7 @@
             <br>
         }
 
-        <input class="settings-button" type="submit" value="Set Number of Player">
+        <input class="standard-button" type="submit" value="Set Number of Player">
     </form>
     <br>
     <form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
@@ -32,13 +32,13 @@
         }
         </select>
         <input type="text" value="" name="playerName">
-        <input class="settings-button" type="submit" value="Set Player Name">
+        <input class="standard-button" type="submit" value="Set Player Name">
     </form>
 
     <br>
     <div>
         <form method="get" action="@routes.GameController.startGame">
-            <input class="settings-button" type="submit" value="Start Game">
+            <input class="standard-button" type="submit" value="Start Game">
         </form>
     </div>
 
