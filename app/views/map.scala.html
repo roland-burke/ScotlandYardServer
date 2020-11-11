@@ -7,26 +7,26 @@
         <div id="left">
             <form method="post" action="@routes.GameController.moveMap("aaa")">
                 @helper.CSRF.formField
-                <input class="map-button" type="submit" value="Left">
+                <input class="standard-button" type="submit" value="Left">
             </form>
         </div>
 
         <div id="middle">
             <form method="post" action="@routes.GameController.moveMap("ww")">
                 @helper.CSRF.formField
-                <input class="map-button" type="submit" value="Up">
+                <input class="standard-button" type="submit" value="Up">
             </form>
 
             <form method="post" action="@routes.GameController.moveMap("ss")">
                 @helper.CSRF.formField
-                <input class="map-button" type="submit" value="Down">
+                <input class="standard-button" type="submit" value="Down">
             </form>
         </div>
 
         <div id="right">
             <form method="post" action="@routes.GameController.moveMap("ddd")">
                 @helper.CSRF.formField
-                <input class="map-button" type="submit" value="Right">
+                <input class="standard-button" type="submit" value="Right">
             </form>
         </div>
     </div>
