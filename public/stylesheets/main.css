@@ -146,6 +146,25 @@ body {
     width: 70px;
 }
 
+/* HIDE RADIO */
+[type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + img {
+    cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+    border:3px solid #c30202;
+    border-radius: 10px;
+}
+
 /* === Map === */
 
 .map-wrapper {
@@ -216,13 +235,8 @@ header {
     right: 0;
 }
 
-/* The '*' is a placeholder for every element in the header */
-header * {
-    display: inline;
-}
-
 header li {
-    margin: 2px 15px 2px 15px;
+    margin: 0.05em 15px 0.05em 15px;
 }
 
 .title {
@@ -251,7 +265,6 @@ header li {
 	padding:6px 14px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffffff;
-	margin-top: 1px;
 }
 .navbar-button:hover {
 	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
@@ -261,7 +274,7 @@ header li {
 	position:relative;
 	top:1px;
 }
-/* --------------- */
+
 .navbar {
     display: flex;
     align-items: center;
@@ -270,10 +283,12 @@ header li {
 
 .left-links ul {
     display: flex;
+    padding-inline-start: 0;
 }
 
 .right-links ul {
     display: flex;
+    padding-inline-start: 0;
 }
 
 .left-links li {
