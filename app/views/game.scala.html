@@ -30,20 +30,36 @@
                     <div>
                         <div>
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/Taxi.svg")">
-                            @player.tickets.taxiTickets
+                            @if(player.tickets.taxiTickets < 10) {
+                                &nbsp;@player.tickets.taxiTickets
+                            } else {
+                                @player.tickets.taxiTickets
+                            }
                         </div>
                         <div>
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/Bus.svg")">
-                            @player.tickets.busTickets
+                            @if(player.tickets.busTickets < 10) {
+                                &nbsp;@player.tickets.busTickets
+                            } else {
+                                @player.tickets.busTickets
+                            }
                         </div>
                         <div>
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/Underground.svg")">
+                            @if(player.tickets.undergroundTickets < 10) {
+                                &nbsp;@player.tickets.undergroundTickets
+                            } else {
                             @player.tickets.undergroundTickets
+                            }
                         </div>
                         <div>
                         @if(player.name == "MrX") {
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/BlackTicket.svg")">
-                            @player.asInstanceOf[MrXInterface].tickets.blackTickets
+                            @if(player.asInstanceOf[MrXInterface].tickets.blackTickets < 10) {
+                                &nbsp;@player.asInstanceOf[MrXInterface].tickets.blackTickets
+                            } else {
+                                @player.asInstanceOf[MrXInterface].tickets.blackTickets
+                            }
                         }
                         </div>
                     </div>
