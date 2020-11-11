@@ -7,6 +7,9 @@
 @(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer, map: Html)(implicit request: RequestHeader, assetsFinder: AssetsFinder)
 
 <div class="main">
+    <div class="game-round">
+        Round: @round - Current Player: @currentPlayer.name
+    </div>
     <div class="game-wrapper">
         <div class="history-wrapper">
             <h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>
@@ -39,50 +42,52 @@
                     }
                     </div>
                     <div>
-                        <div>
+                        <div class="stats-ticket">
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/taxi_small.svg")">
+                            <div>
                             @if(player.tickets.taxiTickets < 10) {
-                                    &nbsp;
-                                @player.tickets.taxiTickets
+                                    &nbsp;@player.tickets.taxiTickets
                             } else {
                                 @player.tickets.taxiTickets
                             }
+                            </div>
                         </div>
-                        <div>
+                        <div class="stats-ticket">
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/bus_small.svg")">
+                            <div>
                             @if(player.tickets.busTickets < 10) {
-                                    &nbsp;
-                                @player.tickets.busTickets
+                                    &nbsp;@player.tickets.busTickets
                             } else {
                                 @player.tickets.busTickets
                             }
+                            </div>
                         </div>
-                        <div>
+                        <div class="stats-ticket">
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/underground_small.svg")">
+                            <div>
                             @if(player.tickets.undergroundTickets < 10) {
-                                    &nbsp;
-                                @player.tickets.undergroundTickets
+                                    &nbsp;@player.tickets.undergroundTickets
                             } else {
                                 @player.tickets.undergroundTickets
                             }
+                            </div>
                         </div>
-                        <div>
+                        <div class="stats-ticket">
                         @if(player.name == "MrX") {
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/black_small.svg")">
+                            <div>
                             @if(player.asInstanceOf[MrXInterface].tickets.blackTickets < 10) {
                                     &nbsp;@player.asInstanceOf[MrXInterface].tickets.blackTickets
                                 } else {
                                 @player.asInstanceOf[MrXInterface].tickets.blackTickets
                             }
+                            </div>
                         }
                         </div>
                     </div>
                 </div>
             }
         </div>
-    </div>
-    <div>
-        Round: @round - Current Player: @currentPlayer.name
     </div>
     <div class="game-controls">
         <form method="post" action="@routes.GameController.movePlayer">

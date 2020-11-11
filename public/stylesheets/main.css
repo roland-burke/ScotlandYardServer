@@ -89,6 +89,14 @@ body {
     align-items: center;
 }
 
+.game-round {
+    background-color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 5px;
+}
+
 .stats-wrapper {
     background-color: #96b9ec;
     border: 2px solid #000000;
@@ -100,7 +108,7 @@ body {
     align-items: center;
     flex-direction: column;
     overflow-y: auto;
-    max-height: 70vh;
+    max-height: 65vh;
     margin-left: 1vw;
 }
 
@@ -110,6 +118,13 @@ body {
     border-radius: 10px;
     margin: 4px;
     padding: 4px;
+    min-width: 10em;
+}
+
+.stats-ticket {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .history-wrapper {
@@ -123,7 +138,7 @@ body {
     align-items: center;
     flex-direction: column;
     overflow-y: auto;
-    max-height: 70vh;
+    max-height: 65vh;
     margin-right: 1vw;
 }
 
