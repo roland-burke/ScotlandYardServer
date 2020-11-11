@@ -2,6 +2,7 @@
 @import model.Game.controller
 @import de.htwg.se.scotlandyard.util.TicketType.TicketType
 @import de.htwg.se.scotlandyard.model.playersComponent.MrXInterface
+@import de.htwg.se.scotlandyard.util.TicketType
 
 @(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer, map: Html)(implicit request: RequestHeader, assetsFinder: AssetsFinder)
 
@@ -10,8 +11,18 @@
         <div class="history-wrapper">
             <h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>
             @for(t <- history) {
-                <div class="history-item">
-                @t.toString()
+                <div >
+                    @if(t == TicketType.Taxi) {
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
+                    } else if(t == TicketType.Bus) {
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
+                    } else if(t == TicketType.Underground) {
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
+                    } else if(t == TicketType.Black) {
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
+                    } else {
+                        Invalid
+                    }
                 </div>
             }
             </div>
@@ -29,7 +40,7 @@
                     </div>
                     <div>
                         <div>
-                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/Taxi.svg")">
+                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/taxi_small.svg")">
                             @if(player.tickets.taxiTickets < 10) {
                                 &nbsp;@player.tickets.taxiTickets
                             } else {
@@ -37,7 +48,7 @@
                             }
                         </div>
                         <div>
-                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/Bus.svg")">
+                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/bus_small.svg")">
                             @if(player.tickets.busTickets < 10) {
                                 &nbsp;@player.tickets.busTickets
                             } else {
@@ -45,7 +56,7 @@
                             }
                         </div>
                         <div>
-                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/Underground.svg")">
+                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/underground_small.svg")">
                             @if(player.tickets.undergroundTickets < 10) {
                                 &nbsp;@player.tickets.undergroundTickets
                             } else {
@@ -54,7 +65,7 @@
                         </div>
                         <div>
                         @if(player.name == "MrX") {
-                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/BlackTicket.svg")">
+                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/black_small.svg")">
                             @if(player.asInstanceOf[MrXInterface].tickets.blackTickets < 10) {
                                 &nbsp;@player.asInstanceOf[MrXInterface].tickets.blackTickets
                             } else {
@@ -108,9 +119,9 @@
                         @if(currentPlayer.equals(controller.getPlayersList()(0))) {
                             <input class="ticket-radio" type="radio" id="black" value="x" name="transport">
                         } else {
-                            <input disabled="true" type="radio" id="black" value="x" name="transport">
+                            <input class="ticket-radio" disabled="true" type="radio" id="black" value="x" name="transport">
                         }
-                        <img class="ticket-icon" src="@assetsFinder.path("images/BlackTicket.svg")">
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
                     </label>
                 </div>
                 <div class="game-control-element">

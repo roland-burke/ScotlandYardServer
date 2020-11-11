@@ -4,46 +4,51 @@
 <div class="main">
 
     <div class="settings-wrapper">
-        <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
-            @helper.CSRF.formField
-            @for(n <- 2 to 7) {
-                <label class="radio-button-label">@n Players</label>
-                @if(playerNumber.toInt == n) {
-                    <input type="radio" checked="true" id="@n+Players" value="@n" name="nPlayer">
-                    <span class="radio-button"></span>
-                } else {
-                    <input type="radio" class="radio-button" id="@n+Players" value="@n" name="nPlayer">
-                    <span class="radio-button"></span>
-                }
-                <br>
-            }
-            <br>
-            <input class="standard-button" type="submit" value="Set Number of Player">
-        </form>
 
-        <br>
-        <form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
-            @helper.CSRF.formField
-
-            <select name="playerIndex">
-            @for((player, i) <- players.view.zipWithIndex) {
-                @if(player.name.equals("MrX")) {
-                    <option name="player" disabled="true" value="@i">@player.name</option>
-                } else {
-                    <option name="player" value="@i">@player.name</option>
-                }
-            }
-            </select>
-            <input type="text" value="" name="playerName">
-            <input class="standard-button" type="submit" value="Set Player Name">
-        </form>
-
-        <br>
-        <div>
-            <form method="get" action="@routes.GameController.startGame">
-                <input class="standard-button" type="submit" value="Start Game">
+        <div class="settings-player">
+            <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
+                @helper.CSRF.formField
+                <div class="player-wrapper">
+                    @for(n <- 2 to 7) {
+                        <div>
+                            <label class="radio-button-label">@n Players</label>
+                            @if(playerNumber.toInt == n) {
+                                <input type="radio" checked="true" id="@n+Players" value="@n" name="nPlayer">
+                                <span class="radio-button"></span>
+                            } else {
+                                <input type="radio" class="radio-button" id="@n+Players" value="@n" name="nPlayer">
+                                <span class="radio-button"></span>
+                            }
+                        </div>
+                    }
+                    <br>
+                    <input class="standard-button" type="submit" value="Set Number of Player">
+                </div>
             </form>
         </div>
+
+        <div class="settings-name">
+            <form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
+                @helper.CSRF.formField
+
+                <select name="playerIndex">
+                @for((player, i) <- players.view.zipWithIndex) {
+                    @if(player.name.equals("MrX")) {
+                        <option name="player" disabled="true" value="@i">@player.name</option>
+                    } else {
+                        <option name="player" value="@i">@player.name</option>
+                    }
+                }
+                </select>
+                <input type="text" value="" name="playerName">
+                <input class="standard-button" type="submit" value="Set Player Name">
+            </form>
+        </div>
+    </div>
+    <div class="settings-start">
+        <form method="get" action="@routes.GameController.startGame">
+            <input class="standard-button" type="submit" value="Start Game">
+        </form>
     </div>
 
 </div>
