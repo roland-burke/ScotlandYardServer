@@ -69,6 +69,7 @@ body {
     -webkit-box-shadow: 5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    display: flex;
     align-items: center;
     padding: 5px;
     margin: 20px 20px 10px 20px;
@@ -86,10 +87,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.game-control-element {
-
 }
 
 .stats-wrapper {
@@ -175,10 +172,6 @@ body {
 
 .settings-name {
     margin: 50px;
-}
-
-.settings-start {
-
 }
 
 .settings-player {
