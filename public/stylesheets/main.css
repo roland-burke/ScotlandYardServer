@@ -147,7 +147,7 @@ body {
 }
 
 /* HIDE RADIO */
-[type=radio] {
+.ticket-radio {
     position: absolute;
     opacity: 0;
     width: 0;
@@ -161,7 +161,7 @@ body {
 
 /* CHECKED STYLES */
 [type=radio]:checked + img {
-    border:3px solid #c30202;
+    border: 4px solid #c30202;
     border-radius: 10px;
 }
 

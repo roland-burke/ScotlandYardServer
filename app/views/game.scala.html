@@ -87,26 +87,26 @@
             <div class="game-controls-buttons">
                 <div class="game-control-element">
                     <label>
-                        <input type="radio" checked="true" id="taxi" value="t" name="transport">
+                        <input class="ticket-radio" type="radio" checked="true" id="taxi" value="t" name="transport">
                         <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
                     </label>
                 </div>
                 <div class="game-control-element">
                     <label>
-                        <input type="radio" id="bus" value="b" name="transport">
+                        <input class="ticket-radio" type="radio" id="bus" value="b" name="transport">
                         <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
                     </label>
                 </div>
                 <div class="game-control-element">
                     <label>
-                        <input type="radio" id="underground" value="u" name="transport">
+                        <input class="ticket-radio" type="radio" id="underground" value="u" name="transport">
                         <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
                     </label>
                 </div>
                 <div class="game-control-element">
                     <label>
                         @if(currentPlayer.equals(controller.getPlayersList()(0))) {
-                            <input type="radio" id="black" value="x" name="transport">
+                            <input class="ticket-radio" type="radio" id="black" value="x" name="transport">
                         } else {
                             <input disabled="true" type="radio" id="black" value="x" name="transport">
                         }
