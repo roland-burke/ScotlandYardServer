@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Michroma');
-
+/*@import url(radioButtons.css);*/
 /*
 Theme Name: Scotty Custom
 Description: ScotlandYard online Game
@@ -7,17 +7,29 @@ Author: Roland Burke, Tim Köhler
 Tags: Scala, Play, ScotlandYard
 */
 
+#about {
+    display: inline-block;
+    text-align: left;
+    max-width: 60%;
+}
+
+input[type="file"] {
+    display: none;
+}
+
 body {
     margin: 100px 0 3em 0;
     height: 100%;
-    font-family:Courier New;
+    font-family: Courier New;
 }
 
 .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    vertical-align: middle;
-    margin: 20px 0 3em 0;
-    height: 80%;
+    min-height: 60vh;
 }
 
 #background:after {
@@ -43,9 +55,9 @@ body {
 .index-wrapper {
     background-color: #cae4ff;
     border: 2px solid #000000;
-    border-radius: 6px;
+    border-radius: 100px;
     display: inline-block;
-    padding: 25px;
+    padding: 80px 40px;
 }
 
 /* ==== Game ==== */
@@ -59,15 +71,25 @@ body {
     box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     align-items: center;
     padding: 5px;
-    margin: 10px 20px 10px 20px;
+    margin: 20px 20px 10px 20px;
 }
 
 .game-controls div {
-    margin: 15px;
+    margin: 5px;
 }
 
 .game-controls * {
     display: inline;
+}
+
+.game-controls-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-control-element {
+
 }
 
 .stats-wrapper {
@@ -80,6 +102,9 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 70vh;
+    margin-left: 1vw;
 }
 
 .stats-item {
@@ -100,6 +125,9 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 70vh;
+    margin-right: 1vw;
 }
 
 .history-item {
@@ -110,18 +138,46 @@ body {
     padding: 4px;
 }
 
+.ticket-icon {
+    width: 90px;
+}
+
+.ticket-icon-stats {
+    width: 70px;
+}
+
+/* HIDE RADIO */
+[type=radio] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + img {
+    cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+    border:3px solid #c30202;
+    border-radius: 10px;
+}
+
 /* === Map === */
 
 .map-wrapper {
     border: 4px groove #5b5b8a;
     border-radius: 5px;
+    display: inline-block;
 }
 
 /* === Buttons === */
 
 .standard-button {
     box-shadow: 0px 10px 14px -7px #276873;
-    background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+    background:linear-gradient(to bottom, #93b2e0 5%, #93BFE0 100%);
     background-color:#599bb3;
     border-radius:8px;
     display:inline-block;
@@ -135,8 +191,8 @@ body {
     text-shadow:0px 1px 0px #3d768a;
 }
 .standard-button:hover {
-    background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
-    background-color:#408c99;
+    background:linear-gradient(to bottom, #2E5D80 5%, #2E5D80 100%);
+    background-color:#2E5D80;
 }
 .standard-button:active {
     position:relative;
@@ -177,34 +233,13 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    height: 3em;
-    display: flex;
-    align-items: center;
-    text-align: center;
-}
-
-/* The '*' is a placeholder for every element in the header */
-header * {
-    display: inline;
 }
 
 header li {
-    margin: 20px;
+    margin: 0.05em 15px 0.05em 15px;
 }
 
-header li a {
-    color: black;
-    text-decoration: none;
-}
-
-/* Centered section inside the top navigation */
-.topnav-centered a {
-    float: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
+.title {
     font-family: Michroma, sans-serif;
     font-weight: bold;
     text-align: center;
@@ -212,6 +247,56 @@ header li a {
     color: rgb(21, 14, 73);
     background-color: rgba(255, 255, 255, 0);
     text-shadow: rgb(0, 0, 0) 2px 2px 6px;
+    margin-right: 5vw;
+}
+
+.navbar-button {
+	box-shadow:inset 0px 9px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 10%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Michroma;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 14px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+.navbar-button:hover {
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
+}
+.navbar-button:active {
+	position:relative;
+	top:1px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-links ul {
+    display: flex;
+    padding-inline-start: 0;
+}
+
+.right-links ul {
+    display: flex;
+    padding-inline-start: 0;
+}
+
+.left-links li {
+    list-style: none;
+}
+
+.right-links li {
+    list-style: none;
 }
 
 /* ==== Footer ==== */
@@ -232,10 +317,11 @@ header li a {
 /* ==== Map Nav ==== */
 
 #wrapper {
-    width: 300px;
-    float: right;
     display: flex;
     align-items: center;
+    margin: auto;
+    width: 10%;
+    padding: 0px 0px 15px 0px;
 }
 #left {
     float: left;
@@ -252,3 +338,4 @@ header li a {
     border-radius: 6px;
     font-size: 15px;
 }
+

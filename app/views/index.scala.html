@@ -8,12 +8,18 @@
 * argument is a `String` with the title of the page, the second
 * argument is an `Html` object containing the body of the page.
 *@
-@main("Welcome to ScotlandYard") {
+@main("Welcome to ScotlandYard")(false) {
     <div class="main">
         <div class="index-wrapper">
             <form method="get" action="settings">
                 <input class="main-menu-button" type="submit" value="Start Game">
             </form>
+            <br>
+            <label class="main-menu-button">
+                <input type="file"/>
+                Load Game
+            </label>
+            <br>
             <br>
             <form method="get" action="about">
                 <input class="main-menu-button" type="submit" value="About">
