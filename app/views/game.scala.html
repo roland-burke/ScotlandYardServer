@@ -19,14 +19,15 @@
         <div class="stats-wrapper">
             <h3>Stats</h3>
             @for(player <- players) {
-                    <div class="stats-item">
-                        <div>
-                            @if(player.name == "MrX") {
-                                <b>@player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen</b>
-                            } else {
-                                <b>@player.name Station: @player.station.number</b>
-                            }
-                        </div>
+                <div class="stats-item">
+                    <div>
+                    @if(player.name == "MrX") {
+                        <b>@player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen</b>
+                    } else {
+                        <b>@player.name Station: @player.station.number</b>
+                    }
+                    </div>
+                    <div>
                         <div>
                             <img class="ticket-icon-stats" src="@assetsFinder.path("images/Taxi.svg")">
                             @player.tickets.taxiTickets
@@ -67,34 +68,41 @@
     <div class="game-controls">
         <form name="gameForm" method="post" action="@routes.GameController.movePlayer">
             @helper.CSRF.formField
-            <div>
-                <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
-                <input class="radio-test" type="radio" checked="true" id="taxi" value="t" name="transport">
-            <div>
-                <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
-                <input type="radio" id="bus" value="b" name="transport">
-            </div>
-            <div>
-                <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
-                <input type="radio" id="underground" value="u" name="transport">
-            </div>
-            <div>
-                <img class="ticket-icon" src="@assetsFinder.path("images/BlackTicket.svg")">
-                @if(currentPlayer.equals(controller.getPlayersList()(0))) {
-                    <input type="radio" id="black" value="x" name="transport">
-                } else {
-                    <input disabled="true" type="radio" id="black" value="x" name="transport">
-                    }
-            </div>
-
-            <div>
-                <input type="number" name="station" value="">
-                <input class="standard-button" type="submit" value="Move Player">
+            <div class="game-controls-buttons">
+                <div class="game-control-element">
+                    <label>
+                        <input type="radio" checked="true" id="taxi" value="t" name="transport">
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
+                    </label>
+                </div>
+                <div class="game-control-element">
+                    <label>
+                        <input type="radio" id="bus" value="b" name="transport">
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
+                    </label>
+                </div>
+                <div class="game-control-element">
+                    <label>
+                        <input type="radio" id="underground" value="u" name="transport">
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
+                    </label>
+                </div>
+                <div class="game-control-element">
+                    <label>
+                        @if(currentPlayer.equals(controller.getPlayersList()(0))) {
+                            <input type="radio" id="black" value="x" name="transport">
+                        } else {
+                            <input disabled="true" type="radio" id="black" value="x" name="transport">
+                        }
+                        <img class="ticket-icon" src="@assetsFinder.path("images/BlackTicket.svg")">
+                    </label>
+                </div>
+                <div class="game-control-element">
+                    <input type="number" name="station" value="">
+                    <input class="standard-button" type="submit" value="Move Player">
+                </div>
             </div>
         </form>
-
     </div>
     <br>
-
-
 </div>
