@@ -1,33 +1,32 @@
 @(title: String)(isIngame: Boolean)
 
 <header>
-    <div class="topnav">
-        <div class="topnav-left">
-            <form method="get" action="/">
-                <input class="navbar-button" type="submit" value="Main Menu">
-            </form>
-            <form method="get" action="/about">
-                <input class="navbar-button" type="submit" value="About">
-            </form>
-            @if(isIngame) {
-            <label class="navbar-button">
-                <input type="file"/>
-                Save Game
-            </label>
-            }
+    <nav class="navbar">
+        <div class="left-links">
+            <ul>
+                <li><a class="navbar-button" href="/">Main Menu</a></li>
+                <li><a class="navbar-button" href="/about">About</a></li>
+                @if(isIngame) {
+                    <li><a class="navbar-button" href="/game">Save Game</a></li>
+                } else {
+                    <li style="visibility: hidden"><a class="navbar-button" href="/game">Save Game</a></li>
+                }
+                </ul>
         </div>
-        <div class="topnav-centered">
-            <a>@title</a>
+        <div class="title">
+            <a class="title">@title</a>
         </div>
         @if(isIngame) {
-        <div class="topnav-right">
-            <form method="get" action="/undo">
-                <input class="navbar-button" type="submit" value="Undo">
-            </form>
-            <form method="get" action="/redo">
-                <input class="navbar-button" type="submit" value="Redo">
-            </form>
-        </div>
-        }
+            <div class="right-links">
+            } else {
+            <div class="right-links" style="visibility: hidden">
+            }
+        <ul>
+            <li><a class="navbar-button" href="/undo">Undo</a></li>
+            <li><a class="navbar-button" href="/redo">Redo</a></li>
+        </ul>
     </div>
+    </nav>
+
 </header>
+
