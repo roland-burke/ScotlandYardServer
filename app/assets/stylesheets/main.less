@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Michroma');
+
+@primary-font: Michroma;
+@primary-blue: #93b2e0;
+@accent-blue: #599bb3;
+
 /*@import url(radioButtons.css);*/
 /*
 Theme Name: Scotty Custom
@@ -20,7 +25,7 @@ input[type="file"] {
 body {
     margin: 100px 0 3em 0;
     height: 100%;
-    font-family: Courier New;
+    font-family: @primary-font;
 }
 
 .main {
@@ -118,7 +123,7 @@ body {
     border-radius: 10px;
     margin: 4px;
     padding: 4px;
-    min-width: 10em;
+    min-width: 11em;
 }
 
 .stats-ticket {
@@ -209,7 +214,7 @@ body {
     display:inline-block;
     cursor:pointer;
     color:#ffffff;
-    font-family:Courier New;
+    font-family: @primary-font;
     font-size:16px;
     font-weight:bold;
     padding:13px 32px;
@@ -234,7 +239,7 @@ body {
     display:inline-block;
     cursor:pointer;
     color:#000000;
-    font-family:Courier New;
+    font-family:@primary-font;
     font-size:40px;
     font-weight:bold;
     padding:16px 30px;
@@ -253,7 +258,7 @@ body {
 /* ==== Header ==== */
 
 header {
-    background-color: #93b2e0;
+    background-color: @primary-blue;
     box-shadow: 0 0 25px 0 black;
     position: fixed;
     top: 0;
@@ -266,7 +271,7 @@ header li {
 }
 
 .title {
-    font-family: Michroma, sans-serif;
+    font-family: @primary-font, sans-serif;
     font-weight: bold;
     text-align: center;
     font-size: 28px;
@@ -285,7 +290,7 @@ header li {
 	display:inline-block;
 	cursor:pointer;
 	color:#666666;
-	font-family:Michroma;
+	font-family:@primary-font;
 	font-size:15px;
 	font-weight:bold;
 	padding:6px 14px;
