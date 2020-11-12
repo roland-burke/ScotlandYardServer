@@ -1,44 +1,54 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 
 @(titleString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
+<div class="main">
 
-<h1>@titleString</h1>
-<form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
-    @helper.CSRF.formField
+    <div class="settings-wrapper">
 
-    @for(n <- 2 to 7) {
-        <label>@n Players</label>
-        @if(playerNumber.toInt == n) {
-            <input type="radio" checked="true" id="@n+Players" value="@n" name="nPlayer">
-        } else {
-            <input type="radio" id="@n+Players" value="@n" name="nPlayer">
-        }
-        <br>
-    }
+        <div class="settings-player">
+            <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
+                @helper.CSRF.formField
+                <div class="player-wrapper">
+                    @for(n <- 2 to 7) {
+                        <div>
+                            <label class="radio-button-label">@n Players</label>
+                            @if(playerNumber.toInt == n) {
+                                <input type="radio" checked="true" id="@n+Players" value="@n" name="nPlayer">
+                                <span class="radio-button"></span>
+                            } else {
+                                <input type="radio" class="radio-button" id="@n+Players" value="@n" name="nPlayer">
+                                <span class="radio-button"></span>
+                            }
+                        </div>
+                    }
+                    <br>
+                    <input class="standard-button" type="submit" value="Set Number of Player">
+                </div>
+            </form>
+        </div>
 
-<input type="submit" value="Set Number of Player">
-</form>
-<br>
-<form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
-    @helper.CSRF.formField
+        <div class="settings-name">
+            <form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
+                @helper.CSRF.formField
 
-    <select name="playerIndex">
-        @for((player, i) <- players.view.zipWithIndex) {
-            @if(player.name.equals("MrX")) {
-                <option name="player" disabled="true" value="@i">@player.name</option>
-            } else {
-                <option name="player" value="@i">@player.name</option>
-            }
-        }
-    </select>
-<input type="text" value="" name="playerName">
-<input type="submit" value="Set Player Name">
-</form>
+                <select name="playerIndex">
+                @for((player, i) <- players.view.zipWithIndex) {
+                    @if(player.name.equals("MrX")) {
+                        <option name="player" disabled="true" value="@i">@player.name</option>
+                    } else {
+                        <option name="player" value="@i">@player.name</option>
+                    }
+                }
+                </select>
+                <input type="text" value="" name="playerName">
+                <input class="standard-button" type="submit" value="Set Player Name">
+            </form>
+        </div>
+    </div>
+    <div>
+        <form method="get" action="@routes.GameController.startGame">
+            <input class="standard-button" type="submit" value="Start Game">
+        </form>
+    </div>
 
-<br>
-
-<form method="get" action="@routes.GameController.startGame">
-    <input type="submit" value="Start Game">
-</form>
-
-
+</div>
