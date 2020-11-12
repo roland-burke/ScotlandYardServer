@@ -1,21 +1,29 @@
-
 @*
 * This template takes a two arguments, a String containing a
 * message to display and an AssetsFinder to locate static assets.
 *@
 @(message: String)(implicit assetsFinder: AssetsFinder)
-
 @*
 * Call the `main` template with two arguments. The first
 * argument is a `String` with the title of the page, the second
 * argument is an `Html` object containing the body of the page.
 *@
-@main("Welcome to ScotlandYard") {
-
-    @*
-    * Get an `Html` object by calling the built-in Play welcome
-    * template and passing a `String` message.
-    *@
-    @welcome(message)
-
+@main("Welcome to ScotlandYard")(false) {
+    <div class="main">
+        <div class="index-wrapper">
+            <form method="get" action="settings">
+                <input class="main-menu-button" type="submit" value="Start Game">
+            </form>
+            <br>
+            <label class="main-menu-button">
+                <input type="file"/>
+                Load Game
+            </label>
+            <br>
+            <br>
+            <form method="get" action="about">
+                <input class="main-menu-button" type="submit" value="About">
+            </form>
+        </div>
+    </div>
 }

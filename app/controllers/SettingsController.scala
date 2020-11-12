@@ -38,8 +38,8 @@ class SettingsController @Inject()(cc: ControllerComponents)(implicit assetsFind
   }
 
   def returnMenuStatusOk(implicit request: Request[_]): Result = {
-    val menuHtml = views.html.main("ScotlandYard")(views.html.settings("Settings", controller.getPlayersList().length.toString, controller.getPlayersList()))
-    Ok(views.html.main("ScotlandYard")(menuHtml))
+    val menuHtml = views.html.settings("Settings", controller.getPlayersList().length.toString, controller.getPlayersList())
+    Ok(views.html.main("Scotland Yard")(false)(menuHtml))
   }
 
 }
