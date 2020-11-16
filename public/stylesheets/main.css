@@ -43,7 +43,7 @@ body {
     height: 100%;
     opacity : 0.10;
     z-index: -1;
-    background-image: url("https://github.com/roland-burke/ScotlandYardServer/raw/master/public/images/map_large.png");
+    background-image: url("/assets/images/map_large.png");
 }
 
 .game-wrapper {
@@ -56,9 +56,8 @@ body {
 .index-wrapper {
     background-color: #cae4ff;
     border: 2px solid #000000;
-    border-radius: 100px;
-    display: inline-block;
-    padding: 80px 40px;
+    border-radius: 10%;
+    padding: 10% 10%;
 }
 
 /* ==== Game ==== */
@@ -128,6 +127,7 @@ body {
     justify-content: space-evenly;
 }
 
+
 .history-wrapper {
     background-color: #96b9ec;
     border: 2px solid #000000;
@@ -187,12 +187,11 @@ body {
 }
 
 .settings-name {
-    margin: 50px;
+    margin: 5%;
 }
 
 .settings-player {
-    overflow: hidden;
-    margin: 50px;
+    margin: 5%;
 }
 
 .player-wrapper {
@@ -236,7 +235,7 @@ body {
     cursor:pointer;
     color:#000000;
     font-family:Michroma;
-    font-size:40px;
+    font-size:250%;
     font-weight:bold;
     padding:16px 30px;
     text-decoration:none;
@@ -303,9 +302,8 @@ header li {
 }
 
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    background-color: #7cb7eb;
+    color:#ffffff;
 }
 
 .left-links ul {
@@ -344,12 +342,13 @@ header li {
 /* === Map === */
 
 .map-wrapper {
-    border: 4px groove #5b5b8a;
+    /*border: 4px groove #5b5b8a;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: column;*/
+    min-width: 20%;
 }
 
 /* ==== Map Nav ==== */
