@@ -1,9 +1,9 @@
 
 jQuery(document).ready(function () {
     var parent = jQuery("#map-wrapper");
-    var childPos = jQuery("#map");
+    var childPos = jQuery("#canvas");
 
-    jQuery("#map").draggable({
+    jQuery("#canvas").draggable({
         drag: function (event, map) {
             const boundaryOffset = 50
 
