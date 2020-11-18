@@ -15,19 +15,27 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-lg-2">
             <div class="history-wrapper">
                 <h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>
                 @for(t <- history) {
-                    <div >
+                    <div class="history-item d-flex justify-content-center">
                         @if(t == TicketType.Taxi) {
-                            <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
+                            <div>
+                                <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
+                            </div>
                         } else if(t == TicketType.Bus) {
-                    <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
+                    <div class="history-item d-flex justify-content-center">
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
+                    </div>
                         } else if(t == TicketType.Underground) {
-                    <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
+                    <div class="history-item d-flex justify-content-center">
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
+                    </div>
                         } else if(t == TicketType.Black) {
-                    <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
+                    <div class="history-item d-flex justify-content-center">
+                        <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
+                    </div>
                         } else {
                         Invalid
                         }
@@ -40,7 +48,7 @@
                 <img src="/assets/images/map_large.png" id="map" class="map-image" alt="Map">
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-lg-2">
             <div class="stats-wrapper">
                 <h3>Stats</h3>
                 @for(player <- players) {
@@ -88,10 +96,10 @@
     <div class="row">
         <div class="col">
             <div class="game-controls d-flex justify-content-center">
-                <form method="post" action="@routes.GameController.movePlayer">
-                    @helper.CSRF.formField
-                    <div class="game-controls-buttons">
-                        <div>
+                <div class="row">
+                    <form method="post" action="@routes.GameController.movePlayer">
+                        @helper.CSRF.formField
+                        <div class="game-controls-buttons">
                             <div>
                                 <label>
                                     <input class="ticket-radio" type="radio" checked="true" id="taxi" value="t" name="transport">
@@ -112,32 +120,31 @@
                             </div>
                             <div>
                                 <label>
-                                    @if(currentPlayer.equals(controller.getPlayersList()(0))) {
-                                        <input class="ticket-radio" type="radio" id="black" value="x" name="transport">
-                                    } else {
-                                        <input class="ticket-radio" disabled="true" type="radio" id="black" value="x" name="transport">
-                                    }
+                                @if(currentPlayer.equals(controller.getPlayersList()(0))) {
+                                    <input class="ticket-radio" type="radio" id="black" value="x" name="transport">
                                     <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
+                                } else {
+                                    <input class="ticket-radio" disabled="true" type="radio" id="black" value="x" name="transport">
+                                    <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")" style="opacity: 40%">
+                                    }
                                 </label>
                             </div>
+                            <div>
+                                <input type="number" name="station" value="" style="margin: 10px">
+                                <input class="standard-button" type="submit" value="Move Player">
+                            </div>
                         </div>
-                        <div>
-                            <input type="number" name="station" value="">
-                            <input class="standard-button" type="submit" value="Move Player">
-                        </div>
+                    </form>
+                    <div>
+                        @if(currentPlayer.name.equals("MrX")) {
+                            <form method="get" action="@routes.GameController.revealMrXPosition">
+                                <input type="submit" class="standard-button" style="padding: 3px 3px 3px 3px;" value="Reveal Mr.X Position">
+                            </form>
+                        }
+                        @if(!mrXPosition.isEmpty) {
+                            <label>Mr.X is at Station: @mrXPosition</label>
+                        }
                     </div>
-                </form>
-                <div>
-                    @if(currentPlayer.name.equals("MrX")) {
-                        <form method="get" action="@routes.GameController.revealMrXPosition">
-                            <input type="submit" class="standard-button" style="padding: 3px 3px 3px 3px;" value="Reveal Mr.X Position">
-                        </form>
-                    }
-                    @if(!mrXPosition.isEmpty) {
-                        <br>
-                        <br>
-                        <div>Mr.X is at Station: @mrXPosition</div>
-                    }
                 </div>
             </div>
         </div>
