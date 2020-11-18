@@ -6,7 +6,7 @@
 
 @(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer, map: Html)(implicit request: RequestHeader, assetsFinder: AssetsFinder)
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             <div class="game-round">
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-md-2">
             <div class="history-wrapper">
                 <h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>
                 @for(t <- history) {
@@ -35,10 +35,10 @@
                 }
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-lg-8 h-15">
             @map
         </div>
-        <div class="col-sm-2">
+        <div class="col-md-2">
             <div class="stats-wrapper">
                 <h3>Stats</h3>
                 @for(player <- players) {
