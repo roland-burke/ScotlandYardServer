@@ -57,7 +57,7 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnGameStatusOk
   }
   def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {
-    val gameHtml = views.html.game(controller.getCurrentPlayer(), mrxStation, controller.getMrX().history, controller.getPlayersList(), controller.getTotalRound(), views.html.map(tui.getTuiMap()))
+    val gameHtml = views.html.game(controller.getCurrentPlayer(), mrxStation, controller.getMrX().history, controller.getPlayersList(), controller.getTotalRound())
     Ok(views.html.main("Scotland Yard")(true)(gameHtml))
   }
 }

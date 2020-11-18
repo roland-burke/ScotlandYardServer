@@ -336,12 +336,6 @@ header li {
 /* === Map === */
 
 .map-wrapper {
-    /*border: 4px groove #5b5b8a;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;*/
     border-radius: 5px;
     border: 4px groove #5b5b8a;
     min-width: 10%;
@@ -349,6 +343,7 @@ header li {
     overflow:hidden;
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
+    z-index: -1;
 }
 
 /* ==== Map Nav ==== */
