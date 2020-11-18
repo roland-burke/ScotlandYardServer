@@ -47,6 +47,7 @@ body {
     border: 2px solid #000000;
     border-radius: 10%;
     padding: 10% 10%;
+    margin-top: 5vh;
 }
 
 /* ==== Game ==== */
@@ -90,7 +91,7 @@ body {
     align-items: center;
     flex-direction: column;
     overflow-y: auto;
-    max-height: 65vh;
+    max-height: 69vh;
 }
 
 .stats-item {
@@ -117,7 +118,7 @@ body {
     -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     overflow-y: auto;
-    max-height: 65vh;
+    max-height: 69vh;
 }
 
 .history-item {
@@ -159,8 +160,7 @@ body {
 /* === Settings === */
 
 .settings-wrapper {
-    display: flex;
-    align-items: flex-end;
+    margin-top: 5vh;
 }
 
 .settings-name {
@@ -302,7 +302,8 @@ header {
 
 .footer {
     background-color: #c4c4c4;
-    height: 2.5em;
+    min-height: 2.5em;
+    max-height: 3em;
     width: 100%;
     display: flex;
     justify-content: space-evenly;
