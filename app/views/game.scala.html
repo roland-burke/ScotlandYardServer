@@ -19,19 +19,19 @@
             <div class="history-wrapper">
                 <h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>
                 @for(t <- history) {
-                <div >
-                    @if(t == TicketType.Taxi) {
-                    <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
-                    } else if(t == TicketType.Bus) {
+                    <div >
+                        @if(t == TicketType.Taxi) {
+                            <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
+                        } else if(t == TicketType.Bus) {
                     <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
-                    } else if(t == TicketType.Underground) {
+                        } else if(t == TicketType.Underground) {
                     <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
-                    } else if(t == TicketType.Black) {
+                        } else if(t == TicketType.Black) {
                     <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
-                    } else {
-                    Invalid
-                    }
-                </div>
+                        } else {
+                        Invalid
+                        }
+                    </div>
                 }
             </div>
         </div>
@@ -44,43 +44,43 @@
             <div class="stats-wrapper">
                 <h3>Stats</h3>
                 @for(player <- players) {
-                <div class="stats-item">
-                    <div>
+                    <div class="stats-item">
+                        <div>
                         @if(player.name == "MrX") {
-                        <b>@player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen</b>
+                            <b>@player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen</b>
                         } else {
-                        <b>@player.name Station: @player.station.number</b>
+                            <b>@player.name Station: @player.station.number</b>
                         }
-                    </div>
-                    <div>
-                        <div class="stats-ticket">
-                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/taxi_small.svg")">
-                            <div style="min-width: 3em;">
+                        </div>
+                        <div>
+                            <div class="stats-ticket">
+                                <img class="ticket-icon-stats" src="@assetsFinder.path("images/taxi_small.svg")">
+                                <div style="min-width: 3em;">
                                 @player.tickets.taxiTickets
+                                </div>
                             </div>
-                        </div>
-                        <div class="stats-ticket">
-                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/bus_small.svg")">
-                            <div style="min-width: 3em;">
+                            <div class="stats-ticket">
+                                <img class="ticket-icon-stats" src="@assetsFinder.path("images/bus_small.svg")">
+                                <div style="min-width: 3em;">
                                 @player.tickets.busTickets
+                                </div>
                             </div>
-                        </div>
-                        <div class="stats-ticket">
-                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/underground_small.svg")">
-                            <div style="min-width: 3em;">
+                            <div class="stats-ticket">
+                                <img class="ticket-icon-stats" src="@assetsFinder.path("images/underground_small.svg")">
+                                <div style="min-width: 3em;">
                                 @player.tickets.undergroundTickets
+                                </div>
                             </div>
-                        </div>
-                        <div class="stats-ticket">
+                            <div class="stats-ticket">
                             @if(player.name == "MrX") {
-                            <img class="ticket-icon-stats" src="@assetsFinder.path("images/black_small.svg")">
-                            <div style="min-width: 3em;">
-                                @player.asInstanceOf[MrXInterface].tickets.blackTickets
-                            </div>
+                                <img class="ticket-icon-stats" src="@assetsFinder.path("images/black_small.svg")">
+                                <div style="min-width: 3em;">
+                                    @player.asInstanceOf[MrXInterface].tickets.blackTickets
+                                </div>
                             }
+                            </div>
                         </div>
                     </div>
-                </div>
                 }
             </div>
         </div>
@@ -92,34 +92,36 @@
                     @helper.CSRF.formField
                     <div class="game-controls-buttons">
                         <div>
-                            <label>
-                                <input class="ticket-radio" type="radio" checked="true" id="taxi" value="t" name="transport">
-                                <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
-                            </label>
+                            <div>
+                                <label>
+                                    <input class="ticket-radio" type="radio" checked="true" id="taxi" value="t" name="transport">
+                                    <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="ticket-radio" type="radio" id="bus" value="b" name="transport">
+                                    <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input class="ticket-radio" type="radio" id="underground" value="u" name="transport">
+                                    <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    @if(currentPlayer.equals(controller.getPlayersList()(0))) {
+                                        <input class="ticket-radio" type="radio" id="black" value="x" name="transport">
+                                    } else {
+                                        <input class="ticket-radio" disabled="true" type="radio" id="black" value="x" name="transport">
+                                    }
+                                    <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
+                                </label>
+                            </div>
                         </div>
                         <div>
-                            <label>
-                                <input class="ticket-radio" type="radio" id="bus" value="b" name="transport">
-                                <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input class="ticket-radio" type="radio" id="underground" value="u" name="transport">
-                                <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                @if(currentPlayer.equals(controller.getPlayersList()(0))) {
-                                <input class="ticket-radio" type="radio" id="black" value="x" name="transport">
-                                } else {
-                                <input class="ticket-radio" disabled="true" type="radio" id="black" value="x" name="transport">
-                                }
-                                <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
-                            </label>
-                        </div>
-                        <div class="game-control-element">
                             <input type="number" name="station" value="">
                             <input class="standard-button" type="submit" value="Move Player">
                         </div>
@@ -127,14 +129,14 @@
                 </form>
                 <div>
                     @if(currentPlayer.name.equals("MrX")) {
-                    <form method="get" action="@routes.GameController.revealMrXPosition">
-                        <input type="submit" class="standard-button" style="padding: 3px 3px 3px 3px;" value="Reveal Mr.X Position">
-                    </form>
+                        <form method="get" action="@routes.GameController.revealMrXPosition">
+                            <input type="submit" class="standard-button" style="padding: 3px 3px 3px 3px;" value="Reveal Mr.X Position">
+                        </form>
                     }
                     @if(!mrXPosition.isEmpty) {
-                    <br>
-                    <br>
-                    <div>Mr.X is at Station: @mrXPosition</div>
+                        <br>
+                        <br>
+                        <div>Mr.X is at Station: @mrXPosition</div>
                     }
                 </div>
             </div>

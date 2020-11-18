@@ -258,10 +258,6 @@ header {
     right: 0;
 }
 
-header li {
-    margin: 0.05em 8px 0.05em 8px;
-}
-
 .title {
     font-family: Michroma, sans-serif;
     font-weight: bold;
@@ -338,34 +334,14 @@ header li {
 .map-wrapper {
     border-radius: 5px;
     border: 4px groove #5b5b8a;
+    background-color: white;
+    -webkit-box-shadow: 5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     min-width: 10%;
-    max-height: 30%;
-    overflow:hidden;
+    height: 65vh;
+    overflow: hidden;
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     z-index: -1;
 }
-
-/* ==== Map Nav ==== */
-
-#wrapper {
-    margin-bottom: 15px;
-}
-#left {
-    margin-top: 25px;
-    float: left;
-}
-#middle {
-    float: left;
-}
-#right {
-    margin-top: 25px;
-    float: right;
-}
-
-.map-button {
-    background-color: #b9b9f8;
-    border-radius: 6px;
-    font-size: 15px;
-}
-
