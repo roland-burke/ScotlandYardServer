@@ -1,32 +1,27 @@
 @(title: String)(isIngame: Boolean)
-
-<header>
-    <nav class="navbar">
-        <div class="left-links">
-            <ul>
-                <li><a class="navbar-button" href="/">Main Menu</a></li>
-                <li><a class="navbar-button" href="/about">About</a></li>
-                @if(isIngame) {
-                    <li><a class="navbar-button" href="/game">Save Game</a></li>
-                } else {
-                    <li style="visibility: hidden"><a class="navbar-button" href="/game">Save Game</a></li>
-                }
-                </ul>
-        </div>
-        <div class="title">
-            <a class="title">@title</a>
-        </div>
-        @if(isIngame) {
-            <div class="right-links">
-            } else {
-            <div class="right-links" style="visibility: hidden">
+<nav class="navbar navbar-expand-md navbar-light fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Main Menu <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active float-left">
+                <a class="nav-link" href="/about">About</a>
+            </li>
+            @if(isIngame) {
+            <li class="nav-item active">
+                <a class="nav-link" href="/game">Save Game</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/undo">Undo</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/redo">Redo</a>
+            </li>
             }
-        <ul>
-            <li><a class="navbar-button" href="/undo">Undo</a></li>
-            <li><a class="navbar-button" href="/redo">Redo</a></li>
         </ul>
     </div>
-    </nav>
-
-</header>
-
+</nav>

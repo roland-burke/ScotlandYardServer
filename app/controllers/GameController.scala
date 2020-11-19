@@ -6,7 +6,12 @@ import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
 import de.htwg.se.scotlandyard.util.TicketType
 import model.Game
 import model.Game.controller
+import play.api.libs.json._
 import play.api.mvc._
+
+import scala.collection.mutable.ListBuffer
+
+case class Coordinate(current: Boolean, color: String, x: Int, y: Int)
 
 @Singleton
 class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
@@ -56,8 +61,26 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     tui.evaluateMoveMapInput(direction)
     returnGameStatusOk
   }
+
+
+
+  def getCoords(): Action[AnyContent] = Action { implicit request =>
+    implicit val coordsListFormat = Json.format[Coordinate]
+
+    val coordsListBuffer = new ListBuffer[Coordinate]
+    for (player <- controller.getPlayersList()) {
+      if (player == controller.getCurrentPlayer()) {
+        coordsListBuffer += Coordinate(current = true, String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue), player.station.guiCoords.x, player.station.guiCoords.y)
+      } else {
+        coordsListBuffer += Coordinate( current = false,String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue), player.station.guiCoords.x, player.station.guiCoords.y)
+      }
+    }
+
+    Ok(Json.obj("coordinates" -> coordsListBuffer.toList))
+  }
+
   def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {
-    val gameHtml = views.html.game(controller.getCurrentPlayer(), mrxStation, controller.getMrX().history, controller.getPlayersList(), controller.getTotalRound(), views.html.map(tui.getTuiMap()))
+    val gameHtml = views.html.game(controller.getCurrentPlayer(), mrxStation, controller.getMrX().history, controller.getPlayersList(), controller.getTotalRound())
     Ok(views.html.main("Scotland Yard")(true)(gameHtml))
   }
 }

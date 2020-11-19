@@ -1,54 +1,61 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 
 @(titleString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
-<div class="main">
 
-    <div class="settings-wrapper">
-
-        <div class="settings-player">
-            <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
-                @helper.CSRF.formField
-                <div class="player-wrapper">
-                    @for(n <- 2 to 7) {
+<div class="container settings-wrapper">
+    <div class="row">
+        <div class="col" style="background-color: #abcdef; border:1px solid #000000;">
+            <div class="settings-player d-flex justify-content-center">
+                <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
+                    @helper.CSRF.formField
+                    <div class="player-wrapper ">
+                        @for(n <- 2 to 7) {
                         <div>
                             <label class="radio-button-label">@n Players</label>
                             @if(playerNumber.toInt == n) {
-                                <input type="radio" checked="true" id="@n+Players" value="@n" name="nPlayer">
-                                <span class="radio-button"></span>
+                            <input type="radio" checked="true" onClick="javascript: submitForm()" id="@n+Players" value="@n" name="nPlayer">
+                            <span class="radio-button"></span>
                             } else {
-                                <input type="radio" class="radio-button" id="@n+Players" value="@n" name="nPlayer">
-                                <span class="radio-button"></span>
+                            <input type="radio" class="radio-button" onClick="javascript: submitForm()" id="@n+Players" value="@n" name="nPlayer">
+                            <span class="radio-button"></span>
                             }
                         </div>
-                    }
-                    <br>
-                    <input class="standard-button" type="submit" value="Set Number of Player">
-                </div>
-            </form>
+                        }
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <div class="settings-name">
-            <form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
-                @helper.CSRF.formField
-
-                <select name="playerIndex">
-                @for((player, i) <- players.view.zipWithIndex) {
-                    @if(player.name.equals("MrX")) {
+        <div class="col" style="background-color: #abcdef; border:1px solid #000000;">
+            <div class="settings-name d-flex justify-content-center">
+                <form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName">
+                    @helper.CSRF.formField
+                    <select name="playerIndex">
+                        @for((player, i) <- players.view.zipWithIndex) {
+                        @if(player.name.equals("MrX")) {
                         <option name="player" disabled="true" value="@i">@player.name</option>
-                    } else {
+                        } else {
                         <option name="player" value="@i">@player.name</option>
-                    }
-                }
-                </select>
-                <input type="text" value="" name="playerName">
-                <input class="standard-button" type="submit" value="Set Player Name">
-            </form>
+                        }
+                        }
+                    </select>
+                    <input type="text" value="" name="playerName">
+                    <input class="standard-button" type="submit" value="Set Player Name">
+                </form>
+            </div>
         </div>
     </div>
-    <div>
-        <form method="get" action="@routes.GameController.startGame">
-            <input class="standard-button" type="submit" value="Start Game">
-        </form>
+    <div class="row">
+        <div class="col" style="background-color: #abcdef; border:1px solid #000000;">
+            <div class="d-flex justify-content-center">
+                <form method="get" action="@routes.GameController.startGame">
+                    <input class="standard-button" type="submit" value="Start Game">
+                </form>
+            </div>
+        </div>
     </div>
-
 </div>
+<script type="text/javascript">
+function submitForm() {
+    document.forms["menuForm"].submit();
+}
+</script>
