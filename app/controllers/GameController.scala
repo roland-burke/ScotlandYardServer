@@ -3,6 +3,7 @@ package controllers
 import javax.inject._
 import de.htwg.se.scotlandyard.aview.tui.Tui
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
+import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
 import de.htwg.se.scotlandyard.util.TicketType
 import model.Game
 import model.Game.controller
@@ -10,6 +11,7 @@ import play.api.libs.json._
 import play.api.mvc._
 
 import scala.collection.mutable.ListBuffer
+import scala.swing.Point
 
 case class Coordinate(current: Boolean, color: String, x: Int, y: Int)
 
@@ -28,19 +30,30 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   }
 
   def movePlayer(): Action[AnyContent] = Action { implicit request =>
-    val selection = request.body.asFormUrlEncoded
-    println(selection.toString)
-    selection.map { args =>
-      val transport = args("transport").head
-      val station = args("station").head
+    val jsonBody: Option[JsValue] = request.body.asJson
+    println(jsonBody)
 
-      if(controller.validateMove(station.toInt, TicketType.of(transport))) {
-        controller.doMove(station.toInt, TicketType.of(transport))
+    jsonBody
+      .map { json =>
+        val ticketType = (json \ "ticketType").as[String]
+        val xPos = (json \ "x").as[Int]
+        val yPos = (json \ "y").as[Int]
+
+        val destStation: Station = closestStationToCoords(xPos, yPos)
+
+        if(controller.validateMove(destStation.number, TicketType.of(ticketType))) {
+          controller.doMove(destStation.number, TicketType.of(ticketType))
+          if (controller.getWin()) {
+            controller.winGame()
+          }
+          Ok
+        } else {
+          BadRequest("Move unvalid")
+        }
       }
-      if (controller.getWin()) controller.winGame()
-
-      returnGameStatusOk
-    }.getOrElse(InternalServerError("Ooopa - Internal Server Error"))
+      .getOrElse {
+        BadRequest("Expected json request body")
+      }
   }
 
   def undoMove(): Action[AnyContent] = Action { implicit request =>
@@ -62,8 +75,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnGameStatusOk
   }
 
-
-
   def getCoords(): Action[AnyContent] = Action { implicit request =>
     implicit val coordsListFormat = Json.format[Coordinate]
 
@@ -77,6 +88,19 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     }
 
     Ok(Json.obj("coordinates" -> coordsListBuffer.toList))
+  }
+
+  def closestStationToCoords(xPos: Int, yPos: Int): Station = {
+    var distance = 9999.0
+    var guessedStation: Station = controller.getStations().head
+    for (station <- controller.getStations()) {
+      val clickedPoint = new Point(xPos, yPos)
+      if (station.guiCoords.distance(clickedPoint) < distance) {
+        distance = station.guiCoords.distance(clickedPoint)
+        guessedStation = station
+      }
+    }
+    guessedStation
   }
 
   def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {

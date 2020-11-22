@@ -15,7 +15,9 @@ GET     /settings                   controllers.SettingsController.openMenu
 GET     /game                       controllers.GameController.startGame
 
 # Game routes
++nocsrf
 POST    /map/move                   controllers.GameController.moveMap(direction)
++nocsrf
 POST    /player/                    controllers.GameController.movePlayer
 GET     /undo                       controllers.GameController.undoMove
 GET     /redo                       controllers.GameController.redoMove
