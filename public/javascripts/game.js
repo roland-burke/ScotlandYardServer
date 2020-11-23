@@ -7,25 +7,25 @@ var firstPos;              // keep track of first position
 
 
 window.onload = function() {
-    drawMap()
+    refresh()
 }
 
+function refresh() {
+    drawMap()
+    drawHistory()
+    drawStats()}
+
 function drawMap() {
- var data = JSON.parse(getAllCoorinates());
+    const data = JSON.parse(getAllCoorinates());
 
-    //var img = document.getElementById("map")
-    var cnvs = document.getElementById("canvas");
+    let cnvs = document.getElementById("canvas");
     cnvs.style.position = "absolute";
-    //cnvs.style.left = img.offsetLeft + "px";
-    //cnvs.style.top = img.offsetTop + "px";
 
-    var ctx = cnvs.getContext("2d");
-
-    var img = new Image();
-      img.onload = function(){
+    let img = new Image();
+    img.onload = function(){
         ctx.drawImage(img,0,0);
         for (var i = 0; i < data.coordinates.length; i++) {
-            var coord = data.coordinates[i];
+            let coord = data.coordinates[i];
 
             ctx.beginPath();
             ctx.arc(coord.x, coord.y, 23, 0, 2 * Math.PI, false);
@@ -34,8 +34,39 @@ function drawMap() {
             ctx.stroke();
         }
       };
-      img.src = '/assets/images/map_large.png';
-      img.id = 'map'
+    img.src = '/assets/images/map_large.png';
+    img.id = 'map'
+}
+
+function drawHistory() {
+    let html = []
+    html.push('<h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>')
+
+    const historyObject = JSON.parse(getHistory())
+
+    for (var i = 0; i < historyObject.history.length; i++) {
+         html.push('<div class="history-item d-flex justify-content-center">')
+         let history = historyObject.history[i].ticketType;
+         if(history === "Taxi") {
+            html.push('<img class="ticket-icon" src="/assets/images/Taxi.svg")">')
+         } else if(history === "Bus") {
+            html.push('<img class="ticket-icon" src="/assets/images/Bus.svg")">')
+         } else if(history === "Underground") {
+            html.push('<img class="ticket-icon" src="/assets/images/Underground.svg")">')
+         } else if(history === "Black") {
+            html.push('<img class="ticket-icon" src="/assets/images/Black.svg")">')
+         } else {
+            Invalid
+         }
+        html.push('</div>')
+    }
+
+    document.getElementById('history-wrapper').innerHTML = html.join("")
+}
+
+
+function drawStats() {
+
 }
 
 canvas.onmousedown = function(e) {
@@ -87,7 +118,7 @@ function movePlayer(e) {
     }
     httpRequest.onreadystatechange = function() {
        if (this.readyState == 4 && this.status == 200) {
-         drawMap()
+         refresh()
        }
     };
     httpRequest.send(JSON.stringify(data));
@@ -106,6 +137,13 @@ function getSelectedTicketType() {
 function getAllCoorinates() {
     var httpRequest = new XMLHttpRequest();
     httpRequest.open('GET', "/coords", false);
+    httpRequest.send();
+    return httpRequest.responseText;
+}
+
+function getHistory() {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('GET', "/history", false);
     httpRequest.send();
     return httpRequest.responseText;
 }

@@ -9,38 +9,15 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <div class="game-round d-flex justify-content-center">
+            <div class="game-round d-flex justify-content-center" id="head-line">
                 Round: @round - Current Player:<span style='white-space: pre-wrap; color: @String.format("#%02x%02x%02x", currentPlayer.color.getRed, currentPlayer.color.getGreen, currentPlayer.color.getBlue)'> @currentPlayer.name</span>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-2">
-            <div class="history-wrapper">
-                <h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>
-                @for(t <- history) {
-                    <div class="history-item d-flex justify-content-center">
-                        @if(t == TicketType.Taxi) {
-                            <div>
-                                <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
-                            </div>
-                        } else if(t == TicketType.Bus) {
-                    <div class="history-item d-flex justify-content-center">
-                        <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
-                    </div>
-                        } else if(t == TicketType.Underground) {
-                    <div class="history-item d-flex justify-content-center">
-                        <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
-                    </div>
-                        } else if(t == TicketType.Black) {
-                    <div class="history-item d-flex justify-content-center">
-                        <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
-                    </div>
-                        } else {
-                        Invalid
-                        }
-                    </div>
-                }
+            <div class="history-wrapper" id="history-wrapper">
+                <!-- This will be filled dynamically by javascript-->
             </div>
         </div>
         <div class="col-lg-8">
@@ -49,7 +26,7 @@
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="stats-wrapper">
+            <div class="stats-wrapper" id="stats-wrapper">
                 <h3>Stats</h3>
                 @for(player <- players) {
                     <div class="stats-item">

@@ -322,7 +322,7 @@ header {
     box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
     min-width: 10%;
     height: 69vh;
-    overflow: hidden;
+    overflow: hidden;*
     cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     transform: translate3d(0,0,0);

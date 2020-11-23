@@ -14,6 +14,7 @@ import scala.collection.mutable.ListBuffer
 import scala.swing.Point
 
 case class Coordinate(current: Boolean, color: String, x: Int, y: Int)
+case class History(ticketType: String)
 
 @Singleton
 class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
@@ -88,6 +89,17 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     }
 
     Ok(Json.obj("coordinates" -> coordsListBuffer.toList))
+  }
+
+  def getHistory(): Action[AnyContent] = Action { implicit request =>
+    implicit val historyListFormat = Json.format[History]
+
+    val historyListBuffer = new ListBuffer[History]
+    for (historyEntry <- controller.getMrX().history) {
+      historyListBuffer += History(historyEntry.toString)
+    }
+
+    Ok(Json.obj("history" -> historyListBuffer.toList))
   }
 
   def closestStationToCoords(xPos: Int, yPos: Int): Station = {
