@@ -13,24 +13,26 @@ window.onload = function() {
 function refresh() {
     drawMap()
     drawHistory()
-    drawStats()}
+    drawStats()
+    drawHeadLine()
+    document.getElementsByName('transport')[0].checked = true
+}
 
 function drawMap() {
-    const data = JSON.parse(getAllCoorinates());
-
+    const playerData = getAllPlayerData();
     let cnvs = document.getElementById("canvas");
     cnvs.style.position = "absolute";
 
     let img = new Image();
     img.onload = function(){
         ctx.drawImage(img,0,0);
-        for (var i = 0; i < data.coordinates.length; i++) {
-            let coord = data.coordinates[i];
+        for (var i = 0; i < playerData.players.length; i++) {
+            let player = playerData.players[i];
 
             ctx.beginPath();
-            ctx.arc(coord.x, coord.y, 23, 0, 2 * Math.PI, false);
+            ctx.arc(player.x, player.y, 23, 0, 2 * Math.PI, false);
             ctx.lineWidth = 8;
-            ctx.strokeStyle = coord.color;
+            ctx.strokeStyle = player.color;
             ctx.stroke();
         }
       };
@@ -42,7 +44,7 @@ function drawHistory() {
     let html = []
     html.push('<h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>')
 
-    const historyObject = JSON.parse(getHistory())
+    const historyObject = getHistory()
 
     for (var i = 0; i < historyObject.history.length; i++) {
          html.push('<div class="history-item d-flex justify-content-center">')
@@ -66,7 +68,57 @@ function drawHistory() {
 
 
 function drawStats() {
+    let html = []
+    html.push('<h3>Stats</h3>')
 
+    const playersData = getAllPlayerData()
+    for (var i = 0; i < playersData.players.length; i++) {
+        const player = playersData.players[i]
+        html.push('<div class="stats-item">')
+        html.push('<div>')
+        if(player.name == "MrX") {
+            html.push(`<b>${player.name} Last seen: ${player.lastSeen}</b>`)
+        } else {
+            html.push(`<b><span style='color: ${player.color}'>${player.name}</span> Station: ${player.station}</b>`)
+        }
+        html.push(`</div>
+                               <div>
+                                   <div class="stats-ticket">
+                                       <img class="ticket-icon-stats" src="/assets/images/taxi_small.svg")">
+                                       <div style="min-width: 3em;">
+                                       ${player.tickets.taxi}
+                                       </div>
+                                   </div>
+                                   <div class="stats-ticket">
+                                       <img class="ticket-icon-stats" src="/assets/images/bus_small.svg")">
+                                       <div style="min-width: 3em;">
+                                        ${player.tickets.bus}
+                                       </div>
+                                   </div>
+                                   <div class="stats-ticket">
+                                       <img class="ticket-icon-stats" src="/assets/images/underground_small.svg")">
+                                       <div style="min-width: 3em;">
+                                        ${player.tickets.underground}
+                                       </div>
+                                   </div>
+                                   <div class="stats-ticket">`)
+        if(player.name == "MrX") {
+             html.push('<img class="ticket-icon-stats" src="/assets/images/black_small.svg")">')
+             html.push('<div style="min-width: 3em;">')
+             html.push(`${player.tickets.black}`)
+             html.push('</div>')
+        }
+        html.push('</div>')
+        html.push('</div>')
+        html.push('</div>')
+    }
+     document.getElementById('stats-wrapper').innerHTML = html.join("")
+}
+
+function drawHeadLine() {
+    const currentPlayer = getCurrentPlayerData()
+    const html = `Round: ${getRound().round} - Current Player:<span style=\'white-space: pre-wrap; color: ${currentPlayer.player.color}\'> ${currentPlayer.player.name}</span>`
+    document.getElementById('head-line-wrapper').innerHTML = html
 }
 
 canvas.onmousedown = function(e) {
@@ -103,8 +155,6 @@ function getXY(e) {
 
 function movePlayer(e) {
     clickCoords = getXY(e)
-    console.log("Clicked at: " +  clickCoords.x + " | " + clickCoords.y)
-    console.log(getAllCoorinates())
 
     const ticketType = getSelectedTicketType()
 
@@ -134,16 +184,32 @@ function getSelectedTicketType() {
     }
 }
 
-function getAllCoorinates() {
+function getAllPlayerData() {
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/coords", false);
+    httpRequest.open('GET', "/player", false);
     httpRequest.send();
-    return httpRequest.responseText;
+    return JSON.parse(httpRequest.responseText);
 }
+
+function getCurrentPlayerData() {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('GET', "/player/current/", false);
+    httpRequest.send();
+    return JSON.parse(httpRequest.responseText);
+}
+
+
+function getRound() {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('GET', "/round", false);
+    httpRequest.send();
+    return JSON.parse(httpRequest.responseText);
+}
+
 
 function getHistory() {
     var httpRequest = new XMLHttpRequest();
     httpRequest.open('GET', "/history", false);
     httpRequest.send();
-    return httpRequest.responseText;
+    return JSON.parse(httpRequest.responseText);
 }

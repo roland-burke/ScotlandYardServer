@@ -9,15 +9,15 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <div class="game-round d-flex justify-content-center" id="head-line">
-                Round: @round - Current Player:<span style='white-space: pre-wrap; color: @String.format("#%02x%02x%02x", currentPlayer.color.getRed, currentPlayer.color.getGreen, currentPlayer.color.getBlue)'> @currentPlayer.name</span>
+            <div class="game-round d-flex justify-content-center" id="head-line-wrapper">
+                <!-- This will be filled dynamically by javascript (drawHeadLine)-->
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-2">
             <div class="history-wrapper" id="history-wrapper">
-                <!-- This will be filled dynamically by javascript-->
+                <!-- This will be filled dynamically by javascript (drawHistory)-->
             </div>
         </div>
         <div class="col-lg-8">
@@ -27,46 +27,7 @@
         </div>
         <div class="col-lg-2">
             <div class="stats-wrapper" id="stats-wrapper">
-                <h3>Stats</h3>
-                @for(player <- players) {
-                    <div class="stats-item">
-                        <div>
-                        @if(player.name == "MrX") {
-                            <b>@player.name Last seen: @player.asInstanceOf[MrXInterface].lastSeen</b>
-                        } else {
-                            <b><span style='color: @String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue)'>@player.name</span> Station: @player.station.number</b>
-                        }
-                        </div>
-                        <div>
-                            <div class="stats-ticket">
-                                <img class="ticket-icon-stats" src="@assetsFinder.path("images/taxi_small.svg")">
-                                <div style="min-width: 3em;">
-                                @player.tickets.taxiTickets
-                                </div>
-                            </div>
-                            <div class="stats-ticket">
-                                <img class="ticket-icon-stats" src="@assetsFinder.path("images/bus_small.svg")">
-                                <div style="min-width: 3em;">
-                                @player.tickets.busTickets
-                                </div>
-                            </div>
-                            <div class="stats-ticket">
-                                <img class="ticket-icon-stats" src="@assetsFinder.path("images/underground_small.svg")">
-                                <div style="min-width: 3em;">
-                                @player.tickets.undergroundTickets
-                                </div>
-                            </div>
-                            <div class="stats-ticket">
-                            @if(player.name == "MrX") {
-                                <img class="ticket-icon-stats" src="@assetsFinder.path("images/black_small.svg")">
-                                <div style="min-width: 3em;">
-                                    @player.asInstanceOf[MrXInterface].tickets.blackTickets
-                                </div>
-                            }
-                            </div>
-                        </div>
-                    </div>
-                }
+                <!-- This will be filled dynamically by javascript (drawStats)-->
             </div>
         </div>
     </div>
@@ -106,13 +67,9 @@
                                     }
                                 </label>
                             </div>
-                            <div>
-                                <input type="number" name="station" value="" style="margin: 10px">
-                                <input class="standard-button" type="submit" value="Move Player">
-                            </div>
                         </div>
                     </form>
-                    <div>
+                    <!--<div>
                         @if(currentPlayer.name.equals("MrX")) {
                             <form method="get" action="@routes.GameController.revealMrXPosition">
                                 <input type="submit" class="standard-button" style="padding: 3px 3px 3px 3px;" value="Reveal Mr.X Position">
@@ -121,7 +78,7 @@
                         @if(!mrXPosition.isEmpty) {
                             <label>Mr.X is at Station: @mrXPosition</label>
                         }
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

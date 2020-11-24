@@ -5,16 +5,13 @@ import de.htwg.se.scotlandyard.aview.tui.Tui
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
 import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
 import de.htwg.se.scotlandyard.util.TicketType
-import model.Game
+import model.{Game, History, PlayerData, Tickets}
 import model.Game.controller
 import play.api.libs.json._
 import play.api.mvc._
 
 import scala.collection.mutable.ListBuffer
 import scala.swing.Point
-
-case class Coordinate(current: Boolean, color: String, x: Int, y: Int)
-case class History(ticketType: String)
 
 @Singleton
 class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
@@ -76,19 +73,37 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnGameStatusOk
   }
 
-  def getCoords(): Action[AnyContent] = Action { implicit request =>
-    implicit val coordsListFormat = Json.format[Coordinate]
+  def getCurrentPlayer(): Action[AnyContent] = Action { implicit request =>
+    implicit val ticketsListFormat = Json.format[Tickets]
+    implicit val playerDataListFormat = Json.format[PlayerData]
+    val player = controller.getCurrentPlayer()
+    Ok(Json.obj("player" -> model.Game.GetPlayerModel(player)))
+  }
 
-    val coordsListBuffer = new ListBuffer[Coordinate]
-    for (player <- controller.getPlayersList()) {
-      if (player == controller.getCurrentPlayer()) {
-        coordsListBuffer += Coordinate(current = true, String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue), player.station.guiCoords.x, player.station.guiCoords.y)
-      } else {
-        coordsListBuffer += Coordinate( current = false,String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue), player.station.guiCoords.x, player.station.guiCoords.y)
+  def getPlayer(playerName: String): Action[AnyContent] = Action { implicit request =>
+    implicit val ticketsListFormat = Json.format[Tickets]
+    implicit val playerDataListFormat = Json.format[PlayerData]
+    val playerDataListBuffer = new ListBuffer[PlayerData]
+    var returnObject: JsObject = null
+
+    if (playerName.isBlank) {
+      for (player <- controller.getPlayersList()) {
+        if (player == controller.getCurrentPlayer()) {
+          playerDataListBuffer += model.Game.GetPlayerModel(player)
+        } else {
+          playerDataListBuffer += model.Game.GetPlayerModel(player)
+        }
+      }
+      returnObject = Json.obj("players" -> playerDataListBuffer.toList)
+    } else {
+      for (player <- controller.getPlayersList()) {
+        if (player.name.equals(playerName)) {
+          returnObject = Json.obj("player" -> model.Game.GetPlayerModel(player))
+        }
       }
     }
 
-    Ok(Json.obj("coordinates" -> coordsListBuffer.toList))
+    Ok(returnObject)
   }
 
   def getHistory(): Action[AnyContent] = Action { implicit request =>
@@ -100,6 +115,10 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     }
 
     Ok(Json.obj("history" -> historyListBuffer.toList))
+  }
+
+  def getRound(): Action[AnyContent] = Action { implicit request =>
+    Ok(Json.obj("round" -> JsNumber(controller.getTotalRound().toInt)))
   }
 
   def closestStationToCoords(xPos: Int, yPos: Int): Station = {
