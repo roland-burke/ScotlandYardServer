@@ -6,43 +6,46 @@
 
 @(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer)(implicit request: RequestHeader, assetsFinder: AssetsFinder)
 
-<div style="position: relative; margin: 0px 0px 0px 0px !important;">
+<div style="position: relative;
+    margin: 0px 0px 0px 0px !important;">
 
-<div id="map-wrapper" class="map-wrapper" style="z-index: 0; overflow: hidden;">
-    <canvas id="canvas" width="2570" height="1926"></canvas>
-</div>
-
-<div class="container-fluid" style="overflow: hidden; position: absolute; top: 0; pointer-events: none">
-
-    <div class="row" >
-        <div class="col w-25 d-flex justify-content-center" style="z-index: 1">
-            <div style="padding-top: 40px">
-            <div class="game-round justify-content-center" id="head-line-wrapper" style="pointer-events: all">
-                <!-- This will be filled dynamically by javascript (drawHeadLine)-->
-            </div>
-            </div>
-        </div>
+    <div id="map-wrapper" class="map-wrapper" style="z-index: 0;
+        overflow: hidden;">
+        <canvas id="canvas" width="2570" height="1926"></canvas>
     </div>
-    <div class="row ">
-        <div class="col-lg-2" style="z-index: 1">
-            <div class="history-wrapper" id="history-wrapper" style="pointer-events: all">
-                <!-- This will be filled dynamically by javascript (drawHistory)-->
+
+    <div class="container-fluid" style="overflow: hidden;
+        position: absolute;
+        top: 0;
+        pointer-events: none;">
+
+        <div class="row">
+            <div class="col w-25 d-flex justify-content-center" style="z-index: 1">
+                <div style="padding-top: 40px">
+                    <div class="game-round justify-content-center" id="head-line-wrapper" style="pointer-events: all">
+                            <!-- This will be filled dynamically by javascript (drawHeadLine)-->
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-lg-8" style="z-index: 1">
-        </div>
-        <div class="col-lg-2" style="z-index: 1">
-            <div class="stats-wrapper" id="stats-wrapper" style="pointer-events: all">
-                <!-- This will be filled dynamically by javascript (drawStats)-->
+        <div class="row">
+            <div class="col-lg-2" style="z-index: 1">
+                <div class="history-wrapper" id="history-wrapper" style="pointer-events: all">
+                        <!-- This will be filled dynamically by javascript (drawHistory)-->
+                </div>
+            </div>
+            <div class="col-lg-8" style="z-index: 1">
+            </div>
+            <div class="col-lg-2" style="z-index: 1">
+                <div class="stats-wrapper" id="stats-wrapper" style="pointer-events: all">
+                        <!-- This will be filled dynamically by javascript (drawStats)-->
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row fixed-bottom" style="z-index: 1">
-        <div class="col d-flex justify-content-center">
-            <div class="game-controls w-25" style="pointer-events: all">
-                <div class="row">
-                    <form method="post" action="@routes.GameController.movePlayer">
-                        @helper.CSRF.formField
+        <div class="row fixed-bottom" style="z-index: 1">
+            <div class="col d-flex justify-content-center w-25">
+                <div class="game-controls" style="pointer-events: all">
+                    <div class="row">
                         <div class="game-controls-buttons">
                             <div>
                                 <label>
@@ -74,22 +77,11 @@
                                 </label>
                             </div>
                         </div>
-                    </form>
-                    <!--<div>
-                        @if(currentPlayer.name.equals("MrX")) {
-                            <form method="get" action="@routes.GameController.revealMrXPosition">
-                                <input type="submit" class="standard-button" style="padding: 3px 3px 3px 3px;" value="Reveal Mr.X Position">
-                            </form>
-                        }
-                        @if(!mrXPosition.isEmpty) {
-                            <label>Mr.X is at Station: @mrXPosition</label>
-                        }
-                    </div>-->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <script src="/assets/javascripts/game.js" type="application/javascript"></script>

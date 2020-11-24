@@ -42,7 +42,7 @@ function drawMap() {
 
 function drawHistory() {
     let html = []
-    html.push('<h3 style="padding: 5px 25px 5px 25px;">Mr.X History</h3>')
+    html.push('<h3>History</h3>')
 
     const historyObject = getHistory()
 

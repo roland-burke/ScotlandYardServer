@@ -49,9 +49,9 @@ body {
     background-color: #ffe8b1;
     border: 2px solid #000000;
     border-radius: 6px;
-    -webkit-box-shadow: 5px 5px 13px 0px rgba(50, 50, 50, 0.94);
-    -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
-    box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    -webkit-box-shadow: 5px 5px 13px 0px #000000;
+    -moz-box-shadow:    5px 5px 13px 0px #000000;
+    box-shadow:         5px 5px 13px 0px #000000;
     padding: 4px;
     margin: 10px 10px 4em 10px;
 }
@@ -69,8 +69,13 @@ body {
     font-size: 20px;
     font-weight: bold;
     border-radius: 10px;
+    -webkit-box-shadow: 5px 5px 13px 0px #000000;
+    -moz-box-shadow:    5px 5px 13px 0px #000000;
+    box-shadow:         5px 5px 13px 0px #000000;
     padding: 5px;
     margin: 50px 0 10px 0;
+    border: 2px solid #000000;
+    border-radius: 6px;
 }
 
 .game-round:hover {
@@ -81,14 +86,17 @@ body {
     background-color: #96b9ec;
     border: 2px solid #000000;
     border-radius: 6px;
-    -webkit-box-shadow: 5px 5px 13px 0px rgba(50, 50, 50, 0.94);
-    -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
-    box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    -webkit-box-shadow: 5px 5px 13px 0px #000000;
+    -moz-box-shadow:    5px 5px 13px 0px #000000;
+    box-shadow:         5px 5px 13px 0px #000000;
     display: flex;
     align-items: center;
     flex-direction: column;
     overflow-y: auto;
     max-height: 69vh;
+    max-width: 200px;
+    min-width: 15vw;
+    margin-bottom: 20px; /* prevent the shadow from being cut off */
 }
 
 .stats-wrapper:hover {
@@ -115,11 +123,16 @@ body {
     background-color: #96b9ec;
     border: 2px solid #000000;
     border-radius: 6px;
-    -webkit-box-shadow: 5px 5px 13px 0px rgba(50, 50, 50, 0.94);
-    -moz-box-shadow:    5px 5px 13px 0px rgba(50, 50, 50, 0.94);
-    box-shadow:         5px 5px 13px 0px rgba(50, 50, 50, 0.94);
+    -webkit-box-shadow: 5px 5px 13px 0px #000000;
+    -moz-box-shadow:    5px 5px 13px 0px #000000;
+    box-shadow:         5px 5px 13px 0px #000000;
     overflow-y: auto;
     max-height: 69vh;
+    max-width: 150px;
+    min-width: 12vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .history-wrapper:hover {
@@ -132,6 +145,7 @@ body {
     border-radius: 8px;
     margin: 4px;
     padding: 4px;
+    max-width: 110px;
 }
 
 .ticket-icon {
@@ -322,7 +336,6 @@ header {
     background-color: #ffffff;
     width: 100vw;
     height: 100vh;
-    cursor: move; /* fallback if grab cursor is unsupported */
     cursor: grab;
     transform: translate3d(0,0,0);
 }
