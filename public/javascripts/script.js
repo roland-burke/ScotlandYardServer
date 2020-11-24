@@ -1,11 +1,15 @@
 
+
+
 jQuery(document).ready(function () {
     var parent = jQuery("#map-wrapper");
     var childPos = jQuery("#canvas");
 
     jQuery("#canvas").draggable({
         drag: function (event, map) {
-            const boundaryOffset = 50
+            const boundaryOffset = 20
+            const headerOffset = document.getElementById("header").offsetHeight
+            const footerOffset = document.getElementById("footer").offsetHeight
 
             var mapWrapperWidth = parent.width()
             var mapWidth = childPos.width()
@@ -14,11 +18,11 @@ jQuery(document).ready(function () {
             var mapHeight = childPos.height()
 
             var mapBoundaryRight = mapWrapperWidth - mapWidth - boundaryOffset
-            var mapBoundaryBottom = mapWrapperHeight - mapHeight - boundaryOffset
+            var mapBoundaryBottom = mapWrapperHeight - mapHeight - boundaryOffset - footerOffset
 
             // Check for top boundary
-            if (map.position.top > boundaryOffset) {
-                map.position.top = boundaryOffset;
+            if (map.position.top > boundaryOffset + headerOffset) {
+                map.position.top = boundaryOffset + headerOffset;
             }
             // Check for left boundary
             if (map.position.left > boundaryOffset) {
