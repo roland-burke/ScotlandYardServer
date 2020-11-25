@@ -6,7 +6,6 @@ import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
 import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
 import de.htwg.se.scotlandyard.util.TicketType
 import model.{Game, History, PlayerData, Tickets}
-import model.Game.controller
 import play.api.libs.json._
 import play.api.mvc._
 
@@ -43,8 +42,14 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
           controller.doMove(destStation.number, TicketType.of(ticketType))
           if (controller.getWin()) {
             controller.winGame()
+            if(controller.getWinningPlayer().name.equals("MrX")) {
+              ResetContent
+            } else {
+              PartialContent
+            }
+          } else {
+            Ok
           }
-          Ok
         } else {
           BadRequest("Move unvalid")
         }
