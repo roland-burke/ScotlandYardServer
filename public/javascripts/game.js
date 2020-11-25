@@ -1,9 +1,9 @@
-
-var ctx = canvas.getContext("2d");
-var isDown = false;        // mouse button is held down
-var isMoving = false;      // we're moving (dragging)
-var radius = 9 * 9         // radius in pixels, 9 squared
-var firstPos;              // keep track of first position
+window.onload = function() {
+    refresh()
+}
+canvas.addEventListener("dblclick", function(e) {
+  movePlayer(e)
+});
 
 function refresh() {
     drawMap()
@@ -17,6 +17,7 @@ function drawMap() {
     const playerData = getAllPlayerData();
     let cnvs = document.getElementById("canvas");
     cnvs.style.position = "absolute";
+    ctx = canvas.getContext("2d");
 
     let img = new Image();
     img.onload = function(){
@@ -239,33 +240,3 @@ function getHistory() {
     httpRequest.send();
     return JSON.parse(httpRequest.responseText);
 }
-
-window.onload = function() {
-    refresh()
-}
-
-canvas.onmousedown = function(e) {
-  firstPos = getXY(e);
-  isDown = true;
-  isMoving = false;
-};
-
-window.addEventListener("mousemove", function(e) {
-  if (!isDown) return;
-  var pos = getXY(e);
-
-  var dx = firstPos.x - pos.x,
-      dy = firstPos.y - pos.y,
-      dist = dx * dx + dy * dy;
-
-  if (dist >= radius) isMoving = true;
-});
-
-window.addEventListener("mouseup", function(e) {
-  if (!isDown) return;
-  isDown = false;
-});
-
-canvas.addEventListener("dblclick", function(e) {
-  movePlayer(e)
-});
