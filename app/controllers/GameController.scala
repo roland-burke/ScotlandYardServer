@@ -50,6 +50,7 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
         }
       }
       .getOrElse {
+
         BadRequest("Expected json request body")
       }
   }

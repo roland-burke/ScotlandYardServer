@@ -6,15 +6,12 @@ canvas.addEventListener("dblclick", function(e) {
 });
 
 function refresh() {
-    drawMap()
-    drawHistory()
-    drawStats()
-    drawHeadLine()
-    drawTransport()
+    getAllPlayerData()
+    getCurrentPlayerAndRound()
+    getHistory()
 }
 
-function drawMap() {
-    const playerData = getAllPlayerData();
+function drawMap(playerData) {
     let cnvs = document.getElementById("canvas");
     cnvs.style.position = "absolute";
     ctx = canvas.getContext("2d");
@@ -36,11 +33,9 @@ function drawMap() {
     img.id = 'map'
 }
 
-function drawHistory() {
+function drawHistory(historyObject) {
     let html = []
     html.push('<h3>History</h3>')
-
-    const historyObject = getHistory()
 
     for (var i = 0; i < historyObject.history.length; i++) {
          html.push('<div class="history-item d-flex justify-content-center">')
@@ -63,11 +58,10 @@ function drawHistory() {
 }
 
 
-function drawStats() {
+function drawStats(playersData) {
     let html = []
     html.push('<h3>Stats</h3>')
 
-    const playersData = getAllPlayerData()
     for (var i = 0; i < playersData.players.length; i++) {
         const player = playersData.players[i]
         html.push('<div class="stats-item">')
@@ -111,13 +105,12 @@ function drawStats() {
      document.getElementById('stats-wrapper').innerHTML = html.join("")
 }
 
-function drawHeadLine() {
-    const currentPlayer = getCurrentPlayerData()
-    const html = `Round: ${getRound().round} - Current Player:<span style=\'white-space: pre-wrap; color: ${currentPlayer.player.color}\'> ${currentPlayer.player.name}</span>`
+function drawHeadLine(currentPlayer, round) {
+    const html = `Round: ${round.round} - Current Player:<span style=\'white-space: pre-wrap; color: ${currentPlayer.player.color}\'> ${currentPlayer.player.name}</span>`
     document.getElementById('head-line-wrapper').innerHTML = html
 }
 
-function drawTransport() {
+function drawTransport(currentPlayer) {
     html = []
 
     html.push(`<div>
@@ -141,7 +134,7 @@ function drawTransport() {
                 <div>`)
 
     html.push('<label>')
-    if(getCurrentPlayerData().player.name === "MrX") {
+    if(currentPlayer.player.name === "MrX") {
         html.push('<input class="ticket-radio" type="radio" id="black" value="x" name="transport">')
         html.push('<img class="ticket-icon" src="/assets/images/Black.svg">')
     } else {
@@ -159,6 +152,18 @@ function getXY(e) {
   return {x: e.clientX - rect.left, y: e.clientY - rect.top}
 }
 
+
+function getSelectedTicketType() {
+    var radios = document.getElementsByName('transport');
+    for (var i = 0, length = radios.length; i < length; i++) {
+      if (radios[i].checked) {
+        return radios[i].value;
+      }
+    }
+}
+
+// -----------------------------------
+
 function movePlayer(e) {
     clickCoords = getXY(e)
 
@@ -173,6 +178,10 @@ function movePlayer(e) {
         y: parseInt(clickCoords.y)
     }
     httpRequest.onreadystatechange = function() {
+       // Add win / lose here
+       /*if (this.readyState == 4 && this.status == 187) {
+        drawWin()
+       }*/
        if (this.readyState == 4 && this.status == 200) {
          refresh()
        }
@@ -180,14 +189,6 @@ function movePlayer(e) {
     httpRequest.send(JSON.stringify(data));
 }
 
-function getSelectedTicketType() {
-    var radios = document.getElementsByName('transport');
-    for (var i = 0, length = radios.length; i < length; i++) {
-      if (radios[i].checked) {
-        return radios[i].value;
-      }
-    }
-}
 
 function callUndo() {
     var httpRequest = new XMLHttpRequest();
@@ -213,30 +214,45 @@ function callRedo() {
 
 function getAllPlayerData() {
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/player", false);
+    httpRequest.open('GET', "/player", true);
+    httpRequest.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            const playerData = JSON.parse(httpRequest.responseText)
+            drawMap(playerData)
+            drawStats(playerData)
+        }
+    };
     httpRequest.send();
-    return JSON.parse(httpRequest.responseText);
 }
 
-function getCurrentPlayerData() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/player/current/", false);
-    httpRequest.send();
-    return JSON.parse(httpRequest.responseText);
+function getCurrentPlayerAndRound() {
+    var httpRequestCurrentPlayer = new XMLHttpRequest();
+    httpRequestCurrentPlayer.open('GET', "/player/current/", true);
+    httpRequestCurrentPlayer.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            const currentPlayer = JSON.parse(httpRequestCurrentPlayer.responseText);
+            drawTransport(currentPlayer)
+
+            var httpRequestRound = new XMLHttpRequest();
+            httpRequestRound.open('GET', "/round", true);
+            httpRequestRound.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    drawHeadLine(currentPlayer, JSON.parse(httpRequestRound.responseText))
+                }
+            };
+            httpRequestRound.send();
+        }
+    };
+    httpRequestCurrentPlayer.send();
 }
-
-
-function getRound() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/round", false);
-    httpRequest.send();
-    return JSON.parse(httpRequest.responseText);
-}
-
 
 function getHistory() {
     var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/history", false);
+    httpRequest.open('GET', "/history", true);
+    httpRequest.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          drawHistory(JSON.parse(httpRequest.responseText))
+        }
+    };
     httpRequest.send();
-    return JSON.parse(httpRequest.responseText);
 }
