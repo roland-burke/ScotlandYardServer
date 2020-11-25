@@ -4,7 +4,7 @@
 /*
 Theme Name: Scotty Custom
 Description: ScotlandYard online Game
-Author: Roland Burke, Tim Köhler
+Author: Roland Burke, Tim Koehler
 Tags: Scala, Play, ScotlandYard
 */
 
@@ -12,6 +12,8 @@ Tags: Scala, Play, ScotlandYard
     display: inline-block;
     text-align: left;
     max-width: 60%;
+    margin-top: 8vh;
+    margin-bottom: 40px;
 }
 
 input[type="file"] {
@@ -56,10 +58,6 @@ body {
     margin: 10px 10px 4em 10px;
 }
 
-.game-controls div {
-    margin: 5px;
-}
-
 .game-controls * {
     display: inline;
 }
@@ -68,7 +66,6 @@ body {
     background-color: #ffffff;
     font-size: 20px;
     font-weight: bold;
-    border-radius: 10px;
     -webkit-box-shadow: 5px 5px 13px 0px #000000;
     -moz-box-shadow:    5px 5px 13px 0px #000000;
     box-shadow:         5px 5px 13px 0px #000000;
@@ -76,6 +73,7 @@ body {
     margin: 50px 0 10px 0;
     border: 2px solid #000000;
     border-radius: 6px;
+    pointer-events: all
 }
 
 .game-round:hover {
@@ -97,6 +95,7 @@ body {
     max-width: 200px;
     min-width: 15vw;
     margin-bottom: 20px; /* prevent the shadow from being cut off */
+    pointer-events: all
 }
 
 .stats-wrapper:hover {
@@ -118,7 +117,6 @@ body {
     justify-content: space-evenly;
 }
 
-
 .history-wrapper {
     background-color: #96b9ec;
     border: 2px solid #000000;
@@ -133,6 +131,7 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    pointer-events: all;
 }
 
 .history-wrapper:hover {
@@ -150,6 +149,7 @@ body {
 
 .ticket-icon {
     width: 90px;
+    margin: 5px;
 }
 
 .ticket-icon-stats {
@@ -184,13 +184,22 @@ body {
 
 .settings-name {
     margin: 5%;
+    display: flex;
+    justify-content: center;
 }
 
 .settings-player {
     margin: 5%;
 }
 
-.player-wrapper {
+.settings-panel {
+    background-color: #abcdef;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    margin: 2%;
+}
+
+.player-number-wrapper {
     display: flex;
     flex-direction: column;
 }
@@ -299,24 +308,6 @@ header {
     color:#ffffff;
 }
 
-.left-links ul {
-    display: flex;
-    padding-inline-start: 0;
-}
-
-.right-links ul {
-    display: flex;
-    padding-inline-start: 0;
-}
-
-.left-links li {
-    list-style: none;
-}
-
-.right-links li {
-    list-style: none;
-}
-
 /* ==== Footer ==== */
 
 .footer {
@@ -338,4 +329,6 @@ header {
     height: 100vh;
     cursor: grab;
     transform: translate3d(0,0,0);
+    z-index: 0;
+    overflow: hidden;
 }
