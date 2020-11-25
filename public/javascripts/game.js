@@ -5,17 +5,12 @@ var isMoving = false;      // we're moving (dragging)
 var radius = 9 * 9         // radius in pixels, 9 squared
 var firstPos;              // keep track of first position
 
-
-window.onload = function() {
-    refresh()
-}
-
 function refresh() {
     drawMap()
     drawHistory()
     drawStats()
     drawHeadLine()
-    document.getElementsByName('transport')[0].checked = true
+    drawTransport()
 }
 
 function drawMap() {
@@ -121,32 +116,42 @@ function drawHeadLine() {
     document.getElementById('head-line-wrapper').innerHTML = html
 }
 
-canvas.onmousedown = function(e) {
-  firstPos = getXY(e);
-  isDown = true;           // record mouse state
-  isMoving = false;        // reset move state
-};
+function drawTransport() {
+    html = []
 
-window.addEventListener("mousemove", function(e) {
-  if (!isDown) return;     // we will only act if mouse button is down
-  var pos = getXY(e);      // get current mouse position
+    html.push(`<div>
+                    <label>
+                        <input class="ticket-radio" type="radio" checked="true" id="taxi" value="t" name="transport">
+                        <img class="ticket-icon" src="/assets/images/Taxi.svg">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input class="ticket-radio" type="radio" id="bus" value="b" name="transport">
+                        <img class="ticket-icon" src="/assets/images/Bus.svg">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input class="ticket-radio" type="radio" id="underground" value="u" name="transport">
+                        <img class="ticket-icon" src="/assets/images/Underground.svg">
+                    </label>
+                </div>
+                <div>`)
 
-  // calculate distance from click point to current point
-  var dx = firstPos.x - pos.x,
-      dy = firstPos.y - pos.y,
-      dist = dx * dx + dy * dy;        // skip square-root (see above)
+    html.push('<label>')
+    if(getCurrentPlayerData().player.name === "MrX") {
+        html.push('<input class="ticket-radio" type="radio" id="black" value="x" name="transport">')
+        html.push('<img class="ticket-icon" src="/assets/images/Black.svg">')
+    } else {
+        html.push('<input class="ticket-radio" disabled="true" type="radio" id="black" value="x" name="transport">')
+        html.push('<img class="ticket-icon" src="/assets/images/Black.svg" style="opacity: 40%">')
+    }
+    html.push('</label>')
+    html.push('</div>')
 
-  if (dist >= radius) isMoving = true; // 10-4 we're on the move
-});
-
-window.addEventListener("mouseup", function(e) {
-  if (!isDown) return;     // no need for us in this case
-  isDown = false;          // record mouse state
-
-  if (!isMoving) {
-    movePlayer(e)
-  }
-});
+    document.getElementById('game-controls').innerHTML = html.join("")
+}
 
 function getXY(e) {
   var rect = canvas.getBoundingClientRect();
@@ -172,7 +177,6 @@ function movePlayer(e) {
        }
     };
     httpRequest.send(JSON.stringify(data));
-
 }
 
 function getSelectedTicketType() {
@@ -182,6 +186,28 @@ function getSelectedTicketType() {
         return radios[i].value;
       }
     }
+}
+
+function callUndo() {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', "/undo", true);
+    httpRequest.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          refresh()
+        }
+    };
+    httpRequest.send();
+}
+
+function callRedo() {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', "/redo", true);
+    httpRequest.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          refresh()
+        }
+    };
+    httpRequest.send();
 }
 
 function getAllPlayerData() {
@@ -213,3 +239,33 @@ function getHistory() {
     httpRequest.send();
     return JSON.parse(httpRequest.responseText);
 }
+
+window.onload = function() {
+    refresh()
+}
+
+canvas.onmousedown = function(e) {
+  firstPos = getXY(e);
+  isDown = true;
+  isMoving = false;
+};
+
+window.addEventListener("mousemove", function(e) {
+  if (!isDown) return;
+  var pos = getXY(e);
+
+  var dx = firstPos.x - pos.x,
+      dy = firstPos.y - pos.y,
+      dist = dx * dx + dy * dy;
+
+  if (dist >= radius) isMoving = true;
+});
+
+window.addEventListener("mouseup", function(e) {
+  if (!isDown) return;
+  isDown = false;
+});
+
+canvas.addEventListener("dblclick", function(e) {
+  movePlayer(e)
+});

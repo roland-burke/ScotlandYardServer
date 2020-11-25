@@ -22,8 +22,10 @@ POST    /player/                    controllers.GameController.movePlayer
 GET     /player                     controllers.GameController.getPlayer(playerName: String = "")
 GET     /player/:playerName         controllers.GameController.getPlayer(playerName: String)
 GET     /player/current/            controllers.GameController.getCurrentPlayer
-GET     /undo                       controllers.GameController.undoMove
-GET     /redo                       controllers.GameController.redoMove
++nocsrf
+POST    /undo                       controllers.GameController.undoMove
++nocsrf
+POST    /redo                       controllers.GameController.redoMove
 GET     /reveal                     controllers.GameController.revealMrXPosition
 GET     /history                    controllers.GameController.getHistory
 GET     /round                      controllers.GameController.getRound

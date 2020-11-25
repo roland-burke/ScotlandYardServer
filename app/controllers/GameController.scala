@@ -56,12 +56,12 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
 
   def undoMove(): Action[AnyContent] = Action { implicit request =>
     controller.undoValidateAndMove()
-    returnGameStatusOk
+    Ok
   }
 
   def redoMove(): Action[AnyContent] = Action { implicit request =>
     controller.redoValidateAndMove()
-    returnGameStatusOk
+    Ok
   }
 
   def revealMrXPosition(): Action[AnyContent] = Action { implicit request =>

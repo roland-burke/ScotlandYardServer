@@ -42,36 +42,8 @@
         </div>
         <div class="row fixed-bottom" style="z-index: 1">
             <div class="col d-flex justify-content-center w-25">
-                <div class="game-controls" style="pointer-events: all">
-                    <div>
-                        <label>
-                            <input class="ticket-radio" type="radio" checked="true" id="taxi" value="t" name="transport">
-                            <img class="ticket-icon" src="@assetsFinder.path("images/Taxi.svg")">
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input class="ticket-radio" type="radio" id="bus" value="b" name="transport">
-                            <img class="ticket-icon" src="@assetsFinder.path("images/Bus.svg")">
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input class="ticket-radio" type="radio" id="underground" value="u" name="transport">
-                            <img class="ticket-icon" src="@assetsFinder.path("images/Underground.svg")">
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                        @if(currentPlayer.equals(controller.getPlayersList()(0))) {
-                            <input class="ticket-radio" type="radio" id="black" value="x" name="transport">
-                            <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")">
-                        } else {
-                            <input class="ticket-radio" disabled="true" type="radio" id="black" value="x" name="transport">
-                            <img class="ticket-icon" src="@assetsFinder.path("images/Black.svg")" style="opacity: 40%">
-                            }
-                        </label>
-                    </div>
+                <div class="game-controls" id="game-controls" style="pointer-events: all">
+                    <!-- This will be filled dynamically by javascript (drawTransport)-->
                 </div>
             </div>
         </div>
