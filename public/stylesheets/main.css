@@ -59,7 +59,6 @@ body {
     max-width: 30vw;
     margin: 10vh 5vh 10vh 5vh;
     pointer-events: all;
-    visibility: hidden;
     padding: 20px;
 }
 
@@ -159,6 +158,7 @@ body {
     align-items: center;
     flex-direction: column;
     pointer-events: all;
+    margin-bottom: 20px; /* prevent the shadow from being cut off */
 }
 
 .history-wrapper:hover {

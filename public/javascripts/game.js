@@ -260,35 +260,35 @@ function getHistory() {
 }
 
 function showWinningScreen(name) {
-    html = []
+
+    $('#winning-background').css('visibility', 'visible')
+    $('#winning-row').html('<h1 id="winning-title">' + name + ' Won!!!</h1>')
+    $('#winning-dialog').addClass('winning-dialog')
+    $('#winning-subtitle').html('<h5>Loading..</h5>')
+    $('#win-button').html('<a href="/">\n' +
+        '                            <button class="standard-button">Main Menu</button>\n' +
+        '                        </a>')
 
     if(name == "MrX") {
-        html.push("<img width='250px' height='250px' src='assets/images/mrx-win.PNG' alt='MrX'>")
+        $('#win-image').html('<img width=\'250px\' height=\'250px\' src=\'assets/images/mrx-win.PNG\' alt=\'MrX\'>')
     } else {
-        html.push("<img width='250px' height='250px' src='assets/images/detective-win.PNG' alt='Detective'>")
+        $('#win-image').html('<img width=\'250px\' height=\'250px\' src=\'assets/images/detective-win.PNG\' alt=\'Detective\'>')
     }
-    document.getElementById('image').innerHTML = html.join("")
 
-    document.getElementById("winning-title").innerHTML = name + " Win!!!"
     var httpRequestCurrentPlayer = new XMLHttpRequest();
     httpRequestCurrentPlayer.open('GET', "/player/current/", true);
     httpRequestCurrentPlayer.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             const currentPlayer = JSON.parse(httpRequestCurrentPlayer.responseText);
             if(name == "MrX") {
-                document.getElementById("winning-subtitle").innerHTML = "MrX escaped successfully"
+                $('#winning-subtitle').html('MrX escaped successfully')
             } else {
-                document.getElementById("winning-subtitle").innerHTML = "MrX was caught at Station: " + currentPlayer.player.station
+                $('#winning-subtitle').html('MrX was caught at Station: ' + currentPlayer.player.station)
             }
         }
     };
     httpRequestCurrentPlayer.send();
 
-    let background = document.getElementById("winning-background");
-    background.style.visibility = "visible";
-
-    let dialog = document.getElementById("winning-dialog");
-    dialog.style.visibility = "visible";
 
     let track = getRandomInt(3)
     var audio = new Audio("assets/audio/" + track + ".mp3");
