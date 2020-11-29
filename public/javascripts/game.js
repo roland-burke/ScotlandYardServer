@@ -166,65 +166,64 @@ function getSelectedTicketType() {
 
 function movePlayer(e) {
     clickCoords = getXY(e)
-
     const ticketType = getSelectedTicketType()
 
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', "/player/", true);
-    httpRequest.setRequestHeader("Content-Type", "application/json");
     const data = {
         ticketType: ticketType,
         x: parseInt(clickCoords.x),
         y: parseInt(clickCoords.y)
     }
-    httpRequest.onreadystatechange = function() {
 
-       if (this.readyState == 4 && this.status == 205) {
-           showWinningScreen("MrX");
-       } else if (this.readyState == 4 && this.status == 206) {
-           showWinningScreen("Detectives");
-       } else if (this.readyState == 4 && this.status == 200) {
-           refresh();
-       }
-
-    };
-    httpRequest.send(JSON.stringify(data));
+    $.ajax({
+        url: "/player/",
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+    }).done(function (response, textStatus, jqXHR){
+        if (jqXHR.status == 205) {
+            showWinningScreen("MrX");
+        } else if (jqXHR.status == 206) {
+            showWinningScreen("Detectives");
+        } else if (jqXHR.status == 200) {
+            refresh();
+        }
+    });
 }
 
 
 function callUndo() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', "/undo", true);
-    httpRequest.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          refresh()
-        }
-    };
-    httpRequest.send();
+    request = $.ajax({
+        url: "/undo",
+        type: "POST",
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        refresh()
+    });
 }
 
 function callRedo() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', "/redo", true);
-    httpRequest.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          refresh()
-        }
-    };
-    httpRequest.send();
+    request = $.ajax({
+        url: "/redo",
+        type: "POST",
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        refresh()
+    });
 }
 
 function getAllPlayerData() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/player", true);
-    httpRequest.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            const playerData = JSON.parse(httpRequest.responseText)
-            drawMap(playerData)
-            drawStats(playerData)
-        }
-    };
-    httpRequest.send();
+    request = $.ajax({
+        url: "/player",
+        type: "GET",
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        const playerData = jQuery.parseJSON(jqXHR.responseText)
+        drawMap(playerData)
+        drawStats(playerData)
+    });
 }
 
 function getCurrentPlayerAndRound() {
@@ -249,14 +248,14 @@ function getCurrentPlayerAndRound() {
 }
 
 function getHistory() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/history", true);
-    httpRequest.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          drawHistory(JSON.parse(httpRequest.responseText))
-        }
-    };
-    httpRequest.send();
+    request = $.ajax({
+        url: "/history",
+        type: "GET",
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        drawHistory(jQuery.parseJSON(jqXHR.responseText))
+    });
 }
 
 function showWinningScreen(name) {
