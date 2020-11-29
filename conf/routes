@@ -15,11 +15,19 @@ GET     /settings                   controllers.SettingsController.openMenu
 GET     /game                       controllers.GameController.startGame
 
 # Game routes
++nocsrf
 POST    /map/move                   controllers.GameController.moveMap(direction)
++nocsrf
 POST    /player/                    controllers.GameController.movePlayer
-GET     /undo                       controllers.GameController.undoMove
-GET     /redo                       controllers.GameController.redoMove
+GET     /player                     controllers.GameController.getPlayer(playerName: String = "")
+GET     /player/:playerName         controllers.GameController.getPlayer(playerName: String)
+GET     /player/current/            controllers.GameController.getCurrentPlayer
++nocsrf
+POST    /undo                       controllers.GameController.undoMove
++nocsrf
+POST    /redo                       controllers.GameController.redoMove
 GET     /reveal                     controllers.GameController.revealMrXPosition
-GET     /coords                     controllers.GameController.getCoords
+GET     /history                    controllers.GameController.getHistory
+GET     /round                      controllers.GameController.getRound
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(file)

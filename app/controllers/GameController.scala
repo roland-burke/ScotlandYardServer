@@ -3,15 +3,14 @@ package controllers
 import javax.inject._
 import de.htwg.se.scotlandyard.aview.tui.Tui
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
+import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
 import de.htwg.se.scotlandyard.util.TicketType
-import model.Game
-import model.Game.controller
+import model.{Game, History, PlayerData, Tickets}
 import play.api.libs.json._
 import play.api.mvc._
 
 import scala.collection.mutable.ListBuffer
-
-case class Coordinate(current: Boolean, color: String, x: Int, y: Int)
+import scala.swing.Point
 
 @Singleton
 class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
@@ -28,29 +27,47 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   }
 
   def movePlayer(): Action[AnyContent] = Action { implicit request =>
-    val selection = request.body.asFormUrlEncoded
-    println(selection.toString)
-    selection.map { args =>
-      val transport = args("transport").head
-      val station = args("station").head
+    val jsonBody: Option[JsValue] = request.body.asJson
+    println(jsonBody)
 
-      if(controller.validateMove(station.toInt, TicketType.of(transport))) {
-        controller.doMove(station.toInt, TicketType.of(transport))
+    jsonBody
+      .map { json =>
+        val ticketType = (json \ "ticketType").as[String]
+        val xPos = (json \ "x").as[Int]
+        val yPos = (json \ "y").as[Int]
+
+        val destStation: Station = closestStationToCoords(xPos, yPos)
+
+        if(controller.validateMove(destStation.number, TicketType.of(ticketType))) {
+          controller.doMove(destStation.number, TicketType.of(ticketType))
+          if (controller.getWin()) {
+            controller.winGame()
+            if(controller.getWinningPlayer().name.equals("MrX")) {
+              ResetContent
+            } else {
+              PartialContent
+            }
+          } else {
+            Ok
+          }
+        } else {
+          BadRequest("Move unvalid")
+        }
       }
-      if (controller.getWin()) controller.winGame()
+      .getOrElse {
 
-      returnGameStatusOk
-    }.getOrElse(InternalServerError("Ooopa - Internal Server Error"))
+        BadRequest("Expected json request body")
+      }
   }
 
   def undoMove(): Action[AnyContent] = Action { implicit request =>
     controller.undoValidateAndMove()
-    returnGameStatusOk
+    Ok
   }
 
   def redoMove(): Action[AnyContent] = Action { implicit request =>
     controller.redoValidateAndMove()
-    returnGameStatusOk
+    Ok
   }
 
   def revealMrXPosition(): Action[AnyContent] = Action { implicit request =>
@@ -62,21 +79,65 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnGameStatusOk
   }
 
+  def getCurrentPlayer(): Action[AnyContent] = Action { implicit request =>
+    implicit val ticketsListFormat = Json.format[Tickets]
+    implicit val playerDataListFormat = Json.format[PlayerData]
+    val player = controller.getCurrentPlayer()
+    Ok(Json.obj("player" -> model.Game.GetPlayerModel(player)))
+  }
 
+  def getPlayer(playerName: String): Action[AnyContent] = Action { implicit request =>
+    implicit val ticketsListFormat = Json.format[Tickets]
+    implicit val playerDataListFormat = Json.format[PlayerData]
+    val playerDataListBuffer = new ListBuffer[PlayerData]
+    var returnObject: JsObject = null
 
-  def getCoords(): Action[AnyContent] = Action { implicit request =>
-    implicit val coordsListFormat = Json.format[Coordinate]
-
-    val coordsListBuffer = new ListBuffer[Coordinate]
-    for (player <- controller.getPlayersList()) {
-      if (player == controller.getCurrentPlayer()) {
-        coordsListBuffer += Coordinate(current = true, String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue), player.station.guiCoords.x, player.station.guiCoords.y)
-      } else {
-        coordsListBuffer += Coordinate( current = false,String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue), player.station.guiCoords.x, player.station.guiCoords.y)
+    if (playerName.isBlank) {
+      for (player <- controller.getPlayersList()) {
+        if (player == controller.getCurrentPlayer()) {
+          playerDataListBuffer += model.Game.GetPlayerModel(player)
+        } else {
+          playerDataListBuffer += model.Game.GetPlayerModel(player)
+        }
+      }
+      returnObject = Json.obj("players" -> playerDataListBuffer.toList)
+    } else {
+      for (player <- controller.getPlayersList()) {
+        if (player.name.equals(playerName)) {
+          returnObject = Json.obj("player" -> model.Game.GetPlayerModel(player))
+        }
       }
     }
 
-    Ok(Json.obj("coordinates" -> coordsListBuffer.toList))
+    Ok(returnObject)
+  }
+
+  def getHistory(): Action[AnyContent] = Action { implicit request =>
+    implicit val historyListFormat = Json.format[History]
+
+    val historyListBuffer = new ListBuffer[History]
+    for (historyEntry <- controller.getMrX().history) {
+      historyListBuffer += History(historyEntry.toString)
+    }
+
+    Ok(Json.obj("history" -> historyListBuffer.toList))
+  }
+
+  def getRound(): Action[AnyContent] = Action { implicit request =>
+    Ok(Json.obj("round" -> JsNumber(controller.getTotalRound().toInt)))
+  }
+
+  def closestStationToCoords(xPos: Int, yPos: Int): Station = {
+    var distance = 9999.0
+    var guessedStation: Station = controller.getStations().head
+    for (station <- controller.getStations()) {
+      val clickedPoint = new Point(xPos, yPos)
+      if (station.guiCoords.distance(clickedPoint) < distance) {
+        distance = station.guiCoords.distance(clickedPoint)
+        guessedStation = station
+      }
+    }
+    guessedStation
   }
 
   def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {

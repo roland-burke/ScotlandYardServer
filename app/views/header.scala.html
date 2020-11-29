@@ -1,5 +1,5 @@
 @(title: String)(isIngame: Boolean)
-<nav class="navbar navbar-expand-md navbar-light fixed-top">
+<nav class="navbar navbar-expand-md navbar-light fixed-top" id="header">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -16,10 +16,10 @@
                 <a class="nav-link" href="/game">Save Game</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/undo">Undo</a>
+                <a class="nav-link" onclick="callUndo()" href="javascript:void(0)">Undo</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/redo">Redo</a>
+                <a class="nav-link" onclick="callRedo()" href="javascript:void(0)">Redo</a>
             </li>
             }
         </ul>
