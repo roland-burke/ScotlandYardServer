@@ -34,13 +34,15 @@ input[type="file"] {
     font-size:250%;
     font-weight:bold;
     padding:16px 30px;
-    text-decoration:none;
+    text-decoration: none;
     text-shadow:3px 3px 2px #393947;
     white-space:nowrap;
 }
 .main-menu-button:hover {
     background:linear-gradient(to bottom, #2b4d7a 5%, #7cb7eb 100%);
     background-color:#2b4d7a;
+    text-decoration: none;
+    color: inherit;
 }
 .main-menu-button:active {
     position:relative;

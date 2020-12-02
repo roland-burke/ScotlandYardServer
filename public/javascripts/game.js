@@ -1,7 +1,8 @@
-window.onload = function() {
+$(document).ready(function(){
     refresh()
-}
-canvas.addEventListener('dblclick', function(e) {
+});
+
+$("#canvas").on("dblclick", function(e) {
   movePlayer(e)
 });
 
@@ -227,7 +228,6 @@ function getAllPlayerData() {
 }
 
 function getCurrentPlayerAndRound() {
-
     request = $.ajax({
         url: '/player/current/',
         type: 'GET',
