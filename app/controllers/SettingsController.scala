@@ -18,26 +18,6 @@ class SettingsController @Inject()(cc: ControllerComponents)(implicit assetsFind
     returnMenuStatusOk
   }
 
-  def setNumberOfPlayer(): Action[AnyContent] = Action { implicit request =>
-    val selection = request.body.asFormUrlEncoded
-    selection.map { args =>
-      val number = args("nPlayer").head
-      controller.initPlayers(number.toInt)
-      returnMenuStatusOk
-    }.getOrElse(InternalServerError("Ooopa - Internal Server Error"))
-  }
-
-  def setPlayerName(): Action[AnyContent] = Action { implicit request =>
-    val selection = request.body.asFormUrlEncoded
-    println(selection.toString)
-    selection.map { args =>
-      val playerName = args("playerName").head
-      val playerIndex = args("playerIndex").head
-      controller.setPlayerName(playerName, playerIndex.toInt)
-      returnMenuStatusOk
-    }.getOrElse(InternalServerError("Ooopa - Internal Server Error"))
-  }
-
   def initGame(): Action[AnyContent] = Action { implicit request =>
     val jsonBody: Option[JsValue] = request.body.asJson
 

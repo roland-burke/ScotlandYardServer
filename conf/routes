@@ -9,16 +9,12 @@ GET     /                           controllers.MainController.index
 GET     /about                      controllers.MainController.showRules
 
 # Menu routes
-POST    /settings/player/name       controllers.SettingsController.setPlayerName
-POST    /settings/player/           controllers.SettingsController.setNumberOfPlayer
 GET     /settings                   controllers.SettingsController.openMenu
 GET     /game                       controllers.GameController.startGame
 +nocsrf
 POST    /init                       controllers.SettingsController.initGame
 
 # Game routes
-+nocsrf
-POST    /map/move                   controllers.GameController.moveMap(direction)
 +nocsrf
 POST    /player/                    controllers.GameController.movePlayer
 GET     /player                     controllers.GameController.getPlayer(playerName: String = "")

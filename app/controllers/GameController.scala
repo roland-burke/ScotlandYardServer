@@ -74,11 +74,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnGameStatusOk(request, controller.getMrX().station.number.toString)
   }
 
-  def moveMap(direction: String): Action[AnyContent] = Action { implicit request =>
-    tui.evaluateMoveMapInput(direction)
-    returnGameStatusOk
-  }
-
   def getCurrentPlayer(): Action[AnyContent] = Action { implicit request =>
     implicit val ticketsListFormat = Json.format[Tickets]
     implicit val playerDataListFormat = Json.format[PlayerData]
