@@ -1,67 +1,53 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 
-@(titleString: String, playerNumber: String, players: List[DetectiveInterface])(implicit request: RequestHeader)
+@(titleString: String)(implicit request: RequestHeader)
 
 <div class="container settings-wrapper">
+    <div class="row d-flex justify-content-center">
+        <h1>@titleString</h1>
+    </div>
     <div class="row">
         <div class="col settings-panel">
             <div class="settings-player d-flex justify-content-center">
-                <form name="menuForm" method="post" action="@routes.SettingsController.setNumberOfPlayer">
-                    @helper.CSRF.formField
                     <div class="player-number-wrapper ">
                     @for(n <- 2 to 7) {
                         <div>
                             <label class="radio-button-label">@n Players</label>
-                            @if(playerNumber.toInt == n) {
-                                <input type="radio" checked="true" onClick="javascript: submitForm()" id="@n+Players" value="@n" name="nPlayer">
+                            @if(n == 3) {
+                                <input type="radio" checked="true" onClick="setNumberOfPlayer(@n)" id="@n+Players" value="@n" name="nPlayer">
                                 <span class="radio-button"></span>
                             } else {
-                                <input type="radio" class="radio-button" onClick="javascript: submitForm()" id="@n+Players" value="@n" name="nPlayer">
+                                <input type="radio" class="radio-button" onClick="setNumberOfPlayer(@n)" id="@n+Players" value="@n" name="nPlayer">
                                 <span class="radio-button"></span>
                             }
                         </div>
                     }
                     </div>
-                </form>
             </div>
         </div>
         <div class="col settings-panel">
             <div class="settings-name d-flex justify-content-center">
-                <form name="menuForm" method="post" action="@routes.SettingsController.setPlayerName" style="display: flex;
+                <div style="display: flex;
                     justify-content: center;
                     align-items: center;
                     flex-direction: column;">
-                    @helper.CSRF.formField
                     <div>
-
-                        <select name="playerIndex">
-                        @for((player, i) <- players.view.zipWithIndex) {
-                            @if(player.name.equals("MrX")) {
-                                <option name="player" disabled="true" value="@i">@player.name</option>
-                            } else {
-                                <option name="player" value="@i">@player.name</option>
-                            }
-                        }
-                        </select>
-                        <input type="text" value="" name="playerName">
+                        <select id="name-select" name="playerIndex"></select>
+                        <input id="name-input" oninput="nameInput()" type="text" value="" name="playerName">
                     </div>
-                    <input class="standard-button" type="submit" value="Set Player Name">
-                </form>
+                    <button id="name-input-button" class="standard-button" disabled="true" onclick="setName()">Set Player Name</button>
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col settings-panel">
             <div class="d-flex justify-content-center" style="margin: 20px">
-                <form method="get" action="@routes.GameController.startGame">
-                    <input class="standard-button" type="submit" value="Start Game">
-                </form>
+                <button class="standard-button" onclick="startGame()">Start Game</button>
             </div>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-        function submitForm() {
-            document.forms["menuForm"].submit();
-        }
-</script>
+
+<script src="/assets/javascripts/settings.js" type="application/javascript"></script>
+<link rel="stylesheet" href="/assets/stylesheets/settings.css"/>

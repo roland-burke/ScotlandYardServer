@@ -13,6 +13,8 @@ POST    /settings/player/name       controllers.SettingsController.setPlayerName
 POST    /settings/player/           controllers.SettingsController.setNumberOfPlayer
 GET     /settings                   controllers.SettingsController.openMenu
 GET     /game                       controllers.GameController.startGame
++nocsrf
+POST    /init                       controllers.SettingsController.initGame
 
 # Game routes
 +nocsrf

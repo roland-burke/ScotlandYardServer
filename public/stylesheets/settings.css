@@ -1,0 +1,34 @@
+/*
+Theme Name: Scotty Custom
+Description: ScotlandYard online Game
+Author: Roland Burke, Tim Koehler
+Tags: Scala, Play, ScotlandYard
+*/
+
+/* === Settings === */
+
+.settings-wrapper {
+    margin-top: 10vh;
+}
+
+.settings-name {
+    margin: 5%;
+    display: flex;
+    justify-content: center;
+}
+
+.settings-player {
+    margin: 5%;
+}
+
+.settings-panel {
+    background-color: #abcdef;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    margin: 2%;
+}
+
+.player-number-wrapper {
+    display: flex;
+    flex-direction: column;
+}
