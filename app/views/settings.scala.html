@@ -25,18 +25,13 @@
                     </div>
             </div>
         </div>
-        <div class="col settings-panel">
-            <div class="settings-name d-flex justify-content-center">
-                <div style="display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    flex-direction: column;">
-                    <div>
-                        <select id="name-select" name="playerIndex"></select>
-                        <input id="name-input" oninput="nameInput()" type="text" value="" name="playerName">
-                    </div>
-                    <button id="name-input-button" class="standard-button" disabled="true" onclick="setName()">Set Player Name</button>
+        <div class="col settings-panel d-flex justify-content-center">
+            <div class="settings-name d-flex justify-content-center flex-column align-items-center">
+                <div>
+                    <select id="name-select" name="playerIndex"></select>
+                    <input id="name-input" oninput="nameInput()" type="text" value="" name="playerName">
                 </div>
+                <button id="name-input-button" class="standard-button" disabled="true" onclick="setName()">Set Player Name</button>
             </div>
         </div>
     </div>
