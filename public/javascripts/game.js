@@ -1,7 +1,8 @@
-window.onload = function() {
+$(document).ready(function(){
     refresh()
-}
-canvas.addEventListener("dblclick", function(e) {
+});
+
+$("#canvas").on("dblclick", function(e) {
   movePlayer(e)
 });
 
@@ -12,9 +13,9 @@ function refresh() {
 }
 
 function drawMap(playerData) {
-    let cnvs = document.getElementById("canvas");
-    cnvs.style.position = "absolute";
-    ctx = canvas.getContext("2d");
+    let cnvs = document.getElementById('canvas');
+    cnvs.style.position = 'absolute';
+    ctx = canvas.getContext('2d');
 
     let img = new Image();
     img.onload = function(){
@@ -54,7 +55,7 @@ function drawHistory(historyObject) {
         html.push('</div>')
     }
 
-    document.getElementById('history-wrapper').innerHTML = html.join("")
+    document.getElementById('history-wrapper').innerHTML = html.join('')
 }
 
 
@@ -66,7 +67,7 @@ function drawStats(playersData) {
         const player = playersData.players[i]
         html.push('<div class="stats-item">')
         html.push('<div>')
-        if(player.name == "MrX") {
+        if(player.name == 'MrX') {
             html.push(`<b>${player.name} Last seen: ${player.lastSeen}</b>`)
         } else {
             html.push(`<b><span style='color: ${player.color}'>${player.name}</span> Station: ${player.station}</b>`)
@@ -102,7 +103,7 @@ function drawStats(playersData) {
         html.push('</div>')
         html.push('</div>')
     }
-     document.getElementById('stats-wrapper').innerHTML = html.join("")
+     document.getElementById('stats-wrapper').innerHTML = html.join('')
 }
 
 function drawHeadLine(currentPlayer, round) {
@@ -166,132 +167,134 @@ function getSelectedTicketType() {
 
 function movePlayer(e) {
     clickCoords = getXY(e)
-
     const ticketType = getSelectedTicketType()
 
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', "/player/", true);
-    httpRequest.setRequestHeader("Content-Type", "application/json");
     const data = {
         ticketType: ticketType,
         x: parseInt(clickCoords.x),
         y: parseInt(clickCoords.y)
     }
-    httpRequest.onreadystatechange = function() {
 
-       if (this.readyState == 4 && this.status == 205) {
-           showWinningScreen("MrX");
-       } else if (this.readyState == 4 && this.status == 206) {
-           showWinningScreen("Detectives");
-       } else if (this.readyState == 4 && this.status == 200) {
-           refresh();
-       }
-
-    };
-    httpRequest.send(JSON.stringify(data));
+    $.ajax({
+        url: '/player/',
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+    }).done(function (response, textStatus, jqXHR){
+        if (jqXHR.status == 205) {
+            showWinningScreen('MrX');
+        } else if (jqXHR.status == 206) {
+            showWinningScreen('Detectives');
+        } else if (jqXHR.status == 200) {
+            refresh();
+        }
+    });
 }
 
 
 function callUndo() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', "/undo", true);
-    httpRequest.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          refresh()
-        }
-    };
-    httpRequest.send();
+    request = $.ajax({
+        url: '/undo',
+        type: 'POST',
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        refresh()
+    });
 }
 
 function callRedo() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('POST', "/redo", true);
-    httpRequest.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          refresh()
-        }
-    };
-    httpRequest.send();
+    request = $.ajax({
+        url: '/redo',
+        type: 'POST',
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        refresh()
+    });
 }
 
 function getAllPlayerData() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/player", true);
-    httpRequest.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            const playerData = JSON.parse(httpRequest.responseText)
-            drawMap(playerData)
-            drawStats(playerData)
-        }
-    };
-    httpRequest.send();
+    request = $.ajax({
+        url: '/player',
+        type: 'GET',
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        const playerData = jQuery.parseJSON(jqXHR.responseText)
+        drawMap(playerData)
+        drawStats(playerData)
+    });
 }
 
 function getCurrentPlayerAndRound() {
-    var httpRequestCurrentPlayer = new XMLHttpRequest();
-    httpRequestCurrentPlayer.open('GET', "/player/current/", true);
-    httpRequestCurrentPlayer.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            const currentPlayer = JSON.parse(httpRequestCurrentPlayer.responseText);
-            drawTransport(currentPlayer)
+    request = $.ajax({
+        url: '/player/current/',
+        type: 'GET',
+    });
 
-            var httpRequestRound = new XMLHttpRequest();
-            httpRequestRound.open('GET', "/round", true);
-            httpRequestRound.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    drawHeadLine(currentPlayer, JSON.parse(httpRequestRound.responseText))
+    request.done(function (response, textStatus, jqXHR) {
+        if (jqXHR.readyState == 4 && jqXHR.status == 200) {
+            const currentPlayer = response;
+            drawTransport(currentPlayer);
+            request = $.ajax({
+                url: '/round',
+                type: 'GET',
+            });
+            request.done(function (response, textStatus, jqXHR) {
+                if (jqXHR.readyState == 4 && jqXHR.status == 200) {
+                    drawHeadLine(currentPlayer, response);
                 }
-            };
-            httpRequestRound.send();
+            });
         }
-    };
-    httpRequestCurrentPlayer.send();
+    });
 }
 
 function getHistory() {
-    var httpRequest = new XMLHttpRequest();
-    httpRequest.open('GET', "/history", true);
-    httpRequest.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          drawHistory(JSON.parse(httpRequest.responseText))
-        }
-    };
-    httpRequest.send();
+    request = $.ajax({
+        url: '/history',
+        type: 'GET',
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        drawHistory(jQuery.parseJSON(jqXHR.responseText))
+    });
 }
 
 function showWinningScreen(name) {
-    html = []
 
-    if(name == "MrX") {
-        html.push("<img width='250px' height='250px' src='assets/images/mrx-win.PNG' alt='MrX'>")
+    $('#winning-background').css('visibility', 'visible')
+    $('#winning-row').html('<h1 id="winning-title">' + name + ' Won!!!</h1>')
+    $('#winning-dialog').addClass('winning-dialog')
+    $('#winning-subtitle').html('<h5>Loading..</h5>')
+    $('#win-button').html('<a href="/">\n' +
+        '                            <button class="standard-button">Main Menu</button>\n' +
+        '                        </a>')
+
+    if(name == 'MrX') {
+        $('#win-image').html('<img width=\'250px\' height=\'250px\' src=\'assets/images/mrx-win.PNG\' alt=\'MrX\'>')
     } else {
-        html.push("<img width='250px' height='250px' src='assets/images/detective-win.PNG' alt='Detective'>")
+        $('#win-image').html('<img width=\'250px\' height=\'250px\' src=\'assets/images/detective-win.PNG\' alt=\'Detective\'>')
     }
-    document.getElementById('image').innerHTML = html.join("")
 
-    document.getElementById("winning-title").innerHTML = name + " Win!!!"
-    var httpRequestCurrentPlayer = new XMLHttpRequest();
-    httpRequestCurrentPlayer.open('GET', "/player/current/", true);
-    httpRequestCurrentPlayer.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            const currentPlayer = JSON.parse(httpRequestCurrentPlayer.responseText);
-            if(name == "MrX") {
-                document.getElementById("winning-subtitle").innerHTML = "MrX escaped successfully"
+    request = $.ajax({
+        url: '/player/current/',
+        type: 'GET',
+    });
+
+    request.done(function (response, textStatus, jqXHR){
+        if (jqXHR.readyState == 4 && jqXHR.status == 200) {
+            const currentPlayer = response;
+            if(name == 'MrX') {
+                $('#winning-subtitle').html('MrX escaped successfully')
             } else {
-                document.getElementById("winning-subtitle").innerHTML = "MrX was caught at Station: " + currentPlayer.player.station
+                $('#winning-subtitle').html('MrX was caught at Station: ' + currentPlayer.player.station)
             }
         }
-    };
-    httpRequestCurrentPlayer.send();
-
-    let background = document.getElementById("winning-background");
-    background.style.visibility = "visible";
-
-    let dialog = document.getElementById("winning-dialog");
-    dialog.style.visibility = "visible";
+    });
 
     let track = getRandomInt(3)
-    var audio = new Audio("assets/audio/" + track + ".mp3");
+    var audio = new Audio('assets/audio/' + track + '.mp3');
     audio.play();
 
 }
@@ -299,3 +302,45 @@ function showWinningScreen(name) {
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
+
+$(document).ready(function () {
+    var parent = $("#map-wrapper");
+    var childPos = $("#canvas");
+
+    $("#canvas").draggable({
+        drag: function (event, map) {
+            const boundaryOffset = 20
+            const headerOffset = document.getElementById("header").offsetHeight
+            const footerOffset = document.getElementById("footer").offsetHeight
+
+            var mapWrapperWidth = parent.width()
+            var mapWidth = childPos.width()
+
+            var mapWrapperHeight = parent.height()
+            var mapHeight = childPos.height()
+
+            var mapBoundaryRight = mapWrapperWidth - mapWidth - boundaryOffset
+            var mapBoundaryBottom = mapWrapperHeight - mapHeight - boundaryOffset - footerOffset
+
+            // Check for top boundary
+            if (map.position.top > boundaryOffset + headerOffset) {
+                map.position.top = boundaryOffset + headerOffset;
+            }
+            // Check for left boundary
+            if (map.position.left > boundaryOffset) {
+                map.position.left = boundaryOffset;
+            }
+            // Check for bottom boundary
+            if (map.position.top < mapBoundaryBottom) {
+                map.position.top = mapBoundaryBottom;
+            }
+            // Check for right boundary
+            if (map.position.left < mapBoundaryRight) {
+                map.position.left = mapBoundaryRight;
+            }
+
+        },
+
+        scroll: false
+    });
+});
