@@ -16,7 +16,7 @@ import scala.swing.Point
 class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
   extends AbstractController(cc) {
 
-  val tui: Tui = Game.tui
+  //val tui: Tui = Game.tui
   val controller: ControllerInterface = Game.controller
 
   // Game endpoints
@@ -28,8 +28,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
 
   def movePlayer(): Action[AnyContent] = Action { implicit request =>
     val jsonBody: Option[JsValue] = request.body.asJson
-    println(jsonBody)
-
     jsonBody
       .map { json =>
         val ticketType = (json \ "ticketType").as[String]

@@ -304,8 +304,8 @@ function getRandomInt(max) {
 }
 
 $(document).ready(function () {
-    var parent = jQuery("#map-wrapper");
-    var childPos = jQuery("#canvas");
+    var parent = $("#map-wrapper");
+    var childPos = $("#canvas");
 
     $("#canvas").draggable({
         drag: function (event, map) {
