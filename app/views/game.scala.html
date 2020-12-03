@@ -38,26 +38,16 @@
                     <h2>Loading..</h2>
                 </div>
             </div>
-            <div class="col-lg-8 d-flex justify-content-center" style="z-index: 5">
-                <div id="winning-dialog" class="col winning-dialog d-flex flex-column justify-content-between">
+            <div id="win" class="col-lg-8 d-flex justify-content-center" style="z-index: 5">
+                <div id="winning-dialog" class="col d-flex flex-column justify-content-between">
                     <div class="row d-flex justify-content-center">
                         <column>
-                        <row>
-                            <h1 id="winning-title">Detectives Won!!!</h1>
-                        </row>
-                        <row id="winning-subtitle" class="d-flex justify-content-center">
-                            <h5>Loading..</h5>
-                        </row>
+                            <row id="winning-row"></row>
+                            <row id="winning-subtitle" class="d-flex justify-content-center"></row>
                         </column>
                     </div>
-                    <div class="row d-flex justify-content-center" id="image">
-                        <p>Loading..</p>
-                    </div>
-                    <div class="row d-flex justify-content-center align-items-center align-self-center">
-                        <a href="/">
-                            <button class="standard-button">Main Menu</button>
-                        </a>
-                    </div>
+                    <div class="row d-flex justify-content-center" id="win-image"></div>
+                    <div id="win-button" class="row d-flex justify-content-center align-items-center align-self-center"></div>
                 </div>
             </div>
             <div class="col-lg-2">
@@ -79,3 +69,4 @@
 </div>
 
 <script src="/assets/javascripts/game.js" type="application/javascript"></script>
+<link rel="stylesheet" href="/assets/stylesheets/game.css"/>

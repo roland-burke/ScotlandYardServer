@@ -17,7 +17,7 @@ object Game {
   val gameInitializer = injector.getInstance(classOf[GameInitializerInterface])
 
   GameMaster.initialize()
-  val tui = new Tui(controller, tuiMap)
+  //val tui = new Tui(controller, tuiMap)
 
   def GetPlayerModel(player: DetectiveInterface): PlayerData = {
     var playerData = PlayerData(

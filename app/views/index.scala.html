@@ -10,20 +10,24 @@
 *@
 @main("Welcome to ScotlandYard")(false) {
     <div class="main">
-        <div class="index-wrapper h-20 d-inline-block">
-            <form method="get" action="settings">
-                <input class="btn main-menu-button" type="submit" value="Start Game">
-            </form>
-            <br>
-            <label class="main-menu-button">
-                <input type="file"/>
-                Load Game
-            </label>
-            <br>
-            <br>
-            <form method="get" action="about">
-                <input class="main-menu-button" type="submit" value="About">
-            </form>
+        <div class="index-wrapper">
+            <div class="row my-3 d-flex justify-content-center">
+                <a href="/settings">
+                    <button class="main-menu-button">Start Game</button>
+                </a>
+            </div>
+            <div class="row my-3 d-flex justify-content-center">
+                <label class="main-menu-button">
+                    <input type="file"/>
+                    Load Game
+                </label>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <a href="/about">
+                    <button class="main-menu-button">About</button>
+                </a>
+            </div>
         </div>
     </div>
+    <link rel="stylesheet" href="/assets/stylesheets/index.css"/>
 }
