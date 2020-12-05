@@ -19,7 +19,7 @@ object Game {
   GameMaster.initialize()
   //val tui = new Tui(controller, tuiMap)
 
-  def GetPlayerModel(player: DetectiveInterface): PlayerData = {
+  def GetPlayerDataModel(player: DetectiveInterface): PlayerData = {
     var playerData = PlayerData(
       name = player.name,
       station = player.station.number,

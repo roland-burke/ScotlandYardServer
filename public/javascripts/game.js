@@ -1,5 +1,21 @@
+var webSocket;
+
 $(document).ready(function(){
-    refresh()
+    webSocket = new WebSocket("ws://localhost:9000/ws");
+    webSocket.onopen = function () {
+        refresh()
+    };
+    webSocket.onclose = function () {};
+    webSocket.onmessage = function (rawMessage) {
+        const message = jQuery.parseJSON(rawMessage.data).event
+        if(message.startsWith('PlayerWin')) {
+            const winningPlayerName = message.split(" ")[1];
+            showWinningScreen(winningPlayerName);
+        } else {
+            refresh()
+        }
+    };
+    webSocket.onerror = function () {};
 });
 
 $("#canvas").on("dblclick", function(e) {
@@ -10,6 +26,11 @@ function refresh() {
     getAllPlayerData()
     getCurrentPlayerAndRound()
     getHistory()
+}
+
+// debug code
+function onMessage(event) {
+    console.log("CONNECTED");
 }
 
 function drawMap(playerData) {
@@ -180,14 +201,6 @@ function movePlayer(e) {
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-    }).done(function (response, textStatus, jqXHR){
-        if (jqXHR.status == 205) {
-            showWinningScreen('MrX');
-        } else if (jqXHR.status == 206) {
-            showWinningScreen('Detectives');
-        } else if (jqXHR.status == 200) {
-            refresh();
-        }
     });
 }
 
@@ -261,8 +274,8 @@ function getHistory() {
     });
 }
 
-function showWinningScreen(name) {
 
+function showWinningScreen(name) {
     $('#winning-background').css('visibility', 'visible')
     $('#winning-row').html('<h1 id="winning-title">' + name + ' Won!!!</h1>')
     $('#winning-dialog').addClass('winning-dialog')
@@ -296,8 +309,10 @@ function showWinningScreen(name) {
     let track = getRandomInt(3)
     var audio = new Audio('assets/audio/' + track + '.mp3');
     audio.play();
-
 }
+
+// ------------------------------
+
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -344,3 +359,12 @@ $(document).ready(function () {
         scroll: false
     });
 });
+
+
+function sendOverWebsocket(jsonMessage) {
+    if(webSocket.readyState == WebSocket.OPEN) {
+        webSocket.send(JSON.stringify(jsonMessage));
+    } else {
+        console.log("Could not send data. Websocket is not open.");
+    }
+}
