@@ -31,6 +31,17 @@ function disableUndoRedo() {
     $('#redo').addClass('not-active');
 }
 
+function setBackToGameButton() {
+    /*
+    TODO:
+    if(condition) {
+        $('#back-to-game').prop("disabled", true);
+    } else {
+        $('#back-to-game').prop("disabled", false);
+    }
+    */
+}
+
 $("#canvas").on("dblclick", function(e) {
   movePlayer(e)
 });
@@ -40,6 +51,7 @@ function refresh(message) {
     if(win) {
         disableUndoRedo()
     }
+    setBackToGameButton()
     drawMap(message.player)
     drawStats(message.player)
     drawHistory(message.history)
