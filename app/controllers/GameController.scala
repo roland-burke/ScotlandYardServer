@@ -85,7 +85,7 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     val playerDataListBuffer = new ListBuffer[PlayerData]
     var returnObject: JsObject = null
 
-    if (playerName.isBlank) {
+    if (playerName.isEmpty()) {
       for (player <- controller.getPlayersList()) {
         if (player == controller.getCurrentPlayer()) {
           playerDataListBuffer += model.Game.GetPlayerDataModel(player)

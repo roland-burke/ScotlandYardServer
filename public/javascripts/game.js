@@ -2,30 +2,40 @@ var webSocket;
 
 $(document).ready(function(){
     webSocket = new WebSocket("ws://localhost:9000/ws");
-    webSocket.onopen = function () {
-        refresh()
-    };
+    webSocket.onopen = function () {};
     webSocket.onclose = function () {};
     webSocket.onmessage = function (rawMessage) {
-        const message = jQuery.parseJSON(rawMessage.data).event
-        if(message.startsWith('PlayerWin')) {
-            const winningPlayerName = message.split(" ")[1];
+        const message = jQuery.parseJSON(rawMessage.data)
+        console.log(message)
+        if(message.event.startsWith('PlayerWin')) {
+            const winningPlayerName = message.event.split(" ")[1];
             showWinningScreen(winningPlayerName);
         } else {
-            refresh()
+            refresh(message)
         }
     };
     webSocket.onerror = function () {};
 });
 
+function extractCurrentPlayer(allPlayer) {
+    for (player of allPlayer) {
+        if (player.current === true) {
+            return player
+        }
+    }
+}
+
 $("#canvas").on("dblclick", function(e) {
   movePlayer(e)
 });
 
-function refresh() {
-    getAllPlayerData()
-    getCurrentPlayerAndRound()
-    getHistory()
+function refresh(message) {
+    drawMap(message.player)
+    drawStats(message.player)
+    drawHistory(message.history)
+    const currentPlayer = extractCurrentPlayer(message.player.players)
+    drawTransport(currentPlayer)
+    drawHeadLine(currentPlayer, message.round)
 }
 
 // debug code
@@ -84,6 +94,8 @@ function drawStats(playersData) {
     let html = []
     html.push('<h3>Stats</h3>')
 
+    console.log(playersData)
+
     for (var i = 0; i < playersData.players.length; i++) {
         const player = playersData.players[i]
         html.push('<div class="stats-item">')
@@ -128,7 +140,7 @@ function drawStats(playersData) {
 }
 
 function drawHeadLine(currentPlayer, round) {
-    const html = `Round: ${round.round} - Current Player:<span style=\'white-space: pre-wrap; color: ${currentPlayer.player.color}\'> ${currentPlayer.player.name}</span>`
+    const html = `Round: ${round} - Current Player:<span style=\'white-space: pre-wrap; color: ${currentPlayer.color}\'> ${currentPlayer.name}</span>`
     document.getElementById('head-line-wrapper').innerHTML = html
 }
 
@@ -156,7 +168,7 @@ function drawTransport(currentPlayer) {
                 <div>`)
 
     html.push('<label>')
-    if(currentPlayer.player.name === "MrX") {
+    if(currentPlayer.name === "MrX") {
         html.push('<input class="ticket-radio" type="radio" id="black" value="x" name="transport">')
         html.push('<img class="ticket-icon" src="/assets/images/Black.svg">')
     } else {
@@ -226,54 +238,6 @@ function callRedo() {
         refresh()
     });
 }
-
-function getAllPlayerData() {
-    request = $.ajax({
-        url: '/player',
-        type: 'GET',
-    });
-
-    request.done(function (response, textStatus, jqXHR){
-        const playerData = jQuery.parseJSON(jqXHR.responseText)
-        drawMap(playerData)
-        drawStats(playerData)
-    });
-}
-
-function getCurrentPlayerAndRound() {
-    request = $.ajax({
-        url: '/player/current/',
-        type: 'GET',
-    });
-
-    request.done(function (response, textStatus, jqXHR) {
-        if (jqXHR.readyState == 4 && jqXHR.status == 200) {
-            const currentPlayer = response;
-            drawTransport(currentPlayer);
-            request = $.ajax({
-                url: '/round',
-                type: 'GET',
-            });
-            request.done(function (response, textStatus, jqXHR) {
-                if (jqXHR.readyState == 4 && jqXHR.status == 200) {
-                    drawHeadLine(currentPlayer, response);
-                }
-            });
-        }
-    });
-}
-
-function getHistory() {
-    request = $.ajax({
-        url: '/history',
-        type: 'GET',
-    });
-
-    request.done(function (response, textStatus, jqXHR){
-        drawHistory(jQuery.parseJSON(jqXHR.responseText))
-    });
-}
-
 
 function showWinningScreen(name) {
     $('#winning-background').css('visibility', 'visible')
