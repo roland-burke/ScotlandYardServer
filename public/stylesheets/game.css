@@ -33,6 +33,14 @@ Tags: Scala, Play, ScotlandYard
     visibility: hidden;
 }
 
+.close-button {
+    background-color: red;
+}
+
+#close-button {
+    position: relative;
+}
+
 .game-controls {
     background-color: #ffe8b1;
     border: 2px solid #000000;

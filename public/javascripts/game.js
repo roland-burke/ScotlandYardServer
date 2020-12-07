@@ -1,12 +1,13 @@
 var webSocket;
 
+var gameDone = false
+
 $(document).ready(function(){
     webSocket = new WebSocket("ws://localhost:9000/ws");
     webSocket.onopen = function () {};
     webSocket.onclose = function () {};
     webSocket.onmessage = function (rawMessage) {
         const message = jQuery.parseJSON(rawMessage.data)
-        console.log(message)
         if(message.event.startsWith('PlayerWin')) {
             const winningPlayerName = message.event.split(" ")[1];
             showWinningScreen(winningPlayerName);
@@ -93,8 +94,6 @@ function drawHistory(historyObject) {
 function drawStats(playersData) {
     let html = []
     html.push('<h3>Stats</h3>')
-
-    console.log(playersData)
 
     for (var i = 0; i < playersData.players.length; i++) {
         const player = playersData.players[i]
@@ -199,6 +198,9 @@ function getSelectedTicketType() {
 // -----------------------------------
 
 function movePlayer(e) {
+    if(gameDone) {
+        return
+    }
     clickCoords = getXY(e)
     const ticketType = getSelectedTicketType()
 
@@ -218,14 +220,14 @@ function movePlayer(e) {
 
 
 function callUndo() {
+
+    //sendStringOverWebsocket("undo")
+
     request = $.ajax({
         url: '/undo',
         type: 'POST',
     });
 
-    request.done(function (response, textStatus, jqXHR){
-        refresh()
-    });
 }
 
 function callRedo() {
@@ -247,6 +249,7 @@ function showWinningScreen(name) {
     $('#win-button').html('<a href="/">\n' +
         '                            <button class="standard-button">Main Menu</button>\n' +
         '                        </a>')
+    $('#close-button').html('<button onclick="closeWinningScreen()" class="close-button">X</button>')
 
     if(name == 'MrX') {
         $('#win-image').html('<img width=\'250px\' height=\'250px\' src=\'assets/images/mrx-win.PNG\' alt=\'MrX\'>')
@@ -273,6 +276,12 @@ function showWinningScreen(name) {
     let track = getRandomInt(3)
     var audio = new Audio('assets/audio/' + track + '.mp3');
     audio.play();
+}
+
+function closeWinningScreen() {
+    $('#winning-background').css('visibility', 'hidden')
+    $('#winning-dialog').css('visibility', 'hidden')
+    gameDone = true
 }
 
 // ------------------------------
@@ -326,8 +335,16 @@ $(document).ready(function () {
 
 
 function sendOverWebsocket(jsonMessage) {
-    if(webSocket.readyState == WebSocket.OPEN) {
+    if(webSocket.readyState === WebSocket.OPEN) {
         webSocket.send(JSON.stringify(jsonMessage));
+    } else {
+        console.log("Could not send data. Websocket is not open.");
+    }
+}
+
+function sendStringOverWebsocket(message) {
+    if(webSocket.readyState === WebSocket.OPEN) {
+        webSocket.send(message);
     } else {
         console.log("Could not send data. Websocket is not open.");
     }

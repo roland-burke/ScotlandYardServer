@@ -40,9 +40,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   }
 
   def receive: Receive = {
-    case x: String =>
-      println("Received: " + x)
-      clientActorRef ! Json.obj("event" -> "Connected")
+    case "undo"  => println("Received!")
   }
 
   def getRound(): Int = {
