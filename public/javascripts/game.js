@@ -1,6 +1,6 @@
 var webSocket;
 
-var gameDone = false
+var win = false
 
 $(document).ready(function(){
     webSocket = new WebSocket("ws://localhost:9000/ws");
@@ -26,11 +26,20 @@ function extractCurrentPlayer(allPlayer) {
     }
 }
 
+function disableUndoRedo() {
+    $('#undo').addClass('not-active');
+    $('#redo').addClass('not-active');
+}
+
 $("#canvas").on("dblclick", function(e) {
   movePlayer(e)
 });
 
 function refresh(message) {
+    win = message.win
+    if(win) {
+        disableUndoRedo()
+    }
     drawMap(message.player)
     drawStats(message.player)
     drawHistory(message.history)
@@ -198,7 +207,7 @@ function getSelectedTicketType() {
 // -----------------------------------
 
 function movePlayer(e) {
-    if(gameDone) {
+    if(win) {
         return
     }
     clickCoords = getXY(e)
@@ -281,7 +290,6 @@ function showWinningScreen(name) {
 function closeWinningScreen() {
     $('#winning-background').css('visibility', 'hidden')
     $('#winning-dialog').css('visibility', 'hidden')
-    gameDone = true
 }
 
 // ------------------------------

@@ -6,11 +6,9 @@
 
 @(currentPlayer: DetectiveInterface, mrXPosition: String, history: List[TicketType], players: List[DetectiveInterface], round: Integer)(implicit request: RequestHeader, assetsFinder: AssetsFinder)
 
-<div style="position: relative">
+<div style="position: relative; overflow-x: hidden;">
 
-    <div id="winning-background" class="winning-background">
-
-    </div>
+    <div id="winning-background" class="winning-background"></div>
 
     <div id="map-wrapper" class="map-wrapper">
         <canvas id="canvas" width="2570" height="1926"></canvas>
@@ -68,6 +66,3 @@
         </div>
     </div>
 </div>
-
-<script src="/assets/javascripts/game.js" type="application/javascript"></script>
-<link rel="stylesheet" href="/assets/stylesheets/game.css"/>
