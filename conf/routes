@@ -13,6 +13,7 @@ GET     /settings                   controllers.SettingsController.openMenu
 GET     /game                       controllers.GameController.startGame
 +nocsrf
 POST    /init                       controllers.SettingsController.initGame
+GET     /running                    controllers.MainController.getGameRunning
 
 # Game routes
 +nocsrf

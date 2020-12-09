@@ -1,7 +1,6 @@
 var webSocket;
 
 var win = false
-var gameRunning = false
 
 $(document).ready(function(){
     webSocket = new WebSocket("ws://localhost:9000/ws");
@@ -32,14 +31,6 @@ function disableUndoRedo() {
     $('#redo').addClass('not-active');
 }
 
-function setBackToGameButton() {
-    if(gameRunning) {
-        $('#back-to-game').prop("disabled", false);
-    } else {
-        $('#back-to-game').prop("disabled", true);
-    }
-}
-
 $("#canvas").on("dblclick", function(e) {
   movePlayer(e)
 });
@@ -47,17 +38,16 @@ $("#canvas").on("dblclick", function(e) {
 function refresh(message) {
     console.log(message)
     win = message.win
-    gameRunning = message.gameRunning
-    if(win) {
-        disableUndoRedo()
-    }
-    setBackToGameButton()
     drawMap(message.player)
     drawStats(message.player)
     drawHistory(message.history)
     const currentPlayer = extractCurrentPlayer(message.player.players)
     drawTransport(currentPlayer)
     drawHeadLine(currentPlayer, message.round)
+    if(win) {
+        disableUndoRedo()
+        $('#head-line-wrapper').append('<br><div class="d-flex justify-content-center"><h5>Game finished!</h5></div>')
+    }
 }
 
 // debug code
@@ -77,8 +67,8 @@ function drawMap(playerData) {
             let player = playerData.players[i];
 
             ctx.beginPath();
-            ctx.arc(player.x, player.y, 23, 0, 2 * Math.PI, false);
-            ctx.lineWidth = 8;
+            ctx.arc(player.x, player.y, 26, 0, 2 * Math.PI, false);
+            ctx.lineWidth = 10;
             ctx.strokeStyle = player.color;
             ctx.stroke();
         }
