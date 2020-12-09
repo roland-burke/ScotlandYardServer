@@ -36,7 +36,6 @@ $("#canvas").on("dblclick", function(e) {
 });
 
 function refresh(message) {
-    console.log(message)
     win = message.win
     drawMap(message.player)
     drawStats(message.player)
@@ -48,11 +47,6 @@ function refresh(message) {
         disableUndoRedo()
         $('#head-line-wrapper').append('<br><div class="d-flex justify-content-center"><h5>Game finished!</h5></div>')
     }
-}
-
-// debug code
-function onMessage(event) {
-    console.log("CONNECTED");
 }
 
 function drawMap(playerData) {
@@ -220,36 +214,16 @@ function movePlayer(e) {
         x: parseInt(clickCoords.x),
         y: parseInt(clickCoords.y)
     }
-
-    $.ajax({
-        url: '/player/',
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-    });
+    sendObjectOverWebsocket(data)
 }
 
 
 function callUndo() {
-
-    //sendStringOverWebsocket("undo")
-
-    request = $.ajax({
-        url: '/undo',
-        type: 'POST',
-    });
-
+    sendStringOverWebsocket("undo")
 }
 
 function callRedo() {
-    request = $.ajax({
-        url: '/redo',
-        type: 'POST',
-    });
-
-    request.done(function (response, textStatus, jqXHR){
-        refresh()
-    });
+    sendStringOverWebsocket("redo")
 }
 
 function showWinningScreen(name) {
@@ -344,7 +318,7 @@ $(document).ready(function () {
 });
 
 
-function sendOverWebsocket(jsonMessage) {
+function sendObjectOverWebsocket(jsonMessage) {
     if(webSocket.readyState === WebSocket.OPEN) {
         webSocket.send(JSON.stringify(jsonMessage));
     } else {
@@ -352,9 +326,12 @@ function sendOverWebsocket(jsonMessage) {
     }
 }
 
-function sendStringOverWebsocket(message) {
+function sendStringOverWebsocket(msg) {
+    const obj = {
+        message: msg,
+    }
     if(webSocket.readyState === WebSocket.OPEN) {
-        webSocket.send(message);
+        webSocket.send(JSON.stringify(obj));
     } else {
         console.log("Could not send data. Websocket is not open.");
     }

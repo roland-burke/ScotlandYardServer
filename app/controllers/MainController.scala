@@ -13,11 +13,11 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   val controller: ControllerInterface = Game.controller
 
   def index: Action[AnyContent] = Action {
-    Ok(views.html.index("Welcome to ScotlandYard!"))
+    Ok(views.html.index(controller.getGameRunning()))
   }
 
   def showRules(): Action[AnyContent] = Action {
-    Ok(views.html.main("Scotland Yard")(false)(views.html.about("About")))
+    Ok(views.html.main("Scotland Yard")(controller.getGameRunning())(views.html.about("About")))
   }
 
   def getGameRunning(): Action[AnyContent] = Action { implicit request =>
@@ -25,5 +25,4 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnObject = Json.obj("gameRunning" -> controller.getGameRunning())
     Ok(returnObject)
   }
-
 }

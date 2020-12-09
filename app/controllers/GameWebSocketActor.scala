@@ -3,11 +3,13 @@ package controllers
 import akka.actor.{Actor, ActorRef, Props}
 import com.google.inject.Guice
 import de.htwg.se.scotlandyard.controllerComponent.{ControllerInterface, NumberOfPlayersChanged, PlayerMoved, PlayerNameChanged, PlayerWin, StartGame}
+import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
+import de.htwg.se.scotlandyard.util.TicketType
 import model.{Game, History, PlayerData, Tickets}
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsObject, JsValue, Json}
 
 import scala.collection.mutable.ListBuffer
-import scala.swing.Reactor
+import scala.swing.{Point, Reactor}
 
 object GameWebSocketActor {
   def props(clientActorRef: ActorRef) = Props(new GameWebSocketActor(clientActorRef))
@@ -19,9 +21,9 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   listenTo(controller)
   reactions += {
     case _: PlayerNameChanged =>
-      clientActorRef ! Json.obj("event" -> "PlayerNameChanged")
+      clientActorRef ! getAllDataObject("PlayerNameChanged")
     case _: NumberOfPlayersChanged =>
-      clientActorRef ! Json.obj("event" -> "NumberOfPlayersChanged")
+      clientActorRef ! getAllDataObject("NumberOfPlayersChanged")
     case _: PlayerMoved =>
       clientActorRef ! getAllDataObject("PlayerMoved")
     case _: StartGame =>
@@ -35,12 +37,25 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   }
 
   override def preStart() = {
-    println("User connected")
     clientActorRef ! getAllDataObject("Connected")
   }
 
   def receive: Receive = {
-    case "undo"  => println("Received!")
+    case obj: JsObject =>
+      val map = obj.value
+      if (map.contains("message")) {
+        handleMessage(map("message").asOpt[String].get)
+      } else {
+        movePlayer(Option(obj))
+      }
+  }
+
+  def handleMessage(message: String): Unit = {
+    message match {
+      case "undo" => controller.undoValidateAndMove()
+      case "redo" => controller.redoValidateAndMove()
+      case _ => println("Unknown: " + message)
+    }
   }
 
   def getRound(): Int = {
@@ -86,6 +101,34 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     }
     returnObject
   }
+  def movePlayer(jsonBody: Option[JsObject]) :Unit = {
+    jsonBody.map {
+      json =>
+        val ticketType = (json \ "ticketType").as[String]
+        val xPos = (json \ "x").as[Int]
+        val yPos = (json \ "y").as[Int]
 
+        val destStation: Station = closestStationToCoords(xPos, yPos)
+
+        if(controller.validateMove(destStation.number, TicketType.of(ticketType))) {
+          controller.doMove(destStation.number, TicketType.of(ticketType))
+          if (controller.getWin()) {
+            controller.winGame()
+          }
+        }
+      }
+  }
+  def closestStationToCoords(xPos: Int, yPos: Int): Station = {
+    var distance = 9999.0
+    var guessedStation: Station = controller.getStations().head
+    for (station <- controller.getStations()) {
+      val clickedPoint = new Point(xPos, yPos)
+      if (station.guiCoords.distance(clickedPoint) < distance) {
+        distance = station.guiCoords.distance(clickedPoint)
+        guessedStation = station
+      }
+    }
+    guessedStation
+  }
 }
 

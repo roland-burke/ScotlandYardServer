@@ -26,38 +26,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     returnGameStatusOk
   }
 
-  def movePlayer(): Action[AnyContent] = Action { implicit request =>
-    val jsonBody: Option[JsValue] = request.body.asJson
-    jsonBody
-      .map { json =>
-        val ticketType = (json \ "ticketType").as[String]
-        val xPos = (json \ "x").as[Int]
-        val yPos = (json \ "y").as[Int]
-
-        val destStation: Station = closestStationToCoords(xPos, yPos)
-
-        if(controller.validateMove(destStation.number, TicketType.of(ticketType))) {
-          controller.doMove(destStation.number, TicketType.of(ticketType))
-          if (controller.getWin()) {
-            controller.winGame()
-            if(controller.getWinningPlayer().name.equals("MrX")) {
-              ResetContent
-            } else {
-              PartialContent
-            }
-          } else {
-            Ok
-          }
-        } else {
-          BadRequest("Move unvalid")
-        }
-      }
-      .getOrElse {
-
-        BadRequest("Expected json request body")
-      }
-  }
-
   def undoMove(): Action[AnyContent] = Action { implicit request =>
     controller.undoValidateAndMove()
     Ok
@@ -118,19 +86,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
 
   def getRound(): Action[AnyContent] = Action { implicit request =>
     Ok(Json.obj("round" -> JsNumber(controller.getTotalRound().toInt)))
-  }
-
-  def closestStationToCoords(xPos: Int, yPos: Int): Station = {
-    var distance = 9999.0
-    var guessedStation: Station = controller.getStations().head
-    for (station <- controller.getStations()) {
-      val clickedPoint = new Point(xPos, yPos)
-      if (station.guiCoords.distance(clickedPoint) < distance) {
-        distance = station.guiCoords.distance(clickedPoint)
-        guessedStation = station
-      }
-    }
-    guessedStation
   }
 
   def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {
