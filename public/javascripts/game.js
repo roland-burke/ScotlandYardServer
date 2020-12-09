@@ -1,14 +1,22 @@
 var webSocket;
 
 var win = false
+var interval;
 
 $(document).ready(function(){
     webSocket = new WebSocket("ws://localhost:9000/ws");
-    webSocket.onopen = function () {};
-    webSocket.onclose = function () {};
+    webSocket.onopen = function () {
+        interval = setInterval(function() {
+            sendStringOverWebsocket('ping')
+        }, 10000);
+    };
+    webSocket.onclose = function () {
+        clearInterval(interval);
+    };
     webSocket.onmessage = function (rawMessage) {
         const message = jQuery.parseJSON(rawMessage.data)
-        if(message.event.startsWith('PlayerWin')) {
+        if(message.alive == 'pong') {}
+        else if(message.event.startsWith('PlayerWin')) {
             const winningPlayerName = message.event.split(" ")[1];
             showWinningScreen(winningPlayerName);
         } else {

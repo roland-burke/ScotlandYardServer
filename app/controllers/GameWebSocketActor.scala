@@ -54,6 +54,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     message match {
       case "undo" => controller.undoValidateAndMove()
       case "redo" => controller.redoValidateAndMove()
+      case "ping" => clientActorRef ! Json.obj("alive" -> "pong")
       case _ => println("Unknown: " + message)
     }
   }
