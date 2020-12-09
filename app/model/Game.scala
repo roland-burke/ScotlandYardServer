@@ -16,9 +16,6 @@ object Game {
   val tuiMap = injector.getInstance(classOf[TuiMapInterface])
   val gameInitializer = injector.getInstance(classOf[GameInitializerInterface])
 
-  GameMaster.initialize()
-  //val tui = new Tui(controller, tuiMap)
-
   def GetPlayerDataModel(player: DetectiveInterface): PlayerData = {
     var isCurrent = false
     if (controller.getCurrentPlayer().name.equals(player.name)) {

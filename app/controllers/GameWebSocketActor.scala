@@ -48,7 +48,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   }
 
   def getAllDataObject(event: String): JsObject = {
-    Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin())
+    Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin(), "gameRunning" -> controller.getGameRunning())
   }
 
   def getHistory(): JsObject = {

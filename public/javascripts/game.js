@@ -1,6 +1,7 @@
 var webSocket;
 
 var win = false
+var gameRunning = false
 
 $(document).ready(function(){
     webSocket = new WebSocket("ws://localhost:9000/ws");
@@ -32,14 +33,11 @@ function disableUndoRedo() {
 }
 
 function setBackToGameButton() {
-    /*
-    TODO:
-    if(condition) {
-        $('#back-to-game').prop("disabled", true);
-    } else {
+    if(gameRunning) {
         $('#back-to-game').prop("disabled", false);
+    } else {
+        $('#back-to-game').prop("disabled", true);
     }
-    */
 }
 
 $("#canvas").on("dblclick", function(e) {
@@ -47,7 +45,9 @@ $("#canvas").on("dblclick", function(e) {
 });
 
 function refresh(message) {
+    console.log(message)
     win = message.win
+    gameRunning = message.gameRunning
     if(win) {
         disableUndoRedo()
     }
