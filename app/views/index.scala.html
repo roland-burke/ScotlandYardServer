@@ -17,15 +17,7 @@
                 </a>
             </div>
             <div class="row my-3 d-flex justify-content-center">
-                @if(isGameRunning) {
-                <a href="/game">
-                    <button class="main-menu-button">Join Game</button>
-                </a>
-                } else {
-                <a href="/game">
-                    <button class="main-menu-button" disabled>Join Game</button>
-                </a>
-                }
+                <button class="main-menu-button" onclick="joinGame()">Join Game</button>
             </div>
             <div class="row my-3 d-flex justify-content-center">
                 <label class="main-menu-button">
