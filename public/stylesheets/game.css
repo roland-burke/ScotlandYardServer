@@ -26,11 +26,27 @@ Tags: Scala, Play, ScotlandYard
     background-color: #000000;
     z-index: 2;
     opacity: 0.5;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     position: fixed;
     pointer-events: none;
     visibility: hidden;
+}
+
+.not-active {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    color: #4D4D4D;
+    opacity: 0.3;
+}
+
+.close-button {
+    background-color: red;
+}
+
+#close-button {
+    position: relative;
 }
 
 .game-controls {
@@ -171,5 +187,9 @@ Tags: Scala, Play, ScotlandYard
     cursor: grab;
     transform: translate3d(0,0,0);
     z-index: 0;
+    overflow: hidden;
+}
+
+#canvas {
     overflow: hidden;
 }

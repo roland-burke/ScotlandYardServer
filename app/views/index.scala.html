@@ -2,7 +2,7 @@
 * This template takes a two arguments, a String containing a
 * message to display and an AssetsFinder to locate static assets.
 *@
-@(message: String)(implicit assetsFinder: AssetsFinder)
+@(isGameRunning: Boolean)(implicit assetsFinder: AssetsFinder)
 @*
 * Call the `main` template with two arguments. The first
 * argument is a `String` with the title of the page, the second
@@ -15,6 +15,9 @@
                 <a href="/settings">
                     <button class="main-menu-button">Start Game</button>
                 </a>
+            </div>
+            <div class="row my-3 d-flex justify-content-center">
+                <button class="main-menu-button" onclick="joinGame()">Join Game</button>
             </div>
             <div class="row my-3 d-flex justify-content-center">
                 <label class="main-menu-button">
