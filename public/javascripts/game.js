@@ -39,6 +39,15 @@ function disableUndoRedo() {
     $('#redo').addClass('not-active');
 }
 
+function enableUndoRedo() {
+    if (($('#undo').is('.not-active'))) {
+        $('#undo').removeClass('not-active');
+    }
+    if (($('#redo').is('.not-active'))) {
+        $('#redo').removeClass('not-active');
+    }
+}
+
 $("#canvas").on("dblclick", function(e) {
   movePlayer(e)
 });
@@ -54,6 +63,8 @@ function refresh(message) {
     if(win) {
         disableUndoRedo()
         $('#head-line-wrapper').append('<br><div class="d-flex justify-content-center"><h5>Game finished!</h5></div>')
+    } else {
+        enableUndoRedo()
     }
 }
 
