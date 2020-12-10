@@ -8,10 +8,10 @@ GET     /                           controllers.MainController.index
 GET     /about                      controllers.MainController.showRules
 
 # Menu routes
-GET     /settings                   controllers.SettingsController.openMenu
+GET     /lobby                      controllers.LobbyController.lobby
 GET     /game                       controllers.GameController.startGame
 +nocsrf
-POST    /init                       controllers.SettingsController.initGame
+POST    /init                       controllers.LobbyController.initGame
 GET     /running                    controllers.MainController.getGameRunning
 
 # Game routes

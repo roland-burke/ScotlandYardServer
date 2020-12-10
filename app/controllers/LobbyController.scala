@@ -7,14 +7,14 @@ import play.api.libs.json.{JsArray, JsValue, Json}
 import play.api.mvc._
 
 @Singleton
-class SettingsController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
+class LobbyController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
   extends AbstractController(cc) {
 
   val controller: ControllerInterface = Game.controller
 
   // Settings Endpoints
 
-  def openMenu(): Action[AnyContent] = Action { implicit request =>
+  def lobby(): Action[AnyContent] = Action { implicit request =>
     returnMenuStatusOk
   }
 
@@ -41,7 +41,7 @@ class SettingsController @Inject()(cc: ControllerComponents)(implicit assetsFind
   }
 
   def returnMenuStatusOk(implicit request: Request[_]): Result = {
-    val menuHtml = views.html.settings("Settings")
+    val menuHtml = views.html.settings("Lobby")
     Ok(views.html.main("Scotland Yard")(false)(menuHtml))
   }
 }
