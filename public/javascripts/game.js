@@ -1,15 +1,71 @@
+var webSocket;
+
+var win = false
+var interval;
+
 $(document).ready(function(){
-    refresh()
+    webSocket = new WebSocket("ws://localhost:9000/ws");
+    webSocket.onopen = function () {
+        interval = setInterval(function() {
+            sendStringOverWebsocket('ping')
+        }, 10000);
+    };
+    webSocket.onclose = function () {
+        clearInterval(interval);
+    };
+    webSocket.onmessage = function (rawMessage) {
+        const message = jQuery.parseJSON(rawMessage.data)
+        if(message.alive == 'pong') {}
+        else if(message.event.startsWith('PlayerWin')) {
+            const winningPlayerName = message.event.split(" ")[1];
+            showWinningScreen(winningPlayerName);
+        } else {
+            refresh(message)
+        }
+    };
+    webSocket.onerror = function () {};
 });
+
+function extractCurrentPlayer(allPlayer) {
+    for (player of allPlayer) {
+        if (player.current === true) {
+            return player
+        }
+    }
+}
+
+function disableUndoRedo() {
+    $('#undo').addClass('not-active');
+    $('#redo').addClass('not-active');
+}
+
+function enableUndoRedo() {
+    if (($('#undo').is('.not-active'))) {
+        $('#undo').removeClass('not-active');
+    }
+    if (($('#redo').is('.not-active'))) {
+        $('#redo').removeClass('not-active');
+    }
+}
 
 $("#canvas").on("dblclick", function(e) {
   movePlayer(e)
 });
 
-function refresh() {
-    getAllPlayerData()
-    getCurrentPlayerAndRound()
-    getHistory()
+function refresh(message) {
+    win = message.win
+    drawMap(message.player)
+    drawStats(message.player)
+    drawHistory(message.history)
+    const currentPlayer = extractCurrentPlayer(message.player.players)
+    drawTransport(currentPlayer)
+    drawHeadLine(currentPlayer, message.round)
+    if(win) {
+        disableUndoRedo()
+        $('#head-line-wrapper').append('<br><div class="d-flex justify-content-center"><h5>Game finished!</h5></div>')
+    } else {
+        enableUndoRedo()
+    }
 }
 
 function drawMap(playerData) {
@@ -24,8 +80,8 @@ function drawMap(playerData) {
             let player = playerData.players[i];
 
             ctx.beginPath();
-            ctx.arc(player.x, player.y, 23, 0, 2 * Math.PI, false);
-            ctx.lineWidth = 8;
+            ctx.arc(player.x, player.y, 26, 0, 2 * Math.PI, false);
+            ctx.lineWidth = 10;
             ctx.strokeStyle = player.color;
             ctx.stroke();
         }
@@ -107,7 +163,7 @@ function drawStats(playersData) {
 }
 
 function drawHeadLine(currentPlayer, round) {
-    const html = `Round: ${round.round} - Current Player:<span style=\'white-space: pre-wrap; color: ${currentPlayer.player.color}\'> ${currentPlayer.player.name}</span>`
+    const html = `Round: ${round} - Current Player:<span style=\'white-space: pre-wrap; color: ${currentPlayer.color}\'> ${currentPlayer.name}</span>`
     document.getElementById('head-line-wrapper').innerHTML = html
 }
 
@@ -135,7 +191,7 @@ function drawTransport(currentPlayer) {
                 <div>`)
 
     html.push('<label>')
-    if(currentPlayer.player.name === "MrX") {
+    if(currentPlayer.name === "MrX") {
         html.push('<input class="ticket-radio" type="radio" id="black" value="x" name="transport">')
         html.push('<img class="ticket-icon" src="/assets/images/Black.svg">')
     } else {
@@ -166,6 +222,9 @@ function getSelectedTicketType() {
 // -----------------------------------
 
 function movePlayer(e) {
+    if(win) {
+        return
+    }
     clickCoords = getXY(e)
     const ticketType = getSelectedTicketType()
 
@@ -174,95 +233,19 @@ function movePlayer(e) {
         x: parseInt(clickCoords.x),
         y: parseInt(clickCoords.y)
     }
-
-    $.ajax({
-        url: '/player/',
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-    }).done(function (response, textStatus, jqXHR){
-        if (jqXHR.status == 205) {
-            showWinningScreen('MrX');
-        } else if (jqXHR.status == 206) {
-            showWinningScreen('Detectives');
-        } else if (jqXHR.status == 200) {
-            refresh();
-        }
-    });
+    sendObjectOverWebsocket(data)
 }
 
 
 function callUndo() {
-    request = $.ajax({
-        url: '/undo',
-        type: 'POST',
-    });
-
-    request.done(function (response, textStatus, jqXHR){
-        refresh()
-    });
+    sendStringOverWebsocket("undo")
 }
 
 function callRedo() {
-    request = $.ajax({
-        url: '/redo',
-        type: 'POST',
-    });
-
-    request.done(function (response, textStatus, jqXHR){
-        refresh()
-    });
-}
-
-function getAllPlayerData() {
-    request = $.ajax({
-        url: '/player',
-        type: 'GET',
-    });
-
-    request.done(function (response, textStatus, jqXHR){
-        const playerData = jQuery.parseJSON(jqXHR.responseText)
-        drawMap(playerData)
-        drawStats(playerData)
-    });
-}
-
-function getCurrentPlayerAndRound() {
-    request = $.ajax({
-        url: '/player/current/',
-        type: 'GET',
-    });
-
-    request.done(function (response, textStatus, jqXHR) {
-        if (jqXHR.readyState == 4 && jqXHR.status == 200) {
-            const currentPlayer = response;
-            drawTransport(currentPlayer);
-            request = $.ajax({
-                url: '/round',
-                type: 'GET',
-            });
-            request.done(function (response, textStatus, jqXHR) {
-                if (jqXHR.readyState == 4 && jqXHR.status == 200) {
-                    drawHeadLine(currentPlayer, response);
-                }
-            });
-        }
-    });
-}
-
-function getHistory() {
-    request = $.ajax({
-        url: '/history',
-        type: 'GET',
-    });
-
-    request.done(function (response, textStatus, jqXHR){
-        drawHistory(jQuery.parseJSON(jqXHR.responseText))
-    });
+    sendStringOverWebsocket("redo")
 }
 
 function showWinningScreen(name) {
-
     $('#winning-background').css('visibility', 'visible')
     $('#winning-row').html('<h1 id="winning-title">' + name + ' Won!!!</h1>')
     $('#winning-dialog').addClass('winning-dialog')
@@ -270,6 +253,7 @@ function showWinningScreen(name) {
     $('#win-button').html('<a href="/">\n' +
         '                            <button class="standard-button">Main Menu</button>\n' +
         '                        </a>')
+    $('#close-button').html('<button onclick="closeWinningScreen()" class="close-button">X</button>')
 
     if(name == 'MrX') {
         $('#win-image').html('<img width=\'250px\' height=\'250px\' src=\'assets/images/mrx-win.PNG\' alt=\'MrX\'>')
@@ -296,8 +280,15 @@ function showWinningScreen(name) {
     let track = getRandomInt(3)
     var audio = new Audio('assets/audio/' + track + '.mp3');
     audio.play();
-
 }
+
+function closeWinningScreen() {
+    $('#winning-background').css('visibility', 'hidden')
+    $('#winning-dialog').css('visibility', 'hidden')
+}
+
+// ------------------------------
+
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -344,3 +335,23 @@ $(document).ready(function () {
         scroll: false
     });
 });
+
+
+function sendObjectOverWebsocket(jsonMessage) {
+    if(webSocket.readyState === WebSocket.OPEN) {
+        webSocket.send(JSON.stringify(jsonMessage));
+    } else {
+        console.log("Could not send data. Websocket is not open.");
+    }
+}
+
+function sendStringOverWebsocket(msg) {
+    const obj = {
+        message: msg,
+    }
+    if(webSocket.readyState === WebSocket.OPEN) {
+        webSocket.send(JSON.stringify(obj));
+    } else {
+        console.log("Could not send data. Websocket is not open.");
+    }
+}

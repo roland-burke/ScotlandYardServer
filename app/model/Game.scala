@@ -16,14 +16,15 @@ object Game {
   val tuiMap = injector.getInstance(classOf[TuiMapInterface])
   val gameInitializer = injector.getInstance(classOf[GameInitializerInterface])
 
-  GameMaster.initialize()
-  //val tui = new Tui(controller, tuiMap)
-
-  def GetPlayerModel(player: DetectiveInterface): PlayerData = {
+  def GetPlayerDataModel(player: DetectiveInterface): PlayerData = {
+    var isCurrent = false
+    if (controller.getCurrentPlayer().name.equals(player.name)) {
+      isCurrent = true
+    }
     var playerData = PlayerData(
       name = player.name,
       station = player.station.number,
-      current = true,
+      current = isCurrent,
       String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue),
       Tickets(taxi = player.tickets.taxiTickets, player.tickets.busTickets, player.tickets.undergroundTickets, player.tickets.blackTickets),
       "", // lastSeen

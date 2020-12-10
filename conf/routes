@@ -2,9 +2,8 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# An example controller showing a sample home page
+# General
 GET     /                           controllers.MainController.index
-
 # Rules
 GET     /about                      controllers.MainController.showRules
 
@@ -13,19 +12,18 @@ GET     /settings                   controllers.SettingsController.openMenu
 GET     /game                       controllers.GameController.startGame
 +nocsrf
 POST    /init                       controllers.SettingsController.initGame
+GET     /running                    controllers.MainController.getGameRunning
 
 # Game routes
-+nocsrf
-POST    /player/                    controllers.GameController.movePlayer
 GET     /player                     controllers.GameController.getPlayer(playerName: String = "")
 GET     /player/:playerName         controllers.GameController.getPlayer(playerName: String)
 GET     /player/current/            controllers.GameController.getCurrentPlayer
-+nocsrf
-POST    /undo                       controllers.GameController.undoMove
-+nocsrf
-POST    /redo                       controllers.GameController.redoMove
 GET     /reveal                     controllers.GameController.revealMrXPosition
 GET     /history                    controllers.GameController.getHistory
 GET     /round                      controllers.GameController.getRound
+
+# WebSockets
+GET     /ws                         controllers.WebSocketController.ws
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(file)
