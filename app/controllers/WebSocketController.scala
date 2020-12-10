@@ -16,5 +16,4 @@ class WebSocketController @Inject() (cc: ControllerComponents)(implicit system: 
       GameWebSocketActor.props(actorRef)
     }
   }
-
 }
