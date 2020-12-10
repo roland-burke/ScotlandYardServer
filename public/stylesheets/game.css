@@ -94,8 +94,8 @@ Tags: Scala, Play, ScotlandYard
     flex-direction: column;
     overflow-y: auto;
     max-height: 69vh;
-    max-width: 200px;
-    min-width: 15vw;
+    max-width: 19em;
+    min-width: 10em;
     margin-bottom: 20px; /* prevent the shadow from being cut off */
     pointer-events: all
 }
@@ -128,8 +128,8 @@ Tags: Scala, Play, ScotlandYard
     box-shadow:         5px 5px 13px 0px #000000;
     overflow-y: auto;
     max-height: 69vh;
-    max-width: 150px;
-    min-width: 12vw;
+    max-width: 10em;
+    min-width: 9em;
     display: flex;
     align-items: center;
     flex-direction: column;
