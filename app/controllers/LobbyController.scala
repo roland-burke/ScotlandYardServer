@@ -31,17 +31,15 @@ class LobbyController @Inject()(cc: ControllerComponents)(implicit assetsFinder:
           val name = (playerNames(i) \ "name").get.toString()
           controller.setPlayerName(name, i)
         }
-
         Ok
       }
       .getOrElse {
-
         BadRequest("Expected json request body")
       }
   }
 
   def returnMenuStatusOk(implicit request: Request[_]): Result = {
-    val menuHtml = views.html.settings("Lobby")
+    val menuHtml = views.html.lobby("Lobby")
     Ok(views.html.main("Scotland Yard")(false)(menuHtml))
   }
 }

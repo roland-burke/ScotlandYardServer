@@ -3,6 +3,8 @@ var webSocket;
 var win = false
 var interval;
 
+const vue = 
+
 $(document).ready(function(){
     webSocket = new WebSocket("ws://localhost:9000/ws");
     webSocket.onopen = function () {
