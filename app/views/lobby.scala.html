@@ -1,23 +1,23 @@
 @import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
 
 @(titleString: String)(implicit request: RequestHeader)
-<div id="settings" class="container settings-wrapper">
+<div id="lobby" class="container settings-wrapper">
     <div class="row d-flex justify-content-center">
         <h1>@titleString</h1>
     </div>
     <div class="row">
         <div class="col settings-panel">
             <div class="settings-player d-flex justify-content-center">
-                    <div v-for="n in player" class="player-number-wrapper">
-                            <label class="radio-button-label">{{n}} Players</label>
-                            <div v-if="n == 3">
-                                <input type="radio" checked="true" @@click="setNumberOfPlayer(n)" id="nPlayers" :value="n" name="nPlayer">
-                                <span class="radio-button"></span>
-                            </div>
-                            <div v-else>
-                                <input type="radio" class="radio-button" @@click="setNumberOfPlayer(n)" id="nPlayers" :value="n" name="nPlayer">
-                                <span class="radio-button"></span>
-                            </div>
+                    <div v-for="n in maxPlayers" class="player-number-wrapper">
+                        <label class="radio-button-label">{{n}} Players</label>
+                        <div v-if="n == 3">
+                            <input type="radio" checked="true" @@click="setNumberOfPlayer(n)" id="nPlayers" :value="n" name="nPlayer">
+                            <span class="radio-button"></span>
+                        </div>
+                        <div v-else>
+                            <input type="radio" class="radio-button" @@click="setNumberOfPlayer(n)" id="nPlayers" :value="n" name="nPlayer">
+                            <span class="radio-button"></span>
+                        </div>
                     </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
             <div class="settings-name d-flex justify-content-center flex-column align-items-center">
                 <select id="name-select" name="playerIndex">
                     <option name="player" disabled="true" value="0">MrX</option>
-                    <option v-for="name in names" name="player" value="name-${index}">{{ name.name }}</option>
+                    <option v-for="name in player.names" name="player" value="name-${index}">{{ name.name }}</option>
                 </select>
                 <input id="name-input" oninput="nameInput()" type="text" value="" name="playerName">
                 <button id="name-input-button" class="standard-button" disabled="true" onclick="setName()">Set Player Name</button>
@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col settings-panel">
             <div class="d-flex justify-content-center" style="margin: 20px">
-                <button class="standard-button" onclick="startGame()">Start Game</button>
+                <button class="standard-button" v-on:click="startGame">Start Game</button>
             </div>
         </div>
     </div>
