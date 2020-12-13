@@ -4,9 +4,15 @@ Vue.component('head-line', {
     props: {
         round: Number,
         color: String,
-        name: String
+        name: String,
+        win: Boolean
     },
-    template: `<div>Round: {{ round }} - Current Player:<span :style="'white-space: pre-wrap; color: ' + color"> {{ name }}</span></div>`
+    template: `
+    <div>
+    Round: {{ round }} - Current Player:<span :style="'white-space: pre-wrap; color: ' + color"> {{ name }}</span><br>
+    <div v-if="win" class="d-flex justify-content-center"><h5>Game finished!</h5></div>
+    </div>
+    `
 })
 
 Vue.component('game-map', {
@@ -203,6 +209,24 @@ Vue.component('stats', {
                 </div>
                 </div>
             </div>
+        </div>
+    </div>
+    </div>`
+})
+
+Vue.component('history', {
+    props: {
+        historyobject: Object
+    },
+    template: `
+    <div>
+    <h3>History</h3>
+    <div v-for="history in historyobject.history">
+        <div class="history-item d-flex justify-content-center">
+            <img v-if="history.ticketType === 'Taxi'" class="ticket-icon" src="/assets/images/Taxi.svg">
+            <img v-if="history.ticketType === 'Bus'" class="ticket-icon" src="/assets/images/Bus.svg">
+            <img v-if="history.ticketType === 'Underground'" class="ticket-icon" src="/assets/images/Underground.svg">
+            <img v-if="history.ticketType === 'Black'" class="ticket-icon" src="/assets/images/Black.svg">
         </div>
     </div>
     </div>`

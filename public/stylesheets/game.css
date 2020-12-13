@@ -20,6 +20,7 @@ Tags: Scala, Play, ScotlandYard
     margin: 10vh 5vh 10vh 5vh;
     pointer-events: all;
     padding: 20px;
+    visibility: visible;
 }
 
 .winning-background {
@@ -30,7 +31,7 @@ Tags: Scala, Play, ScotlandYard
     height: 100vh;
     position: fixed;
     pointer-events: none;
-    visibility: hidden;
+    visibility: visible;
 }
 
 .not-active {

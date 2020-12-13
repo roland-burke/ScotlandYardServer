@@ -21,23 +21,19 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   listenTo(controller)
   reactions += {
     case _: PlayerNameChanged =>
-      clientActorRef ! getAllDataObject("PlayerNameChanged")
+      clientActorRef ! getAllDataObject("ModelChanged")
     case _: NumberOfPlayersChanged =>
-      clientActorRef ! getAllDataObject("NumberOfPlayersChanged")
+      clientActorRef ! getAllDataObject("ModelChanged")
     case _: PlayerMoved =>
-      clientActorRef ! getAllDataObject("PlayerMoved")
+      clientActorRef ! getAllDataObject("ModelChanged")
     case _: StartGame =>
-      clientActorRef ! getAllDataObject("StartGame")
+      clientActorRef ! getAllDataObject("ModelChanged")
     case _: PlayerWin =>
-      if (controller.getWinningPlayer().name.equals("MrX")) {
-        clientActorRef ! Json.obj("event" -> "PlayerWin MrX")
-      } else {
-        clientActorRef ! Json.obj("event" -> "PlayerWin Detectives")
-      }
+      clientActorRef ! getAllDataObject("ModelChanged")
   }
 
   override def preStart() = {
-    clientActorRef ! getAllDataObject("Connected")
+    clientActorRef ! getAllDataObject("ModelChanged")
   }
 
   def receive: Receive = {
@@ -54,7 +50,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     message match {
       case "undo" => controller.undoValidateAndMove()
       case "redo" => controller.redoValidateAndMove()
-      case "ping" => clientActorRef ! Json.obj("alive" -> "pong")
+      case "ping" => clientActorRef ! Json.obj("event" -> "Alive")
       case _ => println("Unknown: " + message)
     }
   }
@@ -64,7 +60,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   }
 
   def getAllDataObject(event: String): JsObject = {
-    Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin())
+    Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin(), "winningPlayer" -> controller.getWinningPlayer().name)
   }
 
   def getHistory(): JsObject = {
