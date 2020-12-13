@@ -5,7 +5,7 @@
     <div id="winning-background" class="winning-background"></div>
 
     <div id="map-wrapper" class="map-wrapper">
-        <canvas id="canvas" width="2570" height="1926"></canvas>
+        <canvas id="canvas" v-on:dblclick="movePlayer($event)" width="2570" height="1926"></canvas>
     </div>
 
     <div class="container-fluid" style="overflow: hidden;
@@ -18,7 +18,16 @@
                 <div style="padding-top: 40px">
                     <div class="game-round justify-content-center" id="head-line-wrapper">
                             <!-- This will be filled dynamically by javascript (drawHeadLine)-->
-                        <h2>Loading..</h2>
+                        <div v-if="model !== null">
+                            <head-line-wrapper
+                            v-bind:round="model.round"
+                            v-bind:color="extractCurrentPlayer().color" 
+                            v-bind:name="extractCurrentPlayer().name"
+                            ></head-line-wrapper>
+                        </div>
+                        <div v-else>
+                            <h2>Loading..</h2>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,133 @@
+/*
+{
+  "event": "Connected",
+  "player": {
+    "players": [
+      {
+        "name": "MrX",
+        "station": 140,
+        "current": false,
+        "color": "#000000",
+        "tickets": {
+          "taxi": 98,
+          "bus": 99,
+          "underground": 99,
+          "black": 5
+        },
+        "lastSeen": "never",
+        "x": 1356,
+        "y": 1228
+      },
+      {
+        "name": "\"Dt1\"",
+        "station": 91,
+        "current": true,
+        "color": "#0000ff",
+        "tickets": {
+          "taxi": 11,
+          "bus": 8,
+          "underground": 4,
+          "black": 0
+        },
+        "lastSeen": "",
+        "x": 2490,
+        "y": 740
+      }
+    ]
+  },
+  "history": {
+    "history": [
+      {
+        "ticketType": "Taxi"
+      }
+    ]
+  },
+  "round": 1,
+  "win": false
+}
+*/
 
+Vue.component('head-line-wrapper', {
+    props: {
+        round: Number,
+        color: String,
+        name: String
+    },
+    template: `<div>Round: {{ round }} - Current Player:<span :style="'white-space: pre-wrap; color: ' + color"> {{ name }}</span></div>`
+})
 
 var app = new Vue({
     el: '#game-wrapper-total',
     data: {
         websocket: null,
         interval: null,
-        win: false
+        win: false,
+        model: null
+    },
+    mounted: function () {
+        const v = this
+
+        var parent = $("#map-wrapper");
+        var childPos = $("#canvas");
+
+        $("#canvas").draggable({
+            drag: function (event, map) {
+                const boundaryOffset = 20
+                const headerOffset = document.getElementById("header").offsetHeight
+                const footerOffset = document.getElementById("footer").offsetHeight
+
+                var mapWrapperWidth = parent.width()
+                var mapWidth = childPos.width()
+
+                var mapWrapperHeight = parent.height()
+                var mapHeight = childPos.height()
+
+                var mapBoundaryRight = mapWrapperWidth - mapWidth - boundaryOffset
+                var mapBoundaryBottom = mapWrapperHeight - mapHeight - boundaryOffset - footerOffset
+
+                // Check for top boundary
+                if (map.position.top > boundaryOffset + headerOffset) {
+                    map.position.top = boundaryOffset + headerOffset;
+                }
+                // Check for left boundary
+                if (map.position.left > boundaryOffset) {
+                    map.position.left = boundaryOffset;
+                }
+                // Check for bottom boundary
+                if (map.position.top < mapBoundaryBottom) {
+                    map.position.top = mapBoundaryBottom;
+                }
+                // Check for right boundary
+                if (map.position.left < mapBoundaryRight) {
+                    map.position.left = mapBoundaryRight;
+                }
+
+            },
+
+            scroll: false
+        });
+
+        this.websocket = new WebSocket("ws://localhost:9000/ws")
+        this.websocket.onmessage = function(rawMessage) {
+            const message = jQuery.parseJSON(rawMessage.data)
+            if(message.alive == 'pong') {}
+            else if (message.event.startsWith('PlayerWin')) {
+                const winningPlayerName = message.event.split(" ")[1];
+                v.showWinningScreen(winningPlayerName);
+            } else {
+                v.model = message
+                v.refresh(message)
+            }
+        }
+
+        this.websocket.onopen = function(event) {
+            v.interval = setInterval(function() {
+                v.sendStringOverWebsocket('ping')
+            }, 10000);
+        }
+        this.websocket.onclose = function() {
+            clearInterval(v.interval)
+        }
     },
     methods: {
         refresh: function(message) {
@@ -15,7 +137,7 @@ var app = new Vue({
             this.drawHistory(message.history)
             const currentPlayer = this.extractCurrentPlayer(message.player.players)
             this.drawTransport(currentPlayer)
-            this.drawHeadLine(currentPlayer, message.round)
+            //this.drawHeadLine(currentPlayer, message.round)
             if(this.win) {
                 this.disableUndoRedo()
                 $('#head-line-wrapper').append('<br><div class="d-flex justify-content-center"><h5>Game finished!</h5></div>')
@@ -53,8 +175,8 @@ var app = new Vue({
             var audio = new Audio('assets/audio/' + track + '.mp3');
             audio.play();
         },
-        extractCurrentPlayer: function(allPlayer) {
-            for (player of allPlayer) {
+        extractCurrentPlayer: function() {
+            for (player of this.model.player.players) {
                 if (player.current === true) {
                     return player
                 }
@@ -202,9 +324,9 @@ var app = new Vue({
         
             document.getElementById('game-controls').innerHTML = html.join("")
         },
-        getXY: function(e) {
+        getXY: function(event) {
           var rect = canvas.getBoundingClientRect();
-          return {x: e.clientX - rect.left, y: e.clientY - rect.top}
+          return {x: event.clientX - rect.left, y: event.clientY - rect.top}
         },
         getSelectedTicketType: function() {
             var radios = document.getElementsByName('transport');
@@ -214,11 +336,11 @@ var app = new Vue({
               }
             }
         },
-        movePlayer: function(e) {
+        movePlayer: function(event) {
             if(this.win) {
                 return
             }
-            clickCoords = this.getXY(e)
+            clickCoords = this.getXY(event)
             const ticketType = this.getSelectedTicketType()
         
             const data = {
@@ -257,74 +379,6 @@ var app = new Vue({
             } else {
                 console.log("Could not send data. Websocket is not open.");
             }
-        }
-    },
-    mounted: function () {
-        const v = this
-
-        $("#canvas").on("dblclick", function(e) {
-            v.movePlayer(e)
-        });
-
-        var parent = $("#map-wrapper");
-        var childPos = $("#canvas");
-
-        $("#canvas").draggable({
-            drag: function (event, map) {
-                const boundaryOffset = 20
-                const headerOffset = document.getElementById("header").offsetHeight
-                const footerOffset = document.getElementById("footer").offsetHeight
-
-                var mapWrapperWidth = parent.width()
-                var mapWidth = childPos.width()
-
-                var mapWrapperHeight = parent.height()
-                var mapHeight = childPos.height()
-
-                var mapBoundaryRight = mapWrapperWidth - mapWidth - boundaryOffset
-                var mapBoundaryBottom = mapWrapperHeight - mapHeight - boundaryOffset - footerOffset
-
-                // Check for top boundary
-                if (map.position.top > boundaryOffset + headerOffset) {
-                    map.position.top = boundaryOffset + headerOffset;
-                }
-                // Check for left boundary
-                if (map.position.left > boundaryOffset) {
-                    map.position.left = boundaryOffset;
-                }
-                // Check for bottom boundary
-                if (map.position.top < mapBoundaryBottom) {
-                    map.position.top = mapBoundaryBottom;
-                }
-                // Check for right boundary
-                if (map.position.left < mapBoundaryRight) {
-                    map.position.left = mapBoundaryRight;
-                }
-
-            },
-
-            scroll: false
-        });
-
-        this.websocket = new WebSocket("ws://localhost:9000/ws")
-        this.websocket.onmessage = function(rawMessage) {
-            const message = jQuery.parseJSON(rawMessage.data)
-            if(message.alive == 'pong') {}
-            else if (message.event.startsWith('PlayerWin')) {
-                const winningPlayerName = message.event.split(" ")[1];
-                v.showWinningScreen(winningPlayerName);
-            } else {
-                v.refresh(message)
-            }
-        }
-
-        this.websocket.onopen = function(event) {
-            v.interval = setInterval(function() {
-                v.sendStringOverWebsocket('ping')
-            }, 10000);
-        }
-        this.websocket.onclose = function() {
-            clearInterval(v.interval)
         }
     }
 })
