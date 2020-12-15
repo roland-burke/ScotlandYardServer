@@ -39,19 +39,19 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   def receive: Receive = {
     case obj: JsObject =>
       val map = obj.value
-      if (map.contains("message")) {
-        handleMessage(map("message").asOpt[String].get)
+      if (map.contains("event")) {
+        handleMessage(map("event").asOpt[String].get)
       } else {
         movePlayer(Option(obj))
       }
   }
 
-  def handleMessage(message: String): Unit = {
-    message match {
+  def handleMessage(event: String): Unit = {
+    event match {
       case "undo" => controller.undoValidateAndMove()
       case "redo" => controller.redoValidateAndMove()
       case "ping" => clientActorRef ! Json.obj("event" -> "Alive")
-      case _ => println("Unknown: " + message)
+      case _ => println("Unknown: " + event)
     }
   }
 
@@ -60,7 +60,11 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   }
 
   def getAllDataObject(event: String): JsObject = {
-    Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin(), "winningPlayer" -> controller.getWinningPlayer().name)
+    if (controller.getWin()) {
+      Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin(), "winningPlayer" -> controller.getWinningPlayer().name)
+    } else {
+      Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin())
+    }
   }
 
   def getHistory(): JsObject = {

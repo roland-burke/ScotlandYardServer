@@ -52,7 +52,7 @@
                 <div v-if="model !== null && model.win">
                     <div id="winning-dialog" class="winning-dialog col d-flex flex-column justify-content-between">
                         <!--<div id="close-button" class="d-flex justify-content-end">
-                            <button v-if="audio !== undefined" v-on:click="audio.stop" class="close-button">X</button>
+                            <button v-if="audio !== undefined" v-on:click="model.win = true" class="close-button">X</button>
                         </div>-->
                         <div class="row d-flex justify-content-center">
                             <div class="col">
@@ -109,5 +109,5 @@
 </div>
 
 <link rel="stylesheet" href="/assets/stylesheets/game.css"/>
-<script type="module" src="/assets/javascripts/game/app.js" type="application/javascript"></script>
+<script type="module" src="/assets/javascripts/game/app.js"></script>
 <script src="/assets/javascripts/game/components.js" type="application/javascript"></script>

@@ -46,7 +46,6 @@
   "win": false
 }
 */
-
 var app = new Vue({
     el: '#game-wrapper-total',
     data: {
@@ -91,7 +90,7 @@ var app = new Vue({
         },
         sendStringOverWebsocket: function(msg) {
             const obj = {
-                message: msg,
+                event: msg,
             }
             if(this.websocket.readyState === WebSocket.OPEN) {
                 this.websocket.send(JSON.stringify(obj));
@@ -103,19 +102,24 @@ var app = new Vue({
     watch: { 
         model: function() {
             if (this.model.win) {
+                $('#undo').addClass('not-active');
+                $('#redo').addClass('not-active');
+                if (this.audio === null) {
+                    let track = Math.floor(Math.random() * Math.floor(3));
+                    this.audio = new Audio('assets/audio/' + track + '.mp3');
+                    this.audio.play();
+                }
+            } else {
                 if (($('#undo').is('.not-active'))) {
                     $('#undo').removeClass('not-active');
                 }
                 if (($('#redo').is('.not-active'))) {
                     $('#redo').removeClass('not-active');
                 }
-                let track = Math.floor(Math.random() * Math.floor(3));
-                console.log(track);
-                this.audio = new Audio('assets/audio/' + track + '.mp3');
-                this.audio.play();
-            } else {
-                $('#undo').addClass('not-active');
-                $('#redo').addClass('not-active');
+                if (this.audio !== null) {
+                    this.audio.pause();
+                    this.audio = null;
+                }
             }
         }
     },
