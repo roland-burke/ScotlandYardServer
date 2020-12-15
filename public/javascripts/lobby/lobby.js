@@ -83,7 +83,7 @@ var app = new Vue({
         },
         sendStringOverWebsocket: function(msg) {
             const obj = {
-                message: msg,
+                event: msg,
             }
             if(this.websocket.readyState === WebSocket.OPEN) {
                 this.websocket.send(JSON.stringify(obj));

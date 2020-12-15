@@ -28,6 +28,7 @@ Vue.component('game-map', {
             const ticketType = this.getSelectedTicketType()
         
             const data = {
+                event: "move",
                 ticketType: ticketType,
                 x: parseInt(clickCoords.x),
                 y: parseInt(clickCoords.y)
@@ -53,7 +54,7 @@ Vue.component('game-map', {
             var childPos = $("#canvas");
 
             $("#canvas").draggable({
-                drag: function (event, map) {
+                drag: function (map) {
                     const boundaryOffset = 20
                     const headerOffset = document.getElementById("header").offsetHeight
                     const footerOffset = document.getElementById("footer").offsetHeight
