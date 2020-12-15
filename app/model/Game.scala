@@ -16,6 +16,48 @@ object Game {
   val tuiMap = injector.getInstance(classOf[TuiMapInterface])
   val gameInitializer = injector.getInstance(classOf[GameInitializerInterface])
 
+  gameInitializer.initialize(3)
+
+  var freeIds = List(0, 1, 2, 3, 4, 5, 6)
+  var defaultNames = List("MrX", "Dt1", "Dt2", "Dt3", "Dt4", "Dt5", "Dt6")
+  var playerList: List[Player] = List()
+
+  /* Lobby:
+  data {
+    player [
+      {
+        id: 0,
+        name: "MrX",
+        color: "#000000",
+        ready: false
+      },
+      {
+        id: 1,
+        name: "Dt1",
+        color: "#0000ff",
+        ready: false
+      },...
+    ]
+  }
+   */
+
+  def getLobbyPlayerDataModel(id: Int): Player = {
+    playerList(id)
+  }
+
+  def register(): Int = {
+    val id = freeIds(0)
+    freeIds = freeIds.drop(1)
+    val hexColor = "#" + Integer.toHexString(gameInitializer.getColorList()(id).getRGB).substring(2)
+    playerList = playerList :+ Player(id, defaultNames(id), hexColor, false)
+    id
+  }
+
+  def deregister(id: Int): Unit = {
+    playerList = playerList.drop(1)
+    freeIds = freeIds :+ id
+  }
+
   def GetPlayerDataModel(player: DetectiveInterface): PlayerData = {
     var isCurrent = false
     if (controller.getCurrentPlayer().name.equals(player.name)) {
@@ -41,4 +83,5 @@ object Game {
 case class Tickets(taxi : Int, bus: Int, underground: Int, black: Int)
 case class PlayerData(name: String, station: Int, current: Boolean, color: String, tickets: Tickets, var lastSeen: String, x: Int, y: Int)
 case class History(ticketType: String)
+case class Player(var id: Int, var name: String, var color: String, var ready: Boolean)
 

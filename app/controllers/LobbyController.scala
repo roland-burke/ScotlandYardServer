@@ -19,23 +19,13 @@ class LobbyController @Inject()(cc: ControllerComponents)(implicit assetsFinder:
   }
 
   def initGame(): Action[AnyContent] = Action { implicit request =>
-    val jsonBody: Option[JsValue] = request.body.asJson
-
-    jsonBody
-      .map { json =>
-        println(json);
-        val number = (json \ "number").as[Int]
-        val playerNames: JsArray = (json \ "names").as[JsArray]
-        controller.initPlayers(number)
-        for(i <- 1 to number - 1) {
-          val name = (playerNames(i) \ "name").get.toString()
-          controller.setPlayerName(name, i)
-        }
-        Ok
-      }
-      .getOrElse {
-        BadRequest("Expected json request body")
-      }
+    val nPlayer = Game.playerList.length
+    controller.initPlayers(nPlayer)
+    for(n <- 0 until nPlayer) {
+      controller.setPlayerName(Game.playerList(n).name, n)
+    }
+    controller.startGame()
+    Ok
   }
 
   def returnMenuStatusOk(implicit request: Request[_]): Result = {

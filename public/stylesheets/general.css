@@ -66,6 +66,37 @@ body {
     color: #d2d2d2;
 }
 
+.standard-button-small {
+    box-shadow: 0px 10px 14px -7px #276873;
+    background:linear-gradient(to bottom, #93b2e0 5%, #93BFE0 100%);
+    background-color:#599bb3;
+    border-radius:8px;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family: Michroma;
+    font-size:12px;
+    font-weight:bold;
+    padding:8px 18px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #3d768a;
+    margin: 5px;
+}
+.standard-button-small:hover {
+    background:linear-gradient(to bottom, #2E5D80 5%, #2E5D80 100%);
+    background-color:#2E5D80;
+    text-decoration:none;
+}
+.standard-button-small:active {
+    position:relative;
+    top:1px;
+    text-decoration:none;
+}
+
+.standard-button-small:disabled {
+    color: #d2d2d2;
+}
+
 /* ==== Header ==== */
 
 header {

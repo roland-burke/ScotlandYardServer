@@ -8,22 +8,22 @@ Tags: Scala, Play, ScotlandYard
 /* === Settings === */
 
 .settings-wrapper {
-    margin-top: 10vh;
+    margin-top: 10em;
 }
 
 .settings-name {
-    margin: 5%;
+    margin: 5em;
 }
 
 .settings-player {
-    margin: 5%;
+    margin: 5em;
 }
 
 .settings-panel {
     background-color: #abcdef;
     border-radius: 10px;
     border: 2px solid #000000;
-    margin: 2%;
+    margin: 10px;
 }
 
 .player-number-wrapper {
