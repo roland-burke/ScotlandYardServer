@@ -21,24 +21,19 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   listenTo(controller)
   reactions += {
     case _: PlayerNameChanged =>
-      clientActorRef ! getAllDataObject("PlayerNameChanged")
+      clientActorRef ! getAllDataObject("ModelChanged")
     case _: NumberOfPlayersChanged =>
-      clientActorRef ! getAllDataObject("NumberOfPlayersChanged")
+      clientActorRef ! getAllDataObject("ModelChanged")
     case _: PlayerMoved =>
-      clientActorRef ! getAllDataObject("PlayerMoved")
+      clientActorRef ! getAllDataObject("ModelChanged")
     case _: StartGame =>
-      clientActorRef ! getAllDataObject("StartGame")
+      clientActorRef ! getAllDataObject("ModelChanged")
     case _: PlayerWin =>
-      if (controller.getWinningPlayer().name.equals("MrX")) {
-        clientActorRef ! Json.obj("event" -> "PlayerWin MrX")
-      } else {
-        clientActorRef ! Json.obj("event" -> "PlayerWin Detectives")
-      }
-    case _: LobbyChange => clientActorRef ! getPlayerLobbyObject("lobby-change")
+      clientActorRef ! getAllDataObject("ModelChanged")
   }
 
   override def preStart() = {
-    clientActorRef ! getAllDataObject("Connected")
+    clientActorRef ! getAllDataObject("ModelChanged")
   }
 
   def receive: Receive = {
@@ -48,19 +43,18 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
       if (map.contains("data")) {
         updateBackendData(Option(obj))
         notifyPlayer()
-      } else if (map.contains("message")) {
-        handleMessage(map("message").asOpt[String].get)
+      else if (map.contains("event")) {
+        handleMessage(map("event").asOpt[String].get)
       } else {
         movePlayer(Option(obj))
       }
   }
 
-  def handleMessage(message: String): Unit = {
-    println(message)
-    message match {
+  def handleMessage(event: String): Unit = {
+    event match {
       case "undo" => controller.undoValidateAndMove()
       case "redo" => controller.redoValidateAndMove()
-      case "ping" => clientActorRef ! Json.obj("alive" -> "pong")
+      case "ping" => clientActorRef ! Json.obj("event" -> "Alive")
       case "register" => notifyPlayerAndRegister()
       case "deregister" => notifyPlayer() // TODO: get deregister id
       case "lobby-change" => notifyPlayer()
@@ -79,7 +73,11 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   }
 
   def getAllDataObject(event: String): JsObject = {
-    Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin())
+    if (controller.getWin()) {
+      Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin(), "winningPlayer" -> controller.getWinningPlayer().name)
+    } else {
+      Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin())
+    }
   }
 
   def updateBackendData(jsonBody: Option[JsObject]) :Unit = {
