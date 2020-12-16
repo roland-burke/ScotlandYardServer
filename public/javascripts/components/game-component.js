@@ -1,37 +1,22 @@
 const GameComponent = Vue.component('game', {
     props: {
         model: Object,
-        gamerunning: Boolean,
-        gamecomponentactive: Boolean
     },
     data: function() {
         return {
-            audio: null
+            audio: null,
+            showWinningDialog: true
         }
-    },
-    mounted: function(){
-        this.$emit('update:gamecomponentactive', true)
-    },
-    beforeDestroy: function() {
-        this.$emit('update:gamecomponentactive', false)
     },
     watch: { 
         model: function() {
             if (this.model.win) {
-                $('#undo').addClass('not-active');
-                $('#redo').addClass('not-active');
                 if (this.audio === null) {
                     let track = Math.floor(Math.random() * Math.floor(3));
                     this.audio = new Audio('assets/audio/' + track + '.mp3');
                     this.audio.play();
                 }
             } else {
-                if (($('#undo').is('.not-active'))) {
-                    $('#undo').removeClass('not-active');
-                }
-                if (($('#redo').is('.not-active'))) {
-                    $('#redo').removeClass('not-active');
-                }
                 if (this.audio !== null) {
                     this.audio.pause();
                     this.audio = null;
@@ -51,7 +36,7 @@ const GameComponent = Vue.component('game', {
     template: `
     <div id="game-wrapper-total" style="position: relative; overflow-x: hidden;">
     
-        <div v-if="model !== null && model.win" id="winning-background" class="winning-background"></div>
+        <div v-if="model !== null && model.win && showWinningDialog" id="winning-background" class="winning-background"></div>
         
         <div v-if="model !== null">
             <game-map
@@ -98,14 +83,14 @@ const GameComponent = Vue.component('game', {
                     </div>
                 </div>
                 <div id="win" class="col-lg-8 d-flex justify-content-center" style="z-index: 5">
-                    <div v-if="model !== null && model.win">
+                    <div v-if="model !== null && model.win && showWinningDialog">
                         <div id="winning-dialog" class="winning-dialog col d-flex flex-column justify-content-between">
-                            <!--<div id="close-button" class="d-flex justify-content-end">
-                                <button v-if="audio !== undefined" v-on:click="model.win = true" class="close-button">X</button>
-                            </div>-->
+                            <div id="close-button" class="d-flex justify-content-end">
+                                <button v-on:click="showWinningDialog = false" class="close-button">X</button>
+                            </div>
                             <div class="row d-flex justify-content-center">
                                 <div class="col">
-                                    <div class="row" id="winning-row">
+                                    <div class="row d-flex justify-content-center" id="winning-row">
                                         <h1 v-if="model.winningPlayer === 'MrX'" id="winning-title">MrX Won!!!</h1>
                                         <h1 v-else id="winning-title">Detectives Won!!!</h1>
                                     </div>
@@ -181,7 +166,7 @@ Vue.component('game-map', {
     },
     methods: {
         movePlayer: function(event) {
-            if(app.win) {
+            if(this.$root.model.win) {
                 return
             }
             clickCoords = this.getXY(event)
@@ -335,43 +320,45 @@ Vue.component('stats', {
     },
     template: `
     <div>
-    <h3>Stats</h3>
-    <div v-for="player in playersdata.players">
-        <div class="stats-item">
-            <div>
-                <b v-if="player.name === 'MrX'">{{player.name}} Last seen: {{player.lastSeen}}</b>
-                <b v-if="player.name !== 'MrX'"><span :style="'color: ' + player.color">{{player.name}}</span> Station: {{player.station}}</b>
-            </div>
-            <div>
-                <div class="stats-ticket">
-                    <img class="ticket-icon-stats" src="/assets/images/taxi_small.svg">
-                    <div style="min-width: 3em;">
-                        {{player.tickets.taxi}}
-                    </div>
+        <div class="d-flex justify-content-center">
+            <h3>Stats</h3>
+        </div>
+        <div v-for="player in playersdata.players">
+            <div class="stats-item">
+                <div>
+                    <b v-if="player.name === 'MrX'">{{player.name}} Last seen: {{player.lastSeen}}</b>
+                    <b v-if="player.name !== 'MrX'"><span :style="'color: ' + player.color">{{player.name}}</span> Station: {{player.station}}</b>
                 </div>
-                <div class="stats-ticket">
-                    <img class="ticket-icon-stats" src="/assets/images/bus_small.svg">
-                    <div style="min-width: 3em;">
-                        {{player.tickets.bus}}
+                <div>
+                    <div class="stats-ticket">
+                        <img class="ticket-icon-stats" src="/assets/images/taxi_small.svg">
+                        <div style="min-width: 3em;">
+                            {{player.tickets.taxi}}
+                        </div>
                     </div>
-                </div>
-                <div class="stats-ticket">
-                    <img class="ticket-icon-stats" src="/assets/images/underground_small.svg">
-                    <div style="min-width: 3em;">
-                        {{player.tickets.underground}}
+                    <div class="stats-ticket">
+                        <img class="ticket-icon-stats" src="/assets/images/bus_small.svg">
+                        <div style="min-width: 3em;">
+                            {{player.tickets.bus}}
+                        </div>
                     </div>
-                </div>
-                <div v-if="player.name === 'MrX'">
-                <div class="stats-ticket">            
-                    <img class="ticket-icon-stats" src="/assets/images/black_small.svg">
-                    <div style="min-width: 3em;">
-                        {{player.tickets.black}}
+                    <div class="stats-ticket">
+                        <img class="ticket-icon-stats" src="/assets/images/underground_small.svg">
+                        <div style="min-width: 3em;">
+                            {{player.tickets.underground}}
+                        </div>
                     </div>
-                </div>
+                    <div v-if="player.name === 'MrX'">
+                        <div class="stats-ticket">            
+                            <img class="ticket-icon-stats" src="/assets/images/black_small.svg">
+                            <div style="min-width: 3em;">
+                                {{player.tickets.black}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>`
 })
 
@@ -382,8 +369,8 @@ Vue.component('history', {
     template: `
     <div>
     <h3>History</h3>
-    <div v-for="history in historyobject.history">
-        <div class="history-item d-flex justify-content-center">
+    <div v-for="history in historyobject.history" class="d-flex justify-content-center">
+        <div class="history-item">
             <img v-if="history.ticketType === 'Taxi'" class="ticket-icon" src="/assets/images/Taxi.svg">
             <img v-if="history.ticketType === 'Bus'" class="ticket-icon" src="/assets/images/Bus.svg">
             <img v-if="history.ticketType === 'Underground'" class="ticket-icon" src="/assets/images/Underground.svg">

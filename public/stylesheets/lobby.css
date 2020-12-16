@@ -7,15 +7,30 @@ Tags: Scala, Play, ScotlandYard
 
 /* === Settings === */
 
-.settings-wrapper {
-    margin-top: 7em;
+.lobby-wrapper {
+    margin-top: 5em;
 }
 
 .lobby-panel {
     background-color: #abcdef;
     border-radius: 10px;
     border: 2px solid #000000;
-    margin: 2em;
+    margin: 1.5em;
+}
+
+.lobby-bottom-panel {
+    background-color: #abcdef;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    margin: 1.5em 1.5em 3.5em 1.5em;
+}
+
+.color-preview {
+    border-radius: 50px;
+    border: 2px solid black;
+    width: 2em;
+    height: 2em;
+    margin-left: 1em;
 }
 
 .player-item {
@@ -23,7 +38,7 @@ Tags: Scala, Play, ScotlandYard
     border: 2px solid #25313e;
     border-radius: 10px;
     margin: 1.5em;
-    padding: 0.5em;
+    padding: 0.3em;
     min-width: 10em;
 }
 
@@ -44,5 +59,8 @@ Tags: Scala, Play, ScotlandYard
 }
 
 .player-item-content {
-    margin: 0.5em;
+    min-width: 16em;
+    margin: 0 0.5em 0 0.5em;
+    display: flex;
+    align-items: center;
 }

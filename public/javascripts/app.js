@@ -1,55 +1,60 @@
 
-const MainComponent = Vue.component('main-component', {
-    props: {
-        lobby: Object,
-        model: Object,
-        gamerunning: Boolean,
-        gamecomponentactive: Boolean
+Vue.use(Vuex)
+
+const store = new Vuex.Store({
+    state: {
+        gameRunning: false
     },
-    template: `
-        <div>
-            <header-component :gamecomponentactive="gamecomponentactive" :gamerunning="gamerunning"></header-component>
-            <main role="main" class="d-flex align-items-center justify-content-center">
-                <router-view :gamecomponentactive.sync="gamecomponentactive" :gamerunning="gamerunning" :lobby="lobby" :model="model"></router-view>
-            </main>
-            <footer-component></footer-component>
-        </div>
-        `
+    mutations: {
+        setGameRunningTrue (state) {
+            state.gameRunning = true
+        },
+        setGameRunningFalse (state) {
+            state.gameRunning = false
+        },
+    },
+    getters: {
+        getGameRunning: state => {
+            return state.gameRunning
+        }
+    }
 })
 
 const router = new VueRouter({
     routes: [
         {
-            path: '/', component: MainComponent, props: true, redirect: '/index',
+            path: '/', component: MainComponent, props: true,
             children:
                 [
                     {
-                        path: 'index',
+                        path: '/',
+                        name: 'Index',
                         component: IndexComponent
                     },
-                    {
-                        path: 'about',
-                        component: AboutComponent
-                    },
-                    {
-                        path: 'lobby',
-                        component: LobbyComponent,
-                        props: true
-                    },
-                    {
-                        path: 'game',
-                        component: GameComponent,
-                        props: {
 
-                        }
-                    }
                 ]
-        }],
+        },
+        {
+            path: '/about',
+            name: 'About',
+            component: AboutComponent
+        },
+        {
+            path: '/lobby',
+            name: 'Lobby',
+            component: LobbyComponent
+        },
+        {
+            path: '/game',
+            name: 'Game',
+            component: GameComponent
+        }]
         
 })
 
 var app = new Vue({
     el: '#app',
+    store: store,
     data: {
         websocket: null,
         interval: null,
@@ -58,12 +63,10 @@ var app = new Vue({
             maxPlayers: 7,
             interval: null,
             registered: false,
-            clientid: 0,
+            clientId: 0,
             size: 2,
             player: [],
         },
-        gamerunning: false,
-        gamecomponentactive: false
     },
     router,
     mounted: function () {
@@ -72,24 +75,23 @@ var app = new Vue({
         this.websocket = new WebSocket("ws://localhost:9000/ws")
         this.websocket.onmessage = function (rawMessage) {
             const message = jQuery.parseJSON(rawMessage.data)
-            console.log(message);
+            console.log(message)
             if (message.event === 'ModelChanged') {
                 v.model = message
             } else if (message.event === 'register') {
-                if (!v.lobby.registered) {
-                    v.lobby.registered = true
-                    v.lobby.clientid = message.id
-                    v.$emit('update:lobby', v.lobby)
-                }
+                v.handleRegister(message.id)
             } else if (message.event === 'lobby-change') {
                 console.log("player: " + JSON.stringify(v.lobby.player))
                 v.lobby.player = message.player
                 v.$emit('update:lobby.player', v.lobby.player)
                 console.log("player_after_update: " + JSON.stringify(v.lobby.player))
             } else if (message.event === 'StartGame') {
-                this.gamerunning = true
+                console.log(v.$store.getters.getGameRunning)
+                store.commit('setGameRunningTrue')
+                console.log(v.$store.getters.getGameRunning)
+                v.$router.push('/game')
             } else if (message.event === 'GameFinished') {
-                this.gamerunning = false
+                store.commit('setGameRunningFalse')
             }
         }
 
@@ -97,7 +99,6 @@ var app = new Vue({
             v.interval = setInterval(function () {
                 v.sendMessageOverWebsocket('ping')
             }, 10000);
-            v.sendMessageOverWebsocket('register')
         }
         this.websocket.onclose = function () {
             clearInterval(v.interval)
@@ -105,6 +106,17 @@ var app = new Vue({
         }
     },
     methods: {
+        handleRegister: function(messageId) {
+            if (!this.lobby.registered) {
+                if(this.lobby.clientId !== -1) { // Lobby not full
+                    this.lobby.registered = true
+                    this.lobby.clientId = messageId
+                    this.$emit('update:lobby', this.lobby)
+                } else { // Already 7 Player
+                    // TODO
+                }
+            }
+        },
         sendObjectOverWebsocket: function (json, msg) {
             const obj = {
                 event: msg,
@@ -121,17 +133,20 @@ var app = new Vue({
             const obj = {
                 event: msg,
             }
-            if (this.websocket.readyState === WebSocket.OPEN) {
+            if (this.websocket !== null && this.websocket.readyState === WebSocket.OPEN) {
                 this.websocket.send(JSON.stringify(obj));
             } else {
                 console.log("Could not send data. Websocket is not open.");
             }
         },
+        sendRegister: function() {
+            this.sendMessageOverWebsocket('register')
+        },
         callUndo: function() {
-            this.$root.sendMessageOverWebsocket("undo")
+            this.sendMessageOverWebsocket("undo")
         },
         callRedo: function() {
-            this.$root.sendMessageOverWebsocket("redo")
+            this.sendMessageOverWebsocket("redo")
         },
     },
     computed: {

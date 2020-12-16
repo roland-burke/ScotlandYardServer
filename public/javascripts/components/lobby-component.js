@@ -8,12 +8,15 @@ const LobbyComponent = Vue.component('lobby',{
             this.lobby.player.number = n;
         },
         startGame: function() {
-            this.$root.sendMessageOverWebsocket('StartGame')
+                const requestOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(this.lobby.player),
+                };
+                fetch("/init", requestOptions)
         },
         getReady: function () {
-            var clientPlayer = this.lobby.player.find(p => {
-                return p.id === this.lobby.clientid;
-            })
+            var clientPlayer = this.lobby.player[this.lobby.clientId]
             clientPlayer.ready = true;
             this.sendPlayerData()
         },
@@ -24,14 +27,19 @@ const LobbyComponent = Vue.component('lobby',{
             this.$root.sendObjectOverWebsocket(jsPlayer, 'lobby-change')
         }
     },
+    mounted: function() {
+        this.$root.sendMessageOverWebsocket('register')
+    },
     template: `
-    <div id="lobby" class="container-fluid settings-wrapper">
+    <div id="lobby" class="container-fluid lobby-wrapper">
         <div class="row d-flex justify-content-center">
             <h1>Lobby</h1>
         </div>
         <div class="row">
             <div class="col-lg-8 lobby-panel">
-                <h3>Player</h3>
+                <div class="d-flex justify-content-center" style="margin-top: 1em">
+                    <h3>Player</h3>
+                </div>
                 <player-settings-bar
                 v-if="lobby.player.length >= 1"
                 :componentid="0"
@@ -75,8 +83,10 @@ const LobbyComponent = Vue.component('lobby',{
                 :enabled.sync="lobby.clientId == 6">
                 </player-settings-bar>
             </div>
-            <div class="col-lg-3 lobby-panel d-flex flex-column justify-content-center">
-                <h3>Settings</h3>
+            <div class="col-lg-3 lobby-panel d-flex flex-column">
+                <div class="d-flex justify-content-center" style="margin-top: 1em">
+                    <h3>Settings</h3>
+                </div>
                 <div class="player-item">
                     <label>Rounds: 24</label>
                     <br>
@@ -98,11 +108,11 @@ const LobbyComponent = Vue.component('lobby',{
             </div>
         </div>
         <div class="row">
-            <div class="col d-flex justify-content-center lobby-panel">
-                <div class="d-flex justify-content-center" style="margin: 20px">
-                    <router-link class="standard-button" to="/game">Start</router-link>
+            <div class="col d-flex justify-content-center lobby-bottom-panel">
+                <div class="d-flex justify-content-center" style="margin: 15px">
+                    <button class="standard-button" v-on:click="startGame">Start</button>
                 </div>
-                <div class="d-flex justify-content-center" style="margin: 20px">
+                <div class="d-flex justify-content-center" style="margin: 15px">
                     <button class="standard-button" v-on:click="getReady">Ready</button>
                 </div>
             </div>
@@ -193,13 +203,15 @@ Vue.component('player-settings-bar', {
     },
     template: `<div class="row player-item d-flex justify-content-between align-items-center">
                 <div class="player-item-content">
-                    <label>Name:</label>
-                    <input v-if="changeName" v-model="player[componentid].name" @keyup.enter="switchView" style="width: 20em" type="text" minlength="3" max="30" value="Dt1">
-                    <label v-if="!changeName" style="width: 20em">{{playerNameComputed}}</label>
-                    <button v-if="enabled" @click="switchView" class="standard-button-small">Change Name</button>
+                    <label style="margin-right: 10px">Name:</label>
+                    <input v-if="changeName" v-model="player[componentid].name" @keyup.enter="switchView" style="width: 15em" type="text" minlength="3" max="30" value="Dt1">
+                    <label v-if="!changeName" style="width: 15em">{{playerNameComputed}}</label>
+                    <div class="d-flex justify-content-end">
+                        <button v-if="enabled" @click="switchView" class="standard-button-small">Change Name</button>
+                    </div>
                 </div>
                 <div class="player-item-content">
-                    <label>Player Color:</label>
+                    <label style="margin-right: 10px">Player Color:</label>
                     <select v-if="componentid != 0" id="name-select" name="playerIndex">
                     <!-- The $ symbol is escaped with '' because of jQuerry -->
                         <option v-for="color in colors" name="player" v-bind:style="{ color: color.value}" value="color-'$'{index}">
@@ -207,9 +219,10 @@ Vue.component('player-settings-bar', {
                         </option>
                     </select>
                     <label v-else>black</label>
+                    <div class="color-preview" v-bind:style="{'background-color': player[componentid].color}"></div>
                 </div>
-                <div class="player-item-content d-flex">
-                    <label>Ready:</label>
+                <div class="player-item-content justify-content-end">
+                    <label style="margin-right: 10px">Ready:</label>
                     <div v-if="this.getClientPlayer().ready" class="ready-field-green"></div>
                     <div v-else class="ready-field-red"></div>
                 </div>

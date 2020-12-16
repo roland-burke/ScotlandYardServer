@@ -46,6 +46,9 @@ object Game {
   }
 
   def register(): Int = {
+    if(freeIds.length == 0) {
+      return -1
+    }
     val id = freeIds(0)
     freeIds = freeIds.drop(1)
     val hexColor = "#" + Integer.toHexString(gameInitializer.getColorList()(id).getRGB).substring(2)
