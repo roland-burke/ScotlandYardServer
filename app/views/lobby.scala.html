@@ -1,90 +1,17 @@
-@import de.htwg.se.scotlandyard.model.playersComponent.DetectiveInterface
+<template>
+    <div id="app">
+        <div v-if="model !== undefined">
+            <div v-if="gameMode">
+                <game v-bind:model="model"></game>
+            </div>
+            <div v-else>
+                <lobby v-bind:lobby="lobby"></lobby>
+            </div>
+        </div>
+    </div>
+</template>
 
-@(titleString: String)(implicit request: RequestHeader)
-<div id="lobby" class="container-fluid settings-wrapper">
-    <div class="row d-flex justify-content-center">
-        <h1>@titleString</h1>
-    </div>
-    <div class="row">
-        <div class="col-lg-8 lobby-panel">
-            <h3>Player</h3>
-            <player-settings-bar
-            v-if="player.length >= 1"
-            :componentid="0"
-            :player.sync="player"
-            :enabled="clientid == 0">
-            </player-settings-bar>
-            <player-settings-bar
-            v-if="player.length >= 2"
-            :componentid="1"
-            :player.sync="player"
-            :enabled="clientid == 1">
-            </player-settings-bar>
-            <player-settings-bar
-            v-if="player.length >= 3"
-            :componentid="2"
-            :player.sync="player"
-            :enabled="clientid == 2">
-            </player-settings-bar>
-            <player-settings-bar
-            v-if="player.length >= 4"
-            :componentid="3"
-            :player.sync="player"
-            :enabled="clientid == 3">
-            </player-settings-bar>
-            <player-settings-bar
-            v-if="player.length >= 5"
-            :componentid="4"
-            :player.sync="player"
-            :enabled="clientid == 4">
-            </player-settings-bar>
-            <player-settings-bar
-            v-if="player.length >= 6"
-            :componentid="5"
-            :player.sync="player"
-            :enabled="clientid == 5">
-            </player-settings-bar>
-            <player-settings-bar
-            v-if="player.length >= 7"
-            :componentid="6"
-            :player.sync="player"
-            :enabled="clientid == 6">
-            </player-settings-bar>
-        </div>
-        <div class="col-lg-3 lobby-panel d-flex flex-column justify-content-center">
-            <h3>Settings</h3>
-            <div class="player-item">
-                <label>Rounds: 24</label>
-                <br>
-                <label>Max Player: 7</label>
-                <h6>Detective Tickets:</h6>
-                <ul>
-                    <li>11 Taxi</li>
-                    <li>&nbsp;8 Bus</li>
-                    <li>&nbsp;4 Underground</li>
-                </ul>
-                    <h6>Mr.X Tickets:</h6>
-                <ul>
-                    <li>99 Taxi</li>
-                    <li>99 Bus</li>
-                    <li>99 Underground</li>
-                    <li>&nbsp;2 Black</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col d-flex justify-content-center lobby-panel">
-            <div class="d-flex justify-content-center" style="margin: 20px">
-                <button class="standard-button" v-on:click="startGame">Start Game</button>
-            </div>
-            <div class="d-flex justify-content-center" style="margin: 20px">
-                <button class="standard-button" v-on:click="getReady">Ready</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<link rel="stylesheet" href="/assets/stylesheets/lobby.css"/>
-<script type="module" src="/assets/javascripts/lobby/lobby.js" type="application/javascript"></script>
+<script src="/assets/javascripts/app.js" type="module"></script>
 <script src="/assets/javascripts/lobby/components.js" type="application/javascript"></script>
+<script src="/assets/javascripts/game/components.js" type="application/javascript"></script>

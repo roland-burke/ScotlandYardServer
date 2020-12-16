@@ -1,58 +1,18 @@
-/*
-{
-  "event": "Connected",
-  "player": {
-    "players": [
-      {
-        "name": "MrX",
-        "station": 140,
-        "current": false,
-        "color": "#000000",
-        "tickets": {
-          "taxi": 98,
-          "bus": 99,
-          "underground": 99,
-          "black": 5
-        },
-        "lastSeen": "never",
-        "x": 1356,
-        "y": 1228
-      },
-      {
-        "name": "\"Dt1\"",
-        "station": 91,
-        "current": true,
-        "color": "#0000ff",
-        "tickets": {
-          "taxi": 11,
-          "bus": 8,
-          "underground": 4,
-          "black": 0
-        },
-        "lastSeen": "",
-        "x": 2490,
-        "y": 740
-      }
-    ]
-  },
-  "history": {
-    "history": [
-      {
-        "ticketType": "Taxi"
-      }
-    ]
-  },
-  "round": 1,
-  "win": false
-}
-*/
 var app = new Vue({
-    el: '#game-wrapper-total',
+    el: '#app',
     data: {
         websocket: null,
         interval: null,
+        gameMode: false,
         model: null,
-        audio: null
+        lobby: {
+            maxPlayers: 7,
+            interval: null,
+            registered: false,
+            clientid: 0,
+            size: 2,
+            player: [],
+        },
     },
     mounted: function () {
         const v = this
@@ -60,35 +20,49 @@ var app = new Vue({
         this.websocket = new WebSocket("ws://localhost:9000/ws")
         this.websocket.onmessage = function(rawMessage) {
             const message = jQuery.parseJSON(rawMessage.data)
+            console.log(message.event);
             if (message.event === 'ModelChanged') {
                 v.model = message
+            } else if(message.event === 'register') {
+                if(!v.lobby.registered) {
+                    v.lobby.registered = true
+                    v.lobby.clientid = message.id
+                }
+            } else if (message.event === 'lobby-change'){
+                console.log("player: " + JSON.stringify(v.lobby.player))
+                v.lobby.player = message.player
+                v.$emit('update:lobby.player', v.lobby.player)
+                console.log("player_after_update: " + JSON.stringify(v.lobby.player))
+            } else if (message.event === 'StartGame') {
+                v.gameMode = true
             }
         }
 
         this.websocket.onopen = function() {
             v.interval = setInterval(function() {
-                v.sendStringOverWebsocket('ping')
+                v.sendMessageOverWebsocket('ping')
             }, 10000);
+            v.sendMessageOverWebsocket('register')
         }
         this.websocket.onclose = function() {
             clearInterval(v.interval)
+            v.sendMessageOverWebsocket('deregister')
         }
     },
     methods: {       
-        callUndo: function() {
-            this.sendStringOverWebsocket("undo")
-        },        
-        callRedo: function() {
-            this.sendStringOverWebsocket("redo")
-        },
-        sendObjectOverWebsocket: function(jsonMessage) {
+        sendObjectOverWebsocket: function(json, msg) {
+            const obj = {
+                event: msg,
+                data: json
+            }
             if(this.websocket.readyState === WebSocket.OPEN) {
-                this.websocket.send(JSON.stringify(jsonMessage));
+                console.log("send: " + JSON.stringify(obj))
+                this.websocket.send(JSON.stringify(obj));
             } else {
                 console.log("Could not send data. Websocket is not open.");
             }
         },
-        sendStringOverWebsocket: function(msg) {
+        sendMessageOverWebsocket: function(msg) {
             const obj = {
                 event: msg,
             }
@@ -98,30 +72,6 @@ var app = new Vue({
                 console.log("Could not send data. Websocket is not open.");
             }
         },
-    },
-    watch: { 
-        model: function() {
-            if (this.model.win) {
-                $('#undo').addClass('not-active');
-                $('#redo').addClass('not-active');
-                if (this.audio === null) {
-                    let track = Math.floor(Math.random() * Math.floor(3));
-                    this.audio = new Audio('assets/audio/' + track + '.mp3');
-                    this.audio.play();
-                }
-            } else {
-                if (($('#undo').is('.not-active'))) {
-                    $('#undo').removeClass('not-active');
-                }
-                if (($('#redo').is('.not-active'))) {
-                    $('#redo').removeClass('not-active');
-                }
-                if (this.audio !== null) {
-                    this.audio.pause();
-                    this.audio = null;
-                }
-            }
-        }
     },
     computed: {
         extractCurrentPlayer: function() {

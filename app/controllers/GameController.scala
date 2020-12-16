@@ -20,12 +20,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   val controller: ControllerInterface = Game.controller
 
   // Game endpoints
-
-  def startGame(): Action[AnyContent] = Action { implicit request =>
-    controller.startGame()
-    returnGameStatusOk
-  }
-
   def undoMove(): Action[AnyContent] = Action { implicit request =>
     controller.undoValidateAndMove()
     Ok
@@ -37,7 +31,7 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   }
 
   def revealMrXPosition(): Action[AnyContent] = Action { implicit request =>
-    returnGameStatusOk(request, controller.getMrX().station.number.toString)
+    Ok
   }
 
   def getCurrentPlayer(): Action[AnyContent] = Action { implicit request =>
@@ -88,8 +82,8 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     Ok(Json.obj("round" -> JsNumber(controller.getTotalRound().toInt)))
   }
 
-  def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {
+  /*def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {
     val gameHtml = views.html.game()
     Ok(views.html.main("Scotland Yard")(true)(gameHtml))
-  }
+  }*/
 }

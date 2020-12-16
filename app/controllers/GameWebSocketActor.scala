@@ -27,7 +27,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     case _: PlayerMoved =>
       clientActorRef ! getAllDataObject("ModelChanged")
     case _: StartGame =>
-      clientActorRef ! getAllDataObject("ModelChanged")
+      clientActorRef ! getAllDataObject("StartGame")
     case _: PlayerWin =>
       clientActorRef ! getAllDataObject("ModelChanged")
     case _: LobbyChange => clientActorRef ! getPlayerLobbyObject("lobby-change")
@@ -40,19 +40,18 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
   def receive: Receive = {
     case obj: JsObject =>
       val map = obj.value
-      println(map.toString())
-      if (map.contains("data")) {
-        updateBackendData(Option(obj))
-        notifyPlayer()
-      } else if (map.contains("event")) {
+      if (map.contains("event")) {
         map("event").asOpt[String].get match {
           case "undo" => controller.undoValidateAndMove()
           case "redo" => controller.redoValidateAndMove()
           case "ping" => clientActorRef ! Json.obj("event" -> "Alive")
-          case "move" => movePlayer(Option(obj))
+          case "move" => movePlayer(map("data").asOpt[JsObject])
           case "register" => notifyPlayerAndRegister()
           case "deregister" => notifyPlayer() // TODO: get deregister id
-          case "lobby-change" => notifyPlayer()
+          case "lobby-change" => 
+            updateBackendData(Option(obj))
+            notifyPlayer()
+          case "StartGame" => controller.startGame()
           case _ => println("Unknown: event")
         }
       }

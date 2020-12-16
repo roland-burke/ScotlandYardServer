@@ -29,7 +29,7 @@ class LobbyController @Inject()(cc: ControllerComponents)(implicit assetsFinder:
   }
 
   def returnMenuStatusOk(implicit request: Request[_]): Result = {
-    val menuHtml = views.html.lobby("Lobby")
+    val menuHtml = views.html.lobby()
     Ok(views.html.main("Scotland Yard")(false)(menuHtml))
   }
 }

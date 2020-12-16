@@ -9,7 +9,6 @@ GET     /about                      controllers.MainController.showRules
 
 # Menu routes
 GET     /lobby                      controllers.LobbyController.lobby
-GET     /game                       controllers.GameController.startGame
 +nocsrf
 POST    /init                       controllers.LobbyController.initGame
 GET     /running                    controllers.MainController.getGameRunning

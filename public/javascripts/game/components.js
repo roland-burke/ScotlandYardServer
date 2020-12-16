@@ -1,4 +1,164 @@
-
+Vue.component('game', {
+    props: {
+        model: null,
+    },
+    data: function() {
+        return {
+            audio: null
+        }
+    },
+    methods: {       
+        callUndo: function() {
+            this.$root.sendMessageOverWebsocket("undo")
+        },        
+        callRedo: function() {
+            this.$root.sendMessageOverWebsocket("redo")
+        },
+    },
+    watch: { 
+        model: function() {
+            if (this.model.win) {
+                $('#undo').addClass('not-active');
+                $('#redo').addClass('not-active');
+                if (this.audio === null) {
+                    let track = Math.floor(Math.random() * Math.floor(3));
+                    this.audio = new Audio('assets/audio/' + track + '.mp3');
+                    this.audio.play();
+                }
+            } else {
+                if (($('#undo').is('.not-active'))) {
+                    $('#undo').removeClass('not-active');
+                }
+                if (($('#redo').is('.not-active'))) {
+                    $('#redo').removeClass('not-active');
+                }
+                if (this.audio !== null) {
+                    this.audio.pause();
+                    this.audio = null;
+                }
+            }
+        }
+    },
+    computed: {
+        extractCurrentPlayer: function() {
+            for (let player of this.model.player.players) {
+                if (player.current === true) {
+                    return player
+                }
+            }
+        },
+    },
+    template: `
+    <div id="game-wrapper-total" style="position: relative; overflow-x: hidden;">
+    
+        <div v-if="model !== null && model.win" id="winning-background" class="winning-background"></div>
+        
+        <div v-if="model !== null">
+            <game-map
+            v-bind:playersdata="model.player"
+            ref="gamemap"
+            ></game-map>/>
+        </div>
+    
+        <div class="container-fluid" style="overflow: hidden;
+            position: absolute;
+            top: 0;
+            pointer-events: none">
+    
+            <div class="row">
+                <div class="col w-25 d-flex justify-content-center">
+                    <div style="padding-top: 40px">
+                        <div class="game-round justify-content-center">
+                            <div v-if="model !== null">
+                                <head-line
+                                v-bind:round="model.round"
+                                v-bind:color="extractCurrentPlayer.color" 
+                                v-bind:name="extractCurrentPlayer.name"
+                                v-bind:win="model.win"
+                                ></head-line>
+                            </div>
+                            <div v-else>
+                                <h2>Loading..</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="history-wrapper" id="history-wrapper">
+                        <div v-if="model !== null">
+                            <history
+                            v-bind:historyobject="model.history"
+                            ></history>
+                        </div>
+                        <div v-else>
+                            <h2>Loading..</h2>
+                        </div>
+                    </div>
+                </div>
+                <div id="win" class="col-lg-8 d-flex justify-content-center" style="z-index: 5">
+                    <div v-if="model !== null && model.win">
+                        <div id="winning-dialog" class="winning-dialog col d-flex flex-column justify-content-between">
+                            <!--<div id="close-button" class="d-flex justify-content-end">
+                                <button v-if="audio !== undefined" v-on:click="model.win = true" class="close-button">X</button>
+                            </div>-->
+                            <div class="row d-flex justify-content-center">
+                                <div class="col">
+                                    <div class="row" id="winning-row">
+                                        <h1 v-if="model.winningPlayer === 'MrX'" id="winning-title">MrX Won!!!</h1>
+                                        <h1 v-else id="winning-title">Detectives Won!!!</h1>
+                                    </div>
+                                    <div id="winning-subtitle" class="row d-flex justify-content-center">
+                                        <div v-if="model.winningPlayer === 'MrX'">MrX escaped successfully</div>
+                                        <div v-else>MrX was caught at Station: {{extractCurrentPlayer.station}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center" id="win-image">
+                                <img v-if="model.winningPlayer === 'MrX'" width="250px" height="250px" src="assets/images/mrx-win.PNG" alt="MrX">
+                                <img v-else width="250px" height="250px" src="assets/images/detective-win.PNG" alt="Detective">
+                            </div>
+                            <div id="win-button" class="row d-flex justify-content-center align-items-center align-self-center">
+                                <a href="/">
+                                    <button class="standard-button">Main Menu</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 d-flex justify-content-end">
+                    <div class="stats-wrapper" id="stats-wrapper">
+                        <div v-if="model !== null">
+                            <stats
+                            v-bind:playersdata="model.player"
+                            ></stats>
+                        </div>
+                        <div v-else>
+                            <h2>Loading..</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row fixed-bottom" style="z-index: 1">
+                <div class="col d-flex justify-content-center w-25">
+                    <div class="game-controls" id="game-controls" style="pointer-events: all">
+                        <div v-if="model !== null">
+                            <game-controls
+                            v-bind:name="extractCurrentPlayer.name"
+                            ></game-controls>
+                        </div>
+                        <div v-else>
+                            <h2>Loading..</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <link rel="stylesheet" href="/assets/stylesheets/game.css"/>
+    </div>
+    `
+})
 
 Vue.component('head-line', {
     props: {
@@ -33,7 +193,7 @@ Vue.component('game-map', {
                 x: parseInt(clickCoords.x),
                 y: parseInt(clickCoords.y)
             }
-            this.$root.sendObjectOverWebsocket(data)
+            this.$root.sendObjectOverWebsocket(data, 'move')
             this.redraw()
         },
         getXY: function(event) {
@@ -54,7 +214,7 @@ Vue.component('game-map', {
             var childPos = $("#canvas");
 
             $("#canvas").draggable({
-                drag: function (map) {
+                drag: function (event, map) {
                     const boundaryOffset = 20
                     const headerOffset = document.getElementById("header").offsetHeight
                     const footerOffset = document.getElementById("footer").offsetHeight
