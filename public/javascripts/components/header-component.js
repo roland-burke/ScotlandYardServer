@@ -1,7 +1,8 @@
 Vue.component('header-component', {
     props: {
         lobby: Object,
-        ingame: Boolean
+        gamerunning: Boolean,
+        gamecomponentactive: Boolean
     },
     methods: {
         callUndo: function() {
@@ -24,13 +25,13 @@ Vue.component('header-component', {
                     <li class="nav-item active float-left">
                         <a class="nav-link" href="/about">About</a>
                     </li>
-                    <li v-if="ingame" class="nav-item active">
+                    <li v-if="gamerunning && gamecomponentactive" class="nav-item active">
                         <a class="nav-link" href="/game">Save Game</a>
                     </li>
-                    <li v-if="ingame" class="nav-item active">
+                    <li v-if="gamerunning && gamecomponentactive" class="nav-item active">
                         <a id="undo" class="nav-link" v-on:click="callUndo" href="/game">Undo</a>
                     </li>
-                    <li v-if="ingame" class="nav-item active">
+                    <li v-if="gamerunning && gamecomponentactive" class="nav-item active">
                         <a id="redo" class="nav-link" v-on:click="callRedo" href="/game">Redo</a>
                     </li>
                 </ul>

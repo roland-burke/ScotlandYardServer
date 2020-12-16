@@ -100,7 +100,7 @@ const LobbyComponent = Vue.component('lobby',{
         <div class="row">
             <div class="col d-flex justify-content-center lobby-panel">
                 <div class="d-flex justify-content-center" style="margin: 20px">
-                    <router-push class="standard-button" to="/game">Start</router-link>
+                    <router-link class="standard-button" to="/game">Start</router-link>
                 </div>
                 <div class="d-flex justify-content-center" style="margin: 20px">
                     <button class="standard-button" v-on:click="getReady">Ready</button>

@@ -2,13 +2,15 @@
 const MainComponent = Vue.component('main-component', {
     props: {
         lobby: Object,
-        model: Object
+        model: Object,
+        gamerunning: Boolean,
+        gamecomponentactive: Boolean
     },
     template: `
         <div>
-            <header-component :ingame="true"></header-component>
+            <header-component :gamecomponentactive="gamecomponentactive" :gamerunning="gamerunning"></header-component>
             <main role="main" class="d-flex align-items-center justify-content-center">
-                <router-view :lobby="lobby" :model="model"></router-view>
+                <router-view :gamecomponentactive.sync="gamecomponentactive" :gamerunning="gamerunning" :lobby="lobby" :model="model"></router-view>
             </main>
             <footer-component></footer-component>
         </div>
@@ -37,10 +39,13 @@ const router = new VueRouter({
                     {
                         path: 'game',
                         component: GameComponent,
-                        props: true
+                        props: {
+
+                        }
                     }
                 ]
-        }]
+        }],
+        
 })
 
 var app = new Vue({
@@ -57,7 +62,8 @@ var app = new Vue({
             size: 2,
             player: [],
         },
-        gamerunning: false
+        gamerunning: false,
+        gamecomponentactive: false
     },
     router,
     mounted: function () {

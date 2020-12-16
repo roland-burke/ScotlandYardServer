@@ -1,11 +1,19 @@
 const GameComponent = Vue.component('game', {
     props: {
         model: Object,
+        gamerunning: Boolean,
+        gamecomponentactive: Boolean
     },
     data: function() {
         return {
             audio: null
         }
+    },
+    mounted: function(){
+        this.$emit('update:gamecomponentactive', true)
+    },
+    beforeDestroy: function() {
+        this.$emit('update:gamecomponentactive', false)
     },
     watch: { 
         model: function() {
