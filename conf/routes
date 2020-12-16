@@ -14,7 +14,6 @@ GET     /running                    controllers.MainController.getGameRunning
 GET     /player                     controllers.GameController.getPlayer(playerName: String = "")
 GET     /player/:playerName         controllers.GameController.getPlayer(playerName: String)
 GET     /player/current/            controllers.GameController.getCurrentPlayer
-GET     /reveal                     controllers.GameController.revealMrXPosition
 GET     /history                    controllers.GameController.getHistory
 GET     /round                      controllers.GameController.getRound
 

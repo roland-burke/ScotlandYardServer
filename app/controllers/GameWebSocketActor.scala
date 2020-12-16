@@ -1,12 +1,11 @@
 package controllers
 
 import akka.actor.{Actor, ActorRef, Props}
-import com.google.inject.Guice
 import de.htwg.se.scotlandyard.controllerComponent.{ControllerInterface, LobbyChange, NumberOfPlayersChanged, PlayerMoved, PlayerNameChanged, PlayerWin, StartGame}
 import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
 import de.htwg.se.scotlandyard.util.TicketType
 import model.{Game, History, Player, PlayerData, Tickets}
-import play.api.libs.json.{JsArray, JsObject, JsValue, Json}
+import play.api.libs.json.{JsArray, JsObject, Json}
 
 import scala.collection.mutable.ListBuffer
 import scala.swing.{Point, Reactor}

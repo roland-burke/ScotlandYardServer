@@ -1,16 +1,12 @@
 package controllers
 
 import javax.inject._
-import de.htwg.se.scotlandyard.aview.tui.Tui
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
-import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
-import de.htwg.se.scotlandyard.util.TicketType
 import model.{Game, History, PlayerData, Tickets}
 import play.api.libs.json._
 import play.api.mvc._
-
 import scala.collection.mutable.ListBuffer
-import scala.swing.Point
+
 
 @Singleton
 class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
@@ -27,10 +23,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
 
   def redoMove(): Action[AnyContent] = Action { implicit request =>
     controller.redoValidateAndMove()
-    Ok
-  }
-
-  def revealMrXPosition(): Action[AnyContent] = Action { implicit request =>
     Ok
   }
 

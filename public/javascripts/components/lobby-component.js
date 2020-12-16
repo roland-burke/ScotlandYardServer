@@ -28,6 +28,7 @@ const LobbyComponent = Vue.component('lobby',{
         }
     },
     mounted: function() {
+        console.log('lobby: ' + JSON.stringify(this.lobby))
         this.$root.sendMessageOverWebsocket('register')
     },
     template: `

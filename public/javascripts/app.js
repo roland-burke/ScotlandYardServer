@@ -64,7 +64,6 @@ var app = new Vue({
             interval: null,
             registered: false,
             clientId: 0,
-            size: 2,
             player: [],
         },
     },
@@ -133,7 +132,7 @@ var app = new Vue({
             const obj = {
                 event: msg,
             }
-            if (this.websocket !== null && this.websocket.readyState === WebSocket.OPEN) {
+            if (this.websocket.readyState === WebSocket.OPEN) {
                 this.websocket.send(JSON.stringify(obj));
             } else {
                 console.log("Could not send data. Websocket is not open.");

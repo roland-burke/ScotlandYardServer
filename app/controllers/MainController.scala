@@ -3,7 +3,7 @@ package controllers
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
 import javax.inject._
 import model.Game
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc._
 
 @Singleton

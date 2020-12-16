@@ -2,9 +2,7 @@ package model
 
 import com.google.inject.Guice
 import de.htwg.se.scotlandyard.ScotlandYardModule
-import de.htwg.se.scotlandyard.aview.tui.Tui
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
-import de.htwg.se.scotlandyard.model.coreComponent.GameMaster
 import de.htwg.se.scotlandyard.model.coreComponent.gameInitializerComponent.GameInitializerInterface
 import de.htwg.se.scotlandyard.model.playersComponent.{DetectiveInterface, MrXInterface}
 import de.htwg.se.scotlandyard.model.tuiMapComponent.TuiMapInterface

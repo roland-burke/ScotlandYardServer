@@ -38,12 +38,10 @@ const GameComponent = Vue.component('game', {
     
         <div v-if="model !== null && model.win && showWinningDialog" id="winning-background" class="winning-background"></div>
         
-        <div v-if="model !== null">
-            <game-map
-            v-bind:playersdata="model.player"
-            ref="gamemap"
-            ></game-map>/>
-        </div>
+        <game-map
+        v-bind:playersdata="model.player"
+        ref="gamemap">
+        </game-map>
     
         <div class="container-fluid" style="overflow: hidden;
             position: absolute;
@@ -268,11 +266,10 @@ Vue.component('game-map', {
         this.redraw()
     },
     template: `
-    <div>
         <div id="map-wrapper" class="map-wrapper">
             <canvas id="canvas" v-on:dblclick="movePlayer($event)" width="2570" height="1926"></canvas>
         </div>
-    </div>`
+        `
 })
 
 Vue.component('game-controls', {
@@ -368,14 +365,14 @@ Vue.component('history', {
     },
     template: `
     <div>
-    <h3>History</h3>
-    <div v-for="history in historyobject.history" class="d-flex justify-content-center">
-        <div class="history-item">
-            <img v-if="history.ticketType === 'Taxi'" class="ticket-icon" src="/assets/images/Taxi.svg">
-            <img v-if="history.ticketType === 'Bus'" class="ticket-icon" src="/assets/images/Bus.svg">
-            <img v-if="history.ticketType === 'Underground'" class="ticket-icon" src="/assets/images/Underground.svg">
-            <img v-if="history.ticketType === 'Black'" class="ticket-icon" src="/assets/images/Black.svg">
+        <h3>History</h3>
+        <div v-for="history in historyobject.history" class="d-flex justify-content-center">
+            <div class="history-item">
+                <img v-if="history.ticketType === 'Taxi'" class="ticket-icon" src="/assets/images/Taxi.svg">
+                <img v-if="history.ticketType === 'Bus'" class="ticket-icon" src="/assets/images/Bus.svg">
+                <img v-if="history.ticketType === 'Underground'" class="ticket-icon" src="/assets/images/Underground.svg">
+                <img v-if="history.ticketType === 'Black'" class="ticket-icon" src="/assets/images/Black.svg">
+            </div>
         </div>
-    </div>
     </div>`
 })
