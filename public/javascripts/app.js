@@ -1,10 +1,14 @@
 
 const MainComponent = Vue.component('main-component', {
+    props: {
+        lobby: Object,
+        model: Object
+    },
     template: `
         <div>
             <header-component :ingame="true"></header-component>
             <main role="main" class="d-flex align-items-center justify-content-center">
-                <router-view></router-view>
+                <router-view :lobby="lobby" :model="model"></router-view>
             </main>
             <footer-component></footer-component>
         </div>
@@ -14,7 +18,7 @@ const MainComponent = Vue.component('main-component', {
 const router = new VueRouter({
     routes: [
         {
-            path: '/', component: MainComponent, redirect: '/index',
+            path: '/', component: MainComponent, props: true, redirect: '/index',
             children:
                 [
                     {
@@ -28,13 +32,12 @@ const router = new VueRouter({
                     {
                         path: 'lobby',
                         component: LobbyComponent,
-                        props: {
-                            lobby: app.$data.lobby
-                        }
+                        props: true
                     },
                     {
                         path: 'game',
-                        component: GameComponent
+                        component: GameComponent,
+                        props: true
                     }
                 ]
         }]
@@ -62,7 +65,7 @@ var app = new Vue({
         this.websocket = new WebSocket("ws://localhost:9000/ws")
         this.websocket.onmessage = function (rawMessage) {
             const message = jQuery.parseJSON(rawMessage.data)
-            console.log(message.event);
+            console.log(message);
             if (message.event === 'ModelChanged') {
                 v.model = message
             } else if (message.event === 'register') {

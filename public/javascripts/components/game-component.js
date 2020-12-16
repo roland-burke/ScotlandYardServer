@@ -1,12 +1,11 @@
 const GameComponent = Vue.component('game', {
+    props: {
+        model: Object,
+    },
     data: function() {
         return {
-            model: this.$root.model,
             audio: null
         }
-    },
-    methods: {       
-
     },
     watch: { 
         model: function() {
