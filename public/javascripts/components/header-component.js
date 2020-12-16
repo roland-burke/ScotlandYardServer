@@ -31,6 +31,9 @@ Vue.component('header-component', {
                         <a id="redo" class="nav-link" v-on:click="callRedo" href="javascript:void(0)">Redo</a>
                     </li>
                 </ul>
+                <div class="d-flex justify-content-center" style="width: 100%; position: fixed">
+                    <label class="title">ScotlandYard</label>
+                </div>
             </div>
         </nav>
     `

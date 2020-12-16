@@ -49,7 +49,7 @@ const GameComponent = Vue.component('game', {
             pointer-events: none">
     
             <div class="row">
-                <div class="col w-25 d-flex justify-content-center">
+                <div class="col d-flex justify-content-center">
                     <div style="padding-top: 40px">
                         <div class="game-round justify-content-center">
                             <div v-if="model !== null">
@@ -152,8 +152,8 @@ Vue.component('head-line', {
     },
     template: `
     <div>
-    Round: {{ round }} - Current Player:<span :style="'white-space: pre-wrap; color: ' + color"> {{ name }}</span><br>
-    <div v-if="win" class="d-flex justify-content-center"><h5>Game finished!</h5></div>
+        Round: {{ round }} - Current Player:<span :style="'white-space: pre-wrap; color: ' + color"> {{ name }}</span><br>
+        <div v-if="win" class="d-flex justify-content-center"><h5>Game finished!</h5></div>
     </div>
     `
 })
