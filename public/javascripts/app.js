@@ -27,7 +27,10 @@ const router = new VueRouter({
                     },
                     {
                         path: 'lobby',
-                        component: LobbyComponent
+                        component: LobbyComponent,
+                        props: {
+                            lobby: app.$data.lobby
+                        }
                     },
                     {
                         path: 'game',

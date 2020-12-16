@@ -34,9 +34,7 @@ const AboutComponent = Vue.component('about-component', {
             <li>99 Underground</li>
             <li>&nbsp;2 Black</li>
         </ul>
-        <a href="/">
-            <button class="standard-button">Back to Main Menu</button>
-        </a>
+        <router-link class="standard-button" to="/">Back to Main Menu</router-link>
         <a href="/game">
             <button id="back-to-game" class="standard-button">Back to Game</button>
         </a>

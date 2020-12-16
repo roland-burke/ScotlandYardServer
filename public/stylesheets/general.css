@@ -55,6 +55,7 @@ body {
     background:linear-gradient(to bottom, #2E5D80 5%, #2E5D80 100%);
     background-color:#2E5D80;
     text-decoration:none;
+    color:#ffffff;
 }
 .standard-button:active {
     position:relative;
@@ -86,6 +87,7 @@ body {
     background:linear-gradient(to bottom, #2E5D80 5%, #2E5D80 100%);
     background-color:#2E5D80;
     text-decoration:none;
+    color:#ffffff;
 }
 .standard-button-small:active {
     position:relative;

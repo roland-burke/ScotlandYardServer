@@ -3,7 +3,7 @@ const IndexComponent = Vue.component('index-component', {
         <div class="main">
         <div class="index-wrapper">
             <div class="row my-3 d-flex justify-content-center">
-                <button class="main-menu-button">Start Game</button>
+                <router-link class="main-menu-button" to="/lobby">Start Game</router-link>
             </div>
             <div class="row my-3 d-flex justify-content-center">
                 <label class="main-menu-button">
@@ -12,9 +12,7 @@ const IndexComponent = Vue.component('index-component', {
                 </label>
             </div>
             <div class="row d-flex justify-content-center">
-                <a href="/about">
-                    <button class="main-menu-button">About</button>
-                </a>
+                <router-link class="main-menu-button" to="/about">About</router-link>
             </div>
         </div>
         <link rel="stylesheet" href="/assets/stylesheets/index.css"/>

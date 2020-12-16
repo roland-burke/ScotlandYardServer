@@ -1,9 +1,7 @@
 
 const LobbyComponent = Vue.component('lobby',{
-    data: function() {
-        return {
-            lobby: this.$root.lobby,
-        }
+    prop: {
+        lobby: Object
     },
     methods: {
         setNumberOfPlayer: function(n) {
@@ -37,7 +35,7 @@ const LobbyComponent = Vue.component('lobby',{
                 <player-settings-bar
                 v-if="lobby.player.length >= 1"
                 :componentid="0"
-                :player.sync="lobby.player"
+                v-bind:player="lobby.player"
                 :enabled.sync="lobby.clientId == 0">
                 </player-settings-bar>
                 <player-settings-bar
