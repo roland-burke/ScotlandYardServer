@@ -1,19 +1,12 @@
-Vue.component('game', {
-    props: {
-        model: null,
-    },
+const GameComponent = Vue.component('game', {
     data: function() {
         return {
+            model: this.$root.model,
             audio: null
         }
     },
     methods: {       
-        callUndo: function() {
-            this.$root.sendMessageOverWebsocket("undo")
-        },        
-        callRedo: function() {
-            this.$root.sendMessageOverWebsocket("redo")
-        },
+
     },
     watch: { 
         model: function() {

@@ -4,11 +4,8 @@
 
 # General
 GET     /                           controllers.MainController.index
-# Rules
-GET     /about                      controllers.MainController.showRules
 
-# Menu routes
-GET     /lobby                      controllers.LobbyController.lobby
+### Rest Endpoints
 +nocsrf
 POST    /init                       controllers.LobbyController.initGame
 GET     /running                    controllers.MainController.getGameRunning

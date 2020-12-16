@@ -1,7 +1,9 @@
 
-Vue.component('lobby',{
-    props: {
-        lobby: Object
+const LobbyComponent = Vue.component('lobby',{
+    data: function() {
+        return {
+            lobby: this.$root.lobby,
+        }
     },
     methods: {
         setNumberOfPlayer: function(n) {
@@ -36,43 +38,43 @@ Vue.component('lobby',{
                 v-if="lobby.player.length >= 1"
                 :componentid="0"
                 :player.sync="lobby.player"
-                :enabled="lobby.clientId == 0">
+                :enabled.sync="lobby.clientId == 0">
                 </player-settings-bar>
                 <player-settings-bar
                 v-if="lobby.player.length >= 2"
                 :componentid="1"
                 :player.sync="lobby.player"
-                :enabled="lobby.clientId == 1">
+                :enabled.sync="lobby.clientId == 1">
                 </player-settings-bar>
                 <player-settings-bar
                 v-if="lobby.player.length >= 3"
                 :componentid="2"
                 :player.sync="lobby.player"
-                :enabled="lobby.clientId == 2">
+                :enabled.sync="lobby.clientId == 2">
                 </player-settings-bar>
                 <player-settings-bar
                 v-if="lobby.player.length >= 4"
                 :componentid="3"
                 :player.sync="lobby.player"
-                :enabled="lobby.clientId == 3">
+                :enabled.sync="lobby.clientId == 3">
                 </player-settings-bar>
                 <player-settings-bar
                 v-if="lobby.player.length >= 5"
                 :componentid="4"
                 :player.sync="lobby.player"
-                :enabled="lobby.clientId == 4">
+                :enabled.sync="lobby.clientId == 4">
                 </player-settings-bar>
                 <player-settings-bar
                 v-if="lobby.player.length >= 6"
                 :componentid="5"
                 :player.sync="lobby.player"
-                :enabled="lobby.clientId == 5">
+                :enabled.sync="lobby.clientId == 5">
                 </player-settings-bar>
                 <player-settings-bar
                 v-if="lobby.player.length >= 7"
                 :componentid="6"
                 :player.sync="lobby.player"
-                :enabled="lobby.clientId == 6">
+                :enabled.sync="lobby.clientId == 6">
                 </player-settings-bar>
             </div>
             <div class="col-lg-3 lobby-panel d-flex flex-column justify-content-center">

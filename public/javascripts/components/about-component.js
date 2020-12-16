@@ -1,6 +1,6 @@
-@(message: String)
-
-<div class="main">
+const AboutComponent = Vue.component('about-component', {
+    template: `
+        <div class="main">
     <div id="about">
         <div class="d-flex justify-content-center">
             <h1>About</h1>
@@ -41,6 +41,7 @@
             <button id="back-to-game" class="standard-button">Back to Game</button>
         </a>
     </div>
+    <script src="/assets/javascripts/about.js" type="application/javascript"></script>
 </div>
-
-<script src="/assets/javascripts/about.js" type="application/javascript"></script>
+    `
+})
