@@ -57,6 +57,7 @@ var app = new Vue({
             size: 2,
             player: [],
         },
+        gamerunning: false
     },
     router,
     mounted: function () {
@@ -80,7 +81,9 @@ var app = new Vue({
                 v.$emit('update:lobby.player', v.lobby.player)
                 console.log("player_after_update: " + JSON.stringify(v.lobby.player))
             } else if (message.event === 'StartGame') {
-                //TODO
+                this.gamerunning = true
+            } else if (message.event === 'GameFinished') {
+                this.gamerunning = false
             }
         }
 
