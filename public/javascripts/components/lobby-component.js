@@ -207,7 +207,7 @@ Vue.component('player-settings-bar', {
                     <label style="margin-right: 10px">Name:</label>
                     <input v-if="changeName" v-model="player[componentid].name" @keyup.enter="switchView" style="width: 15em" type="text" minlength="3" max="30" value="Dt1">
                     <label v-if="!changeName" style="width: 15em">{{playerNameComputed}}</label>
-                    <div class="d-flex justify-content-end">
+                    <div v-if="componentid != 0" class="d-flex justify-content-end">
                         <button v-if="enabled" @click="switchView" class="standard-button-small">Change Name</button>
                     </div>
                 </div>
