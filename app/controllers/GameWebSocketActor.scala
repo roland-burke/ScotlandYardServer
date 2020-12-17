@@ -30,6 +30,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     case _: PlayerWin =>
       clientActorRef ! getAllDataObject("ModelChanged")
       clientActorRef ! Json.obj("event" -> "GameFinished")
+      Game.resetPlayerList()
     case _: LobbyChange => clientActorRef ! getPlayerLobbyObject("lobby-change")
   }
 
