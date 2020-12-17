@@ -43,6 +43,11 @@ object Game {
     playerList(id)
   }
 
+  def resetPlayerList(): Unit = {
+    freeIds = List(0, 1, 2, 3, 4, 5, 6)
+    playerList = List()
+  }
+
   def register(): Int = {
     if(freeIds.length == 0) {
       return -1
