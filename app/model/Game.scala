@@ -2,9 +2,7 @@ package model
 
 import com.google.inject.Guice
 import de.htwg.se.scotlandyard.ScotlandYardModule
-import de.htwg.se.scotlandyard.aview.tui.Tui
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
-import de.htwg.se.scotlandyard.model.coreComponent.GameMaster
 import de.htwg.se.scotlandyard.model.coreComponent.gameInitializerComponent.GameInitializerInterface
 import de.htwg.se.scotlandyard.model.playersComponent.{DetectiveInterface, MrXInterface}
 import de.htwg.se.scotlandyard.model.tuiMapComponent.TuiMapInterface
@@ -15,6 +13,56 @@ object Game {
   val controller = injector.getInstance(classOf[ControllerInterface])
   val tuiMap = injector.getInstance(classOf[TuiMapInterface])
   val gameInitializer = injector.getInstance(classOf[GameInitializerInterface])
+
+  gameInitializer.initialize(3)
+
+  var freeIds = List(0, 1, 2, 3, 4, 5, 6)
+  var defaultNames = List("MrX", "Dt1", "Dt2", "Dt3", "Dt4", "Dt5", "Dt6")
+  var playerList: List[Player] = List()
+
+  /* Lobby:
+  data {
+    player [
+      {
+        id: 0,
+        name: "MrX",
+        color: "#000000",
+        ready: false
+      },
+      {
+        id: 1,
+        name: "Dt1",
+        color: "#0000ff",
+        ready: false
+      },...
+    ]
+  }
+   */
+
+  def getLobbyPlayerDataModel(id: Int): Player = {
+    playerList(id)
+  }
+
+  def resetPlayerList(): Unit = {
+    freeIds = List(0, 1, 2, 3, 4, 5, 6)
+    playerList = List()
+  }
+
+  def register(): Int = {
+    if(freeIds.length == 0) {
+      return -1
+    }
+    val id = freeIds(0)
+    freeIds = freeIds.drop(1)
+    val hexColor = "#" + Integer.toHexString(gameInitializer.getColorList()(id).getRGB).substring(2)
+    playerList = playerList :+ Player(id, defaultNames(id), hexColor, false)
+    id
+  }
+
+  def deregister(id: Int): Unit = {
+    playerList = playerList.drop(1)
+    freeIds = freeIds :+ id
+  }
 
   def GetPlayerDataModel(player: DetectiveInterface): PlayerData = {
     var isCurrent = false
@@ -41,4 +89,5 @@ object Game {
 case class Tickets(taxi : Int, bus: Int, underground: Int, black: Int)
 case class PlayerData(name: String, station: Int, current: Boolean, color: String, tickets: Tickets, var lastSeen: String, x: Int, y: Int)
 case class History(ticketType: String)
+case class Player(var id: Int, var name: String, var color: String, var ready: Boolean)
 

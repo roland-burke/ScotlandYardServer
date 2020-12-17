@@ -4,21 +4,16 @@
 
 # General
 GET     /                           controllers.MainController.index
-# Rules
-GET     /about                      controllers.MainController.showRules
 
-# Menu routes
-GET     /settings                   controllers.SettingsController.openMenu
-GET     /game                       controllers.GameController.startGame
+### Rest Endpoints
 +nocsrf
-POST    /init                       controllers.SettingsController.initGame
+POST    /init                       controllers.LobbyController.initGame
 GET     /running                    controllers.MainController.getGameRunning
 
 # Game routes
 GET     /player                     controllers.GameController.getPlayer(playerName: String = "")
 GET     /player/:playerName         controllers.GameController.getPlayer(playerName: String)
 GET     /player/current/            controllers.GameController.getCurrentPlayer
-GET     /reveal                     controllers.GameController.revealMrXPosition
 GET     /history                    controllers.GameController.getHistory
 GET     /round                      controllers.GameController.getRound
 
