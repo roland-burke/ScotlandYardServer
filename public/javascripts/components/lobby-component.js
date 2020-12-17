@@ -213,7 +213,7 @@ Vue.component('player-settings-bar', {
                 </div>
                 <div class="player-item-content">
                     <label style="margin-right: 10px">Player Color:</label>
-                    <select v-if="componentid != 0" id="name-select" name="playerIndex">
+                    <select v-if="componentid != 0 && enabled" id="name-select" name="playerIndex">
                     <!-- The $ symbol is escaped with '' because of jQuerry -->
                         <option v-for="color in colors" name="player" v-bind:style="{ color: color.value}" value="color-'$'{index}">
                             {{ color.name }}
