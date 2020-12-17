@@ -137,16 +137,7 @@ var app = new Vue({
             } else {
                 console.log("Could not send data. Websocket is not open.");
             }
-        },
-        sendRegister: function() {
-            this.sendMessageOverWebsocket('register')
-        },
-        callUndo: function() {
-            this.sendMessageOverWebsocket("undo")
-        },
-        callRedo: function() {
-            this.sendMessageOverWebsocket("redo")
-        },
+        }
     },
     computed: {
         extractCurrentPlayer: function () {
