@@ -1,16 +1,12 @@
 package controllers
 
 import javax.inject._
-import de.htwg.se.scotlandyard.aview.tui.Tui
 import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
-import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
-import de.htwg.se.scotlandyard.util.TicketType
 import model.{Game, History, PlayerData, Tickets}
 import play.api.libs.json._
 import play.api.mvc._
-
 import scala.collection.mutable.ListBuffer
-import scala.swing.Point
+
 
 @Singleton
 class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: AssetsFinder)
@@ -20,12 +16,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   val controller: ControllerInterface = Game.controller
 
   // Game endpoints
-
-  def startGame(): Action[AnyContent] = Action { implicit request =>
-    controller.startGame()
-    returnGameStatusOk
-  }
-
   def undoMove(): Action[AnyContent] = Action { implicit request =>
     controller.undoValidateAndMove()
     Ok
@@ -34,10 +24,6 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   def redoMove(): Action[AnyContent] = Action { implicit request =>
     controller.redoValidateAndMove()
     Ok
-  }
-
-  def revealMrXPosition(): Action[AnyContent] = Action { implicit request =>
-    returnGameStatusOk(request, controller.getMrX().station.number.toString)
   }
 
   def getCurrentPlayer(): Action[AnyContent] = Action { implicit request =>
@@ -88,8 +74,4 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     Ok(Json.obj("round" -> JsNumber(controller.getTotalRound().toInt)))
   }
 
-  def returnGameStatusOk(implicit request: Request[_], mrxStation: String = ""): Result = {
-    val gameHtml = views.html.game(controller.getCurrentPlayer(), mrxStation, controller.getMrX().history, controller.getPlayersList(), controller.getTotalRound())
-    Ok(views.html.main("Scotland Yard")(true)(gameHtml))
-  }
 }
