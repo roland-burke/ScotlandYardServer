@@ -53,9 +53,19 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
             updateBackendData(Option(obj))
             notifyPlayer()
           case "StartGame" => controller.startGame()
+          case "init" => initGame()
           case _ => println("Unknown: event")
         }
       }
+  }
+
+  def initGame(): Unit = {
+    val nPlayer = Game.playerList.length
+    controller.initPlayers(nPlayer)
+    for(n <- 0 until nPlayer) {
+      controller.setPlayerName(Game.playerList(n).name, n)
+    }
+    controller.startGame()
   }
 
   def notifyPlayer(): Unit = {
