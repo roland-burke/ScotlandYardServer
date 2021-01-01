@@ -64,12 +64,13 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     controller.initPlayers(nPlayer)
     for(n <- 0 until nPlayer) {
       controller.setPlayerName(Game.playerList(n).name, n)
+      controller.setPlayerColor(Game.playerList(n).color, n)
     }
     controller.startGame()
   }
 
   def notifyPlayer(): Unit = {
-    println("notfiy player")
+    println("notify player")
     println(getPlayerLobbyObject("lobby-change"))
     controller.updateLobby()
   }
