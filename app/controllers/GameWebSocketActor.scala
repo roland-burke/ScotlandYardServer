@@ -1,7 +1,7 @@
 package controllers
 
 import akka.actor.{Actor, ActorRef, Props}
-import de.htwg.se.scotlandyard.controllerComponent.{ControllerInterface, LobbyChange, NumberOfPlayersChanged, PlayerMoved, PlayerNameChanged, PlayerWin, StartGame}
+import de.htwg.se.scotlandyard.controllerComponent.{ControllerInterface, LobbyChange, NumberOfPlayersChanged, PlayerColorChanged, PlayerMoved, PlayerNameChanged, PlayerWin, StartGame}
 import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
 import de.htwg.se.scotlandyard.util.TicketType
 import model.{Game, History, Player, PlayerData, Tickets}
@@ -22,6 +22,8 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     case _: PlayerNameChanged =>
       clientActorRef ! getAllDataObject("ModelChanged")
     case _: NumberOfPlayersChanged =>
+      clientActorRef ! getAllDataObject("ModelChanged")
+    case _: PlayerColorChanged =>
       clientActorRef ! getAllDataObject("ModelChanged")
     case _: PlayerMoved =>
       clientActorRef ! getAllDataObject("ModelChanged")
@@ -51,9 +53,9 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
           case "deregister" => notifyPlayer() // TODO: get deregister id
           case "lobby-change" => 
             updateBackendData(Option(obj))
+            startGameIfReady()
             notifyPlayer()
           case "StartGame" => controller.startGame()
-          case "init" => initGame()
           case _ => println("Unknown: event")
         }
       }
@@ -67,6 +69,16 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
       controller.setPlayerColor(Game.playerList(n).color, n)
     }
     controller.startGame()
+  }
+
+  def startGameIfReady(): Unit = {
+    var allReady = true
+    for(p <- Game.playerList) {
+      allReady = p.ready && allReady
+    }
+    if(allReady) {
+      initGame()
+    }
   }
 
   def notifyPlayer(): Unit = {
