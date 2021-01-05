@@ -38,6 +38,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
 
   override def preStart() = {
     clientActorRef ! getAllDataObject("ModelChanged")
+    clientActorRef ! getPlayerLobbyObject("lobby-change")
   }
 
   def receive: Receive = {
@@ -69,6 +70,7 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
       controller.setPlayerColor(Game.playerList(n).color, n)
     }
     controller.startGame()
+    clientActorRef ! getAllDataObject("StartGame")
   }
 
   def startGameIfReady(): Unit = {
