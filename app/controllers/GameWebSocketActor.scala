@@ -33,7 +33,9 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
       clientActorRef ! getAllDataObject("ModelChanged")
       clientActorRef ! Json.obj("event" -> "GameFinished")
       Game.resetPlayerList()
-    case _: LobbyChange => clientActorRef ! getPlayerLobbyObject("lobby-change")
+    case _: LobbyChange =>
+      clientActorRef ! getPlayerLobbyObject("lobby-change")
+      clientActorRef ! getAllDataObject("ModelChanged")
   }
 
   override def preStart() = {
@@ -50,8 +52,8 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
           case "redo" => controller.redoValidateAndMove()
           case "ping" => clientActorRef ! Json.obj("event" -> "Alive")
           case "move" => movePlayer(map("data").asOpt[JsObject])
-          case "register" => notifyPlayerAndRegister()
-          case "deregister" => notifyPlayer() // TODO: get deregister id
+          case "register" => notifyPlayerAndRegister(Option(obj))
+          case "deregister" => notifyPlayerAndDeregister(Option(obj))
           case "lobby-change" => 
             updateBackendData(Option(obj))
             startGameIfReady()
@@ -60,6 +62,28 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
           case _ => println("Unknown: event")
         }
       }
+  }
+
+  // Lobby methods
+
+  def notifyPlayerAndRegister(jsonBody: Option[JsObject]): Unit = {
+    println("register event")
+    val id = getIdFromJson(jsonBody)
+    clientActorRef ! Json.obj("event" -> "register", "id" -> Game.register(id))
+    notifyPlayer()
+  }
+
+  def notifyPlayerAndDeregister(jsonBody: Option[JsObject]): Unit = {
+    println("deregister event")
+    val id = getIdFromJson(jsonBody)
+    Game.deregister(id)
+    notifyPlayer()
+  }
+
+  def notifyPlayer(): Unit = {
+    println("notify player")
+    println(getPlayerLobbyObject("lobby-change"))
+    controller.updateLobby()
   }
 
   def initGame(): Unit = {
@@ -78,26 +102,8 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     for(p <- Game.playerList) {
       allReady = p.ready && allReady
     }
-    if(allReady) {
+    if(allReady && Game.playerList.length > 1) {
       initGame()
-    }
-  }
-
-  def notifyPlayer(): Unit = {
-    println("notify player")
-    println(getPlayerLobbyObject("lobby-change"))
-    controller.updateLobby()
-  }
-
-  def getRound(): Int = {
-    controller.getTotalRound()
-  }
-
-  def getAllDataObject(event: String): JsObject = {
-    if (controller.getWin()) {
-      Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin(), "winningPlayer" -> controller.getWinningPlayer().name)
-    } else {
-      Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "win" -> controller.getWin())
     }
   }
 
@@ -118,21 +124,13 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     }
   }
 
-  def notifyPlayerAndRegister(): Unit = {
-    println("register event")
-    clientActorRef ! Json.obj("event" -> "register", "id" -> Game.register())
-    notifyPlayer()
-  }
-
-  def getHistory(): JsObject = {
-    implicit val historyListFormat = Json.format[History]
-
-    val historyListBuffer = new ListBuffer[History]
-    for (historyEntry <- controller.getMrX().history) {
-      historyListBuffer += History(historyEntry.toString)
+  def getIdFromJson(jsonBody: Option[JsObject]): Int = {
+    var id = -1
+    jsonBody.map {
+      json =>
+        id = (json \ "data" \ "id").get.toString().toInt
     }
-
-    Json.obj("history" -> historyListBuffer.toList)
+    id
   }
 
   def getPlayerLobbyObject(event: String): JsObject = {
@@ -145,6 +143,31 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     }
     returnObject = Json.obj("event" -> event, "player" -> playerListBuffer.toList)
     returnObject
+  }
+
+  // Other Methods
+
+  def getRound(): Int = {
+    controller.getTotalRound()
+  }
+
+  def getAllDataObject(event: String): JsObject = {
+    if (controller.getWin()) {
+      Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "gameRunning" -> controller.getGameRunning(), "win" -> controller.getWin(), "winningPlayer" -> controller.getWinningPlayer().name)
+    } else {
+      Json.obj("event" -> event, "player" -> getPlayer(""), "history" -> getHistory(), "round" -> getRound(), "gameRunning" -> controller.getGameRunning(), "win" -> controller.getWin())
+    }
+  }
+
+  def getHistory(): JsObject = {
+    implicit val historyListFormat = Json.format[History]
+
+    val historyListBuffer = new ListBuffer[History]
+    for (historyEntry <- controller.getMrX().history) {
+      historyListBuffer += History(historyEntry.toString)
+    }
+
+    Json.obj("history" -> historyListBuffer.toList)
   }
 
   def getPlayer(playerName: String): JsObject =  {
