@@ -68,9 +68,12 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
 
   def notifyPlayerAndRegister(jsonBody: Option[JsObject]): Unit = {
     println("register event")
-    val id = getIdFromJson(jsonBody)
-    clientActorRef ! Json.obj("event" -> "register", "id" -> Game.register(id))
-    notifyPlayer()
+    val id = Game.register(getIdFromJson(jsonBody))
+
+    if(id >= 0) {
+      clientActorRef ! Json.obj("event" -> "register", "id" -> id)
+      notifyPlayer()
+    }
   }
 
   def notifyPlayerAndDeregister(jsonBody: Option[JsObject]): Unit = {
