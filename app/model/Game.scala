@@ -43,11 +43,14 @@ object Game {
   def register(idFromClient: Int): Int = {
     var id = idFromClient // assign to another variable because a method parameter is immutable
     if(playerList.length >= 7) {
-      return -1
+      return -2
     }
 
     if(id == -1) { // client has no id, generate a new one. Otherwise use the existing one
       id = getRandomId()
+    }
+    if(idPlayerMap.contains(id)) { // client is already registered
+      return -1
     }
 
     // Gets the next unused player
