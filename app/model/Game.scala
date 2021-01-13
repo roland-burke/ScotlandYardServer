@@ -152,8 +152,10 @@ object Game {
 
     if (playerData.name.equals("MrX")) {
       playerData.lastSeen = player.asInstanceOf[MrXInterface].lastSeen
-      playerData.lastSeenX = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.x
-      playerData.lastSeenY = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.y
+      if (!controller.getMrX().lastSeen.equals("never")) {
+        playerData.lastSeenX = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.x
+        playerData.lastSeenY = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.y
+      }
     }
     playerData
   }
