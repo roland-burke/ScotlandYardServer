@@ -147,11 +147,13 @@ object Game {
       "", // lastSeen
       0, // lastSeenX
       0, // lastSeenY
+      false,
       player.station.guiCoords.x,
       player.station.guiCoords.y)
 
     if (playerData.name.equals("MrX")) {
       playerData.lastSeen = player.asInstanceOf[MrXInterface].lastSeen
+      playerData.isVisible = controller.getMrX().isVisible
       if (!controller.getMrX().lastSeen.equals("never")) {
         playerData.lastSeenX = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.x
         playerData.lastSeenY = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.y
@@ -162,7 +164,7 @@ object Game {
 }
 
 case class Tickets(taxi : Int, bus: Int, underground: Int, black: Int)
-case class PlayerData(name: String, station: Int, current: Boolean, color: String, tickets: Tickets, var lastSeen: String, var lastSeenX: Int, var lastSeenY: Int, x: Int, y: Int)
+case class PlayerData(name: String, station: Int, current: Boolean, color: String, tickets: Tickets, var lastSeen: String, var lastSeenX: Int, var lastSeenY: Int, var isVisible: Boolean, x: Int, y: Int)
 case class History(ticketType: String)
 case class Player(var id: Int, var name: String, var color: String, var ready: Boolean)
 
