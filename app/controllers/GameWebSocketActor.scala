@@ -180,18 +180,18 @@ class GameWebSocketActor(clientActorRef: ActorRef) extends Actor with Reactor{
     var returnObject: JsObject = null
 
     if (playerName.isEmpty()) {
-      for (player <- controller.getPlayersList()) {
+      for ((player, i) <- controller.getPlayersList().view.zipWithIndex) {
         if (player == controller.getCurrentPlayer()) {
-          playerDataListBuffer += model.Game.GetPlayerDataModel(player)
+          playerDataListBuffer += model.Game.GetPlayerDataModel(player, i)
         } else {
-          playerDataListBuffer += model.Game.GetPlayerDataModel(player)
+          playerDataListBuffer += model.Game.GetPlayerDataModel(player, i)
         }
       }
       returnObject = Json.obj("players" -> playerDataListBuffer.toList)
     } else {
-      for (player <- controller.getPlayersList()) {
+      for ((player, i) <- controller.getPlayersList().view.zipWithIndex) {
         if (player.name.equals(playerName)) {
-          returnObject = Json.obj("player" -> model.Game.GetPlayerDataModel(player))
+          returnObject = Json.obj("player" -> model.Game.GetPlayerDataModel(player, i))
         }
       }
     }

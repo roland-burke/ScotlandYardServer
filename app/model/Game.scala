@@ -65,6 +65,10 @@ object Game {
   }
 
   def deregister(id: Int): Unit = {
+    if(controller.getGameRunning) {
+      print("Game running! Deregister skipped..")
+      return
+    }
     var playerIndex = -1
     println("=== BEFORE DEREGISTER ===")
     println(idPlayerMap)
@@ -133,11 +137,12 @@ object Game {
     idPlayerMap = Map()
   }
 
-  def GetPlayerDataModel(player: DetectiveInterface): PlayerData = {
+  def GetPlayerDataModel(player: DetectiveInterface, index: Int): PlayerData = {
     var isCurrent = false
     if (controller.getCurrentPlayer().name.equals(player.name)) {
       isCurrent = true
     }
+    val clientId = idPlayerMap.find(_._2 == index).map(_._1).getOrElse(-1)
     var playerData = PlayerData(
       name = player.name,
       station = player.station.number,
@@ -146,7 +151,8 @@ object Game {
       Tickets(taxi = player.tickets.taxiTickets, player.tickets.busTickets, player.tickets.undergroundTickets, player.tickets.blackTickets),
       "", // lastSeen
       player.station.guiCoords.x,
-      player.station.guiCoords.y)
+      player.station.guiCoords.y,
+      id = clientId)
 
     if (playerData.name.equals("MrX")) {
       playerData.lastSeen = player.asInstanceOf[MrXInterface].lastSeen
@@ -156,7 +162,7 @@ object Game {
 }
 
 case class Tickets(taxi : Int, bus: Int, underground: Int, black: Int)
-case class PlayerData(name: String, station: Int, current: Boolean, color: String, tickets: Tickets, var lastSeen: String, x: Int, y: Int)
+case class PlayerData(name: String, station: Int, current: Boolean, color: String, tickets: Tickets, var lastSeen: String, x: Int, y: Int, id: Int)
 case class History(ticketType: String)
 case class Player(var id: Int, var name: String, var color: String, var ready: Boolean)
 
