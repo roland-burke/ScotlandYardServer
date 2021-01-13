@@ -145,18 +145,22 @@ object Game {
       String.format("#%02x%02x%02x", player.color.getRed, player.color.getGreen, player.color.getBlue),
       Tickets(taxi = player.tickets.taxiTickets, player.tickets.busTickets, player.tickets.undergroundTickets, player.tickets.blackTickets),
       "", // lastSeen
+      0, // lastSeenX
+      0, // lastSeenY
       player.station.guiCoords.x,
       player.station.guiCoords.y)
 
     if (playerData.name.equals("MrX")) {
       playerData.lastSeen = player.asInstanceOf[MrXInterface].lastSeen
+      playerData.lastSeenX = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.x
+      playerData.lastSeenY = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.y
     }
     playerData
   }
 }
 
 case class Tickets(taxi : Int, bus: Int, underground: Int, black: Int)
-case class PlayerData(name: String, station: Int, current: Boolean, color: String, tickets: Tickets, var lastSeen: String, x: Int, y: Int)
+case class PlayerData(name: String, station: Int, current: Boolean, color: String, tickets: Tickets, var lastSeen: String, var lastSeenX: Int, var lastSeenY: Int, x: Int, y: Int)
 case class History(ticketType: String)
 case class Player(var id: Int, var name: String, var color: String, var ready: Boolean)
 
