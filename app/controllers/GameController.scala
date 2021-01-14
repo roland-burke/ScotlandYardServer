@@ -30,7 +30,7 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     implicit val ticketsListFormat = Json.format[Tickets]
     implicit val playerDataListFormat = Json.format[PlayerData]
     val player = controller.getCurrentPlayer()
-    Ok(Json.obj("player" -> model.Game.GetPlayerDataModel(player)))
+    Ok(Json.obj("player" -> model.Game.GetPlayerDataModel(player, 0)))
   }
 
   def getPlayer(playerName: String): Action[AnyContent] = Action { implicit request =>
@@ -40,18 +40,18 @@ class GameController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
     var returnObject: JsObject = null
 
     if (playerName.isEmpty()) {
-      for (player <- controller.getPlayersList()) {
+      for ((player, i) <- controller.getPlayersList().view.zipWithIndex) {
         if (player == controller.getCurrentPlayer()) {
-          playerDataListBuffer += model.Game.GetPlayerDataModel(player)
+          playerDataListBuffer += model.Game.GetPlayerDataModel(player, i)
         } else {
-          playerDataListBuffer += model.Game.GetPlayerDataModel(player)
+          playerDataListBuffer += model.Game.GetPlayerDataModel(player, i)
         }
       }
       returnObject = Json.obj("players" -> playerDataListBuffer.toList)
     } else {
-      for (player <- controller.getPlayersList()) {
+      for ((player, i) <- controller.getPlayersList().view.zipWithIndex) {
         if (player.name.equals(playerName)) {
-          returnObject = Json.obj("player" -> model.Game.GetPlayerDataModel(player))
+          returnObject = Json.obj("player" -> model.Game.GetPlayerDataModel(player, i))
         }
       }
     }
