@@ -5,18 +5,6 @@
 # General
 GET     /                           controllers.MainController.index
 
-### Rest Endpoints
-+nocsrf
-POST    /init                       controllers.LobbyController.initGame
-GET     /running                    controllers.MainController.getGameRunning
-
-# Game routes
-GET     /player                     controllers.GameController.getPlayer(playerName: String = "")
-GET     /player/:playerName         controllers.GameController.getPlayer(playerName: String)
-GET     /player/current/            controllers.GameController.getCurrentPlayer
-GET     /history                    controllers.GameController.getHistory
-GET     /round                      controllers.GameController.getRound
-
 # WebSockets
 GET     /ws                         controllers.WebSocketController.ws
 

@@ -13,12 +13,6 @@ class MainController @Inject()(cc: ControllerComponents)(implicit assetsFinder: 
   val controller: ControllerInterface = Game.controller
 
   def index: Action[AnyContent] = Action {
-    Ok(views.html.main())
-  }
-
-  def getGameRunning(): Action[AnyContent] = Action { implicit request =>
-    var returnObject: JsObject = null
-    returnObject = Json.obj("gameRunning" -> controller.getGameRunning())
-    Ok(returnObject)
+    Redirect("localhost:8080", 301)
   }
 }
