@@ -2,9 +2,9 @@ import com.typesafe.sbt.SbtScalariform._
 
 import scalariform.formatter.preferences._
 
-name := "play-silhouette-seed"
+name := "scotland-yard-server"
 
-version := "6.0.0"
+version := "1.0.0"
 
 scalaVersion := "2.13.1"
 
