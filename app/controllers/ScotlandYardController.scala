@@ -12,6 +12,7 @@ import play.api.mvc.{ AbstractController, AnyContent, ControllerComponents, Requ
 import utils.route.Calls
 
 import java.io.File
+import java.nio.file.NoSuchFileException
 import java.util.UUID
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -27,7 +28,12 @@ class ScotlandYardController @Inject() (cc: ControllerComponents)(implicit syste
 }
 
 class ScotlandYardFrontendController @Inject() (scc: SilhouetteControllerComponents)(implicit ex: ExecutionContext) extends SilhouetteController(scc) {
-  def serveFrontend() = SecuredAction { implicit request: Request[AnyContent] =>
-    Ok.sendFile(new File("/app/public/ScotlandYardFrontend/index.html"), inline = true)
+  def serveFrontend() = Action { implicit request: Request[AnyContent] =>
+    try {
+      Ok.sendFile(new File("/app/public/ScotlandYardFrontend/index.html"), inline = true)
+    } catch {
+      case e: NoSuchFileException => Ok.sendFile(new File("./public/ScotlandYardFrontend/index.html"), inline = true)
+    }
+
   }
 }
