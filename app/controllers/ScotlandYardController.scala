@@ -26,8 +26,8 @@ class ScotlandYardController @Inject() (cc: ControllerComponents)(implicit syste
   }
 }
 
-class ScotlandYardFrontendController @Inject() (scc: SilhouetteControllerComponents, af: AssetsFinder)(implicit ex: ExecutionContext) extends SilhouetteController(scc) {
+class ScotlandYardFrontendController @Inject() (scc: SilhouetteControllerComponents)(implicit ex: ExecutionContext) extends SilhouetteController(scc) {
   def serveFrontend() = SecuredAction { implicit request: Request[AnyContent] =>
-    Ok.sendFile(new File(af.path("ScotlandYardFrontend/index.html")), inline = true)
+    Ok.sendFile(new File("/app/public/ScotlandYardFrontend/index.html"), inline = true)
   }
 }
