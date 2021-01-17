@@ -3,6 +3,7 @@
 # ~~~~
 
 # Home page
+GET         /restart                         controllers.ScotlandYardFrontendController.restartGame
 GET         /                                controllers.ApplicationController.index
 GET         /signOut                         controllers.ApplicationController.signOut
 GET         /authenticate/:provider          controllers.SocialAuthController.authenticate(provider)
