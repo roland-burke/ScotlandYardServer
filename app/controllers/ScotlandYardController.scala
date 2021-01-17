@@ -40,6 +40,6 @@ class ScotlandYardFrontendController @Inject() (scc: SilhouetteControllerCompone
   def restartGame() = Action { implicit request: Request[AnyContent] =>
     val controller: ControllerInterface = Game.controller
     controller.winGame()
-    Redirect("/ScotlandYard")
+    Redirect("/ScotlandYard", TEMPORARY_REDIRECT)
   }
 }
