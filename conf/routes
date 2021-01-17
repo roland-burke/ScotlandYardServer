@@ -34,8 +34,7 @@ GET         /account/activate/:token         controllers.ActivateAccountControll
 
 GET         /ws                              controllers.ScotlandYardController.ws
 GET         /ScotlandYard                    controllers.ScotlandYardFrontendController.serveFrontend
-GET         /ScotlandYard/:string            controllers.ScotlandYardFrontendController.serveFrontend
-GET         /ScotlandYard/assets/*file       controllers.Assets.at(path="/public/ScotlandYardFrontend", file)
+GET         /ScotlandYard/*file              controllers.Assets.at(path="/public/ScotlandYardFrontend", file)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.versioned(file)
