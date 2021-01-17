@@ -29,7 +29,7 @@ class ScotlandYardController @Inject() (cc: ControllerComponents)(implicit syste
 }
 
 class ScotlandYardFrontendController @Inject() (scc: SilhouetteControllerComponents)(implicit ex: ExecutionContext) extends SilhouetteController(scc) {
-  def serveFrontend() = Action { implicit request: Request[AnyContent] =>
+  def serveFrontend() = SecuredAction { implicit request: Request[AnyContent] =>
     try {
       Ok.sendFile(new File("/app/public/ScotlandYardFrontend/index.html"), inline = true)
     } catch {
@@ -37,7 +37,7 @@ class ScotlandYardFrontendController @Inject() (scc: SilhouetteControllerCompone
     }
   }
 
-  def restartGame() = Action { implicit request: Request[AnyContent] =>
+  def restartGame() = SecuredAction { implicit request: Request[AnyContent] =>
     val controller: ControllerInterface = Game.controller
     controller.winGame()
     Redirect("/ScotlandYard", TEMPORARY_REDIRECT)
