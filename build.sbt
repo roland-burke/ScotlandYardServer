@@ -13,7 +13,7 @@ resolvers += Resolver.jcenterRepo
 resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
 libraryDependencies ++= Seq(
-  "com.mohiva" %% "play-silhouette" % "6.1.1",
+  "com.mohiva" %% "play-silhouette" % "7.0.0",
   "com.mohiva" %% "play-silhouette-password-bcrypt" % "6.1.1",
   "com.mohiva" %% "play-silhouette-persistence" % "6.1.1",
   "com.mohiva" %% "play-silhouette-crypto-jca" % "6.1.1",
