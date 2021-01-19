@@ -4,11 +4,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ScotlandYard/css/about.30a057da.css"
   },
   {
-    "revision": "676f6418a67aa7524351",
+    "revision": "837f22ad87b040c4b501",
     "url": "/ScotlandYard/css/app.040d46ce.css"
   },
   {
-    "revision": "c475da169d509bdcf1b8",
+    "revision": "3e7dfe8ba85eeadb3d4d",
     "url": "/ScotlandYard/css/chunk-vendors.4cbd925f.css"
   },
   {
@@ -60,7 +60,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ScotlandYard/img/underground_small.de4b32bf.svg"
   },
   {
-    "revision": "e733f43f263ed043d5dceac530694c8f",
+    "revision": "188b8e5fad5a41d8b25448c91280203f",
     "url": "/ScotlandYard/index.html"
   },
   {
@@ -68,12 +68,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ScotlandYard/js/about.543d0a72.js"
   },
   {
-    "revision": "676f6418a67aa7524351",
-    "url": "/ScotlandYard/js/app.82d727f3.js"
+    "revision": "837f22ad87b040c4b501",
+    "url": "/ScotlandYard/js/app.72d6699b.js"
   },
   {
-    "revision": "c475da169d509bdcf1b8",
-    "url": "/ScotlandYard/js/chunk-vendors.b6d5ea0f.js"
+    "revision": "3e7dfe8ba85eeadb3d4d",
+    "url": "/ScotlandYard/js/chunk-vendors.1c73411d.js"
   },
   {
     "revision": "e23c3301ec7b39effb7c180633b9c520",
