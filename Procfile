@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/scotlandyard-server -Dhttp.port=${PORT} -Dconfig.resource="application.prod.conf"
+web: target/universal/stage/bin/scotland-yard-server -Dhttp.port=${PORT} -Dconfig.resource="application.prod.conf"
