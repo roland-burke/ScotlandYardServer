@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ScotlandYard/precache-manifest.52f9f17a029524c999d55ff79d4605b1.js"
+  "/ScotlandYard/precache-manifest.402d08836aa23dae7b9d9458ef718fca.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "scotland-yard-frontend"});
