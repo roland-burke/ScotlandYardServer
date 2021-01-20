@@ -3,7 +3,6 @@
 # ~~~~
 
 # Home page
-GET         /restart                         controllers.ScotlandYardFrontendController.restartGame
 GET         /                                controllers.ApplicationController.index
 GET         /signOut                         controllers.ApplicationController.signOut
 GET         /authenticate/:provider          controllers.SocialAuthController.authenticate(provider)
@@ -34,6 +33,7 @@ GET         /account/email/:email            controllers.ActivateAccountControll
 GET         /account/activate/:token         controllers.ActivateAccountController.activate(token: java.util.UUID)
 
 GET         /ws                              controllers.ScotlandYardController.ws
+GET         /ScotlandYard/restart            controllers.ScotlandYardFrontendController.restartGame
 GET         /ScotlandYard/about              controllers.ScotlandYardFrontendController.serveFrontend
 GET         /ScotlandYard/lobby              controllers.ScotlandYardFrontendController.serveFrontend
 GET         /ScotlandYard/game               controllers.ScotlandYardFrontendController.serveFrontend
