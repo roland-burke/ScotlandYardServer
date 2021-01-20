@@ -34,11 +34,11 @@ GET         /account/email/:email            controllers.ActivateAccountControll
 GET         /account/activate/:token         controllers.ActivateAccountController.activate(token: java.util.UUID)
 
 GET         /ws                              controllers.ScotlandYardController.ws
-GET         /ScotlandYard/*file              controllers.Assets.at(path="/public/ScotlandYardFrontend", file)
-GET         /ScotlandYard/                   controllers.ScotlandYardFrontendController.serveFrontend
 GET         /ScotlandYard/about              controllers.ScotlandYardFrontendController.serveFrontend
 GET         /ScotlandYard/lobby              controllers.ScotlandYardFrontendController.serveFrontend
 GET         /ScotlandYard/game               controllers.ScotlandYardFrontendController.serveFrontend
+GET         /ScotlandYard/*file              controllers.Assets.at(path="/public/ScotlandYardFrontend", file)
+GET         /ScotlandYard/                   controllers.ScotlandYardFrontendController.serveFrontend
 GET         /ScotlandYard                    controllers.ScotlandYardFrontendController.serveFrontend
 
 
