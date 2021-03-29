@@ -2,11 +2,14 @@ package models
 
 import scala.util.Random
 import com.google.inject.Guice
+import de.htwg.se.scotlandyard.ScotlandYard.stationsJsonFilePath
 import de.htwg.se.scotlandyard.ScotlandYardModule
-import de.htwg.se.scotlandyard.controllerComponent.ControllerInterface
-import de.htwg.se.scotlandyard.model.coreComponent.gameInitializerComponent.GameInitializerInterface
-import de.htwg.se.scotlandyard.model.playersComponent.{ DetectiveInterface, MrXInterface }
-import de.htwg.se.scotlandyard.model.tuiMapComponent.TuiMapInterface
+import de.htwg.se.scotlandyard.aview.tui.tuiMapComponent.TuiMapInterface
+import de.htwg.se.scotlandyard.controller.ControllerInterface
+import de.htwg.se.scotlandyard.controller.gameInitializerComponent.GameInitializerInterface
+import de.htwg.se.scotlandyard.model.players.MrX
+
+import scala.io.Source
 
 object Game {
   val injector = Guice.createInjector(new ScotlandYardModule)
@@ -15,7 +18,10 @@ object Game {
   val tuiMap = injector.getInstance(classOf[TuiMapInterface])
   val gameInitializer = injector.getInstance(classOf[GameInitializerInterface])
 
-  gameInitializer.initialize(3)
+  val stationsSource: String = Source.fromFile(stationsJsonFilePath).getLines.mkString
+
+  controller.initializeStations(stationsSource)
+  controller.initialize(3)
 
   // COOKIE HANDLING
 
@@ -137,9 +143,9 @@ object Game {
     idPlayerMap = Map()
   }
 
-  def GetPlayerDataModel(player: DetectiveInterface, index: Int): PlayerData = {
+  def GetPlayerDataModel(player: de.htwg.se.scotlandyard.model.players.Player, index: Int): PlayerData = {
     var isCurrent = false
-    if (controller.getCurrentPlayer().name.equals(player.name)) {
+    if (controller.getCurrentPlayer.name.equals(player.name)) {
       isCurrent = true
     }
     val clientId = idPlayerMap.find(_._2 == index).map(_._1).getOrElse(-1)
@@ -153,16 +159,16 @@ object Game {
       0, // lastSeenX
       0, // lastSeenY
       false,
-      player.station.guiCoords.x,
-      player.station.guiCoords.y,
+      player.station.guiCoordinates.x,
+      player.station.guiCoordinates.y,
       id = clientId)
 
     if (playerData.name.equals("MrX")) {
-      playerData.lastSeen = player.asInstanceOf[MrXInterface].lastSeen
-      playerData.isVisible = controller.getMrX().isVisible
-      if (!controller.getMrX().lastSeen.equals("never")) {
-        playerData.lastSeenX = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.x
-        playerData.lastSeenY = controller.getStations()(controller.getMrX().lastSeen.toInt).guiCoords.y
+      playerData.lastSeen = player.asInstanceOf[MrX].lastSeen
+      playerData.isVisible = controller.getMrX.isVisible
+      if (!controller.getMrX.lastSeen.equals("never")) {
+        playerData.lastSeenX = controller.getStations()(controller.getMrX.lastSeen.toInt).guiCoordinates.x
+        playerData.lastSeenY = controller.getStations()(controller.getMrX.lastSeen.toInt).guiCoordinates.y
       }
     }
     playerData

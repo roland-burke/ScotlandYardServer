@@ -1,9 +1,8 @@
 package controllers
 
 import akka.actor.{ Actor, ActorRef, Props }
-import de.htwg.se.scotlandyard.controllerComponent.{ ControllerInterface, LobbyChange, NumberOfPlayersChanged, PlayerColorChanged, PlayerMoved, PlayerNameChanged, PlayerWin, StartGame }
-import de.htwg.se.scotlandyard.model.tuiMapComponent.station.Station
-import de.htwg.se.scotlandyard.util.TicketType
+import de.htwg.se.scotlandyard.controller.{ ControllerInterface, LobbyChange, NumberOfPlayersChanged, PlayerColorChanged, PlayerMoved, PlayerNameChanged, PlayerWin, StartGame }
+import de.htwg.se.scotlandyard.model.{ Station, TicketType }
 import models.{ Game, History, Player, PlayerData, Tickets }
 import play.api.libs.json.{ JsArray, JsObject, Json }
 
@@ -48,8 +47,8 @@ class ScotlandYardWebSocketActor(clientActorRef: ActorRef) extends Actor with Re
       val map = obj.value
       if (map.contains("event")) {
         map("event").asOpt[String].get match {
-          case "undo" => controller.undoValidateAndMove()
-          case "redo" => controller.redoValidateAndMove()
+          case "undo" => controller.undoMove()
+          case "redo" => controller.redoMove()
           case "ping" => clientActorRef ! Json.obj("event" -> "Alive")
           case "move" => movePlayer(map("data").asOpt[JsObject])
           case "register" => notifyPlayerAndRegister(Option(obj))
@@ -91,7 +90,7 @@ class ScotlandYardWebSocketActor(clientActorRef: ActorRef) extends Actor with Re
 
   def initGame(): Unit = {
     val nPlayer = Game.playerList.length
-    controller.initPlayers(nPlayer)
+    controller.initialize(nPlayer)
     for (n <- 0 until nPlayer) {
       controller.setPlayerName(Game.playerList(n).name, n)
       controller.setPlayerColor(Game.playerList(n).color, n)
@@ -166,7 +165,7 @@ class ScotlandYardWebSocketActor(clientActorRef: ActorRef) extends Actor with Re
     implicit val historyListFormat = Json.format[History]
 
     val historyListBuffer = new ListBuffer[History]
-    for (historyEntry <- controller.getMrX().history) {
+    for (historyEntry <- controller.getMrX.history) {
       historyListBuffer += History(historyEntry.toString)
     }
 
@@ -181,7 +180,7 @@ class ScotlandYardWebSocketActor(clientActorRef: ActorRef) extends Actor with Re
 
     if (playerName.isEmpty()) {
       for ((player, i) <- controller.getPlayersList().view.zipWithIndex) {
-        if (player == controller.getCurrentPlayer()) {
+        if (player == controller.getCurrentPlayer) {
           playerDataListBuffer += models.Game.GetPlayerDataModel(player, i)
         } else {
           playerDataListBuffer += models.Game.GetPlayerDataModel(player, i)
@@ -206,12 +205,7 @@ class ScotlandYardWebSocketActor(clientActorRef: ActorRef) extends Actor with Re
 
         val destStation: Station = closestStationToCoords(xPos, yPos)
 
-        if (controller.validateMove(destStation.number, TicketType.of(ticketType))) {
-          controller.doMove(destStation.number, TicketType.of(ticketType))
-          if (controller.getWin()) {
-            controller.winGame()
-          }
-        }
+        controller.move(destStation.number, TicketType.of(ticketType))
     }
   }
 
@@ -220,8 +214,8 @@ class ScotlandYardWebSocketActor(clientActorRef: ActorRef) extends Actor with Re
     var guessedStation: Station = controller.getStations().head
     for (station <- controller.getStations()) {
       val clickedPoint = new Point(xPos, yPos)
-      if (station.guiCoords.distance(clickedPoint) < distance) {
-        distance = station.guiCoords.distance(clickedPoint)
+      if (station.guiCoordinates.distance(clickedPoint) < distance) {
+        distance = station.guiCoordinates.distance(clickedPoint)
         guessedStation = station
       }
     }
