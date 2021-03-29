@@ -25,7 +25,6 @@ libraryDependencies ++= Seq(
   "com.iheart" %% "ficus" % "1.4.7",
   "com.typesafe.play" %% "play-mailer" % "7.0.1",
   "com.typesafe.play" %% "play-mailer-guice" % "7.0.1",
-//"com.enragedginger" %% "akka-quartz-scheduler" % "1.8.2-akka-2.6.x",
   "com.enragedginger" %% "akka-quartz-scheduler" % "1.8.3-akka-2.6.x",
   "com.adrianhurt" %% "play-bootstrap" % "1.5.1-P27-B4",
   "com.mohiva" %% "play-silhouette-testkit" % "6.1.1" % "test",
@@ -47,6 +46,7 @@ lazy val root = (project in file("."))
     scalaVersion := "2.13.0",
     libraryDependencies ++= Seq(
       guice,
+      "de.htwg.se" %% "scotland-yard" % "0.1.0",
       "com.h2database" % "h2" % "1.4.199",
       "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
     ),
