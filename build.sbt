@@ -43,7 +43,7 @@ lazy val root = (project in file("."))
   .settings(
     name := """scotland-yard-server""",
     version := "1.0-SNAPSHOT",
-    scalaVersion := "2.13.0",
+    scalaVersion := "2.13.1",
     libraryDependencies ++= Seq(
       guice,
       "com.h2database" % "h2" % "1.4.199",
