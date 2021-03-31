@@ -42,7 +42,7 @@
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup2">
                     <div class="navbar-nav ml-auto">
                         @user.map { u =>
-                        <a class="nav-link" href="@controllers.routes.ApplicationController.index">@u.name</a>
+                        <a class="nav-link" href="@controllers.routes.ApplicationController.index">@u.nickname</a>
                         @if(u.loginInfo.providerID == com.mohiva.play.silhouette.impl.providers.CredentialsProvider.ID) {
                         <a class="nav-item nav-link" href="@controllers.routes.ChangePasswordController.view">@messages("change.password")</a>
                         }

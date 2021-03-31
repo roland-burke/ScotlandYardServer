@@ -40,7 +40,7 @@ class SignUpController @Inject() (
     SignUpForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(signUp(form))),
       data => {
-        val result = Redirect(routes.SignUpController.view()).flashing("info" -> Messages("sign.up.email.sent", data.email))
+        val result = Redirect(routes.SignInController.view())
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userService.retrieve(loginInfo).flatMap {
           case Some(user) =>
@@ -51,9 +51,7 @@ class SignUpController @Inject() (
             val user = User(
               userID = UUID.randomUUID(),
               loginInfo = loginInfo,
-              firstName = Some(data.firstName),
-              lastName = Some(data.lastName),
-              fullName = Some(data.firstName + " " + data.lastName),
+              nickname = Some(data.nickname),
               email = Some(data.email),
               avatarURL = None,
               activated = true

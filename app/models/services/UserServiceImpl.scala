@@ -54,9 +54,7 @@ class UserServiceImpl @Inject() (userDAO: UserDAO)(implicit ex: ExecutionContext
     userDAO.find(profile.loginInfo).flatMap {
       case Some(user) => // Update user with profile
         userDAO.save(user.copy(
-          firstName = profile.firstName,
-          lastName = profile.lastName,
-          fullName = profile.fullName,
+          nickname = profile.firstName,
           email = profile.email,
           avatarURL = profile.avatarURL
         ))
@@ -64,9 +62,7 @@ class UserServiceImpl @Inject() (userDAO: UserDAO)(implicit ex: ExecutionContext
         userDAO.save(User(
           userID = UUID.randomUUID(),
           loginInfo = profile.loginInfo,
-          firstName = profile.firstName,
-          lastName = profile.lastName,
-          fullName = profile.fullName,
+          nickname = profile.firstName,
           email = profile.email,
           avatarURL = profile.avatarURL,
           activated = true
